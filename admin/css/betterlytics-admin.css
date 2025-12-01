@@ -1,0 +1,110 @@
+/**
+ * Betterlytics Admin Styles
+ *
+ * @package Betterlytics
+ * @since   1.0.0
+ */
+
+.betterlytics-settings {
+	max-width: 900px;
+}
+
+.betterlytics-settings h1 {
+	margin-bottom: 20px;
+}
+
+.betterlytics-settings hr {
+	margin: 30px 0;
+}
+
+/* Hooks Table */
+#betterlytics-hooks-table {
+	margin: 20px 0;
+}
+
+#betterlytics-hooks-table .column-enabled {
+	width: 80px;
+}
+
+#betterlytics-hooks-table .column-wp-hook {
+	width: 35%;
+}
+
+#betterlytics-hooks-table .column-event-name {
+	width: 35%;
+}
+
+#betterlytics-hooks-table .column-actions {
+	width: 100px;
+}
+
+#betterlytics-hooks-table input[type="text"] {
+	width: 100%;
+}
+
+#betterlytics-hooks-table input[type="checkbox"] {
+	margin: 0;
+}
+
+#betterlytics-hooks-list tr.empty-row td {
+	text-align: center;
+	padding: 20px;
+	color: #666;
+}
+
+/* Buttons */
+#betterlytics-add-hook {
+	margin-right: 10px;
+}
+
+#betterlytics-hooks-status {
+	margin-left: 10px;
+	font-style: italic;
+}
+
+#betterlytics-hooks-status.success {
+	color: #00a32a;
+}
+
+#betterlytics-hooks-status.error {
+	color: #d63638;
+}
+
+/* Help Section */
+.betterlytics-hooks-help {
+	background: #f6f7f7;
+	border: 1px solid #c3c4c7;
+	padding: 15px 20px;
+	margin-top: 20px;
+}
+
+.betterlytics-hooks-help h3 {
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+
+.betterlytics-hooks-help ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.betterlytics-hooks-help li {
+	margin-bottom: 8px;
+}
+
+.betterlytics-hooks-help code {
+	background: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+}
+
+/* Delete button */
+.betterlytics-delete-hook {
+	color: #b32d2e;
+	cursor: pointer;
+}
+
+.betterlytics-delete-hook:hover {
+	color: #a00;
+}

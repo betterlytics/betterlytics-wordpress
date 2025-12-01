@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: PHP Lint (PHPCS)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run PHPCS via Docker
+        run: |
+          docker run --rm -v "$PWD:/app" -w /app composer:latest bash -c "
+            composer install --quiet --no-interaction &&
+            vendor/bin/phpcs --report-full
+          "
+
+  test:
+    name: PHP Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run PHPUnit via Docker Compose
+        run: |
+          docker compose --profile test up -d db-test
+          docker compose --profile test run --rm phpunit
+
+      - name: Cleanup
+        if: always()
+        run: docker compose --profile test down -v
+
+  build:
+    name: Build Plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create plugin zip
+        run: |
+          mkdir -p build
+          zip -r build/betterlytics.zip . \
+            -x "*.git*" \
+            -x "vendor/*" \
+            -x "tests/*" \
+            -x "bin/*" \
+            -x "build/*" \
+            -x "docker-compose.yml" \
+            -x "Dockerfile*" \
+            -x "Makefile" \
+            -x "phpunit.xml*" \
+            -x "phpcs.xml*" \
+            -x "composer.*" \
+            -x ".editorconfig" \
+            -x ".env*" \
+            -x ".github/*"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: betterlytics-plugin
+          path: build/betterlytics.zip

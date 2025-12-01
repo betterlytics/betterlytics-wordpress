@@ -1,0 +1,107 @@
+services:
+  wordpress:
+    image: wordpress:6.7-php8.2-apache
+    ports:
+      - "${WORDPRESS_PORT:-8888}:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wordpress_data:/var/www/html
+      - .:/var/www/html/wp-content/plugins/betterlytics
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - betterlytics
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
+      MYSQL_USER: ${MYSQL_USER:-wordpress}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - betterlytics
+
+  # Test environment
+  wordpress-test:
+    image: wordpress:6.7-php8.2-apache
+    environment:
+      WORDPRESS_DB_HOST: db-test
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress_test
+    volumes:
+      - wordpress_test_data:/var/www/html
+      - .:/var/www/html/wp-content/plugins/betterlytics
+    depends_on:
+      db-test:
+        condition: service_healthy
+    networks:
+      - betterlytics
+    profiles:
+      - test
+
+  db-test:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: wordpress_test
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_test_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - betterlytics
+    profiles:
+      - test
+
+  # PHPUnit test runner
+  phpunit:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/var/www/html/wp-content/plugins/betterlytics
+      - phpunit_cache:/tmp/wordpress-tests-lib
+    depends_on:
+      db-test:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db-test
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress_test
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      WP_PHPUNIT__DIR: /tmp/wordpress-tests-lib
+    networks:
+      - betterlytics
+    profiles:
+      - test
+
+volumes:
+  wordpress_data:
+  db_data:
+  wordpress_test_data:
+  db_test_data:
+  phpunit_cache:
+
+networks:
+  betterlytics:

@@ -1,0 +1,41 @@
+# Dependencies
+/vendor/
+
+# Build artifacts
+/build/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+debug.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# WordPress environment
+wp-content/
+wordpress/
+
+# PHPUnit
+.phpunit.result.cache
+phpunit.xml
+
+# PHPCS
+phpcs.xml
+
+# Composer
+composer.lock
+
+# Coverage reports
+/coverage/

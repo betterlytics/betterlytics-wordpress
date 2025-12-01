@@ -1,0 +1,33 @@
+FROM php:8.2-cli
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    default-mysql-client \
+    subversion \
+    && docker-php-ext-install mysqli pdo pdo_mysql zip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/html/wp-content/plugins/betterlytics
+
+# Copy composer files first for caching
+COPY composer.json ./
+
+# Install PHP dependencies
+RUN composer install --prefer-dist --no-progress --no-interaction
+
+# Copy the rest of the plugin
+COPY . .
+
+# Script to setup WordPress test suite and run PHPUnit
+COPY bin/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["vendor/bin/phpunit"]

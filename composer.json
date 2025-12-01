@@ -1,0 +1,33 @@
+{
+	"name": "betterlytics/betterlytics-wordpress",
+	"description": "Privacy-first analytics for WordPress",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Betterlytics",
+			"homepage": "https://betterlytics.io"
+		}
+	],
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^3.0",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"phpunit/phpunit": "^9.6",
+		"yoast/phpunit-polyfills": "^2.0"
+	},
+	"scripts": {
+		"lint": "phpcs",
+		"lint:fix": "phpcbf",
+		"test": "phpunit"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"sort-packages": true
+	}
+}
