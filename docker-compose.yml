@@ -3,7 +3,7 @@ services:
   # Development
   # ===================
   wordpress:
-    image: wordpress:6.7-php8.2-apache
+    image: wordpress:latest
     ports:
       - "${WORDPRESS_PORT:-8888}:80"
     environment:
