@@ -24,14 +24,14 @@ class Betterlytics_Activator {
 	 * @since 1.0.0
 	 */
 	public static function activate() {
-		$default_options = array(
+		$default_options = [
 			'site_id'         => '',
 			'server_url'      => 'https://betterlytics.io/track',
 			'script_url'      => 'https://betterlytics.io/analytics.js',
 			'enabled'         => false,
 			'track_logged_in' => true,
-			'hooks'           => array(),
-		);
+			'hooks'           => [],
+		];
 
 		if ( ! get_option( 'betterlytics_options' ) ) {
 			add_option( 'betterlytics_options', $default_options );

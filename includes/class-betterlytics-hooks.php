@@ -27,7 +27,7 @@ class Betterlytics_Hooks {
 		}
 
 		$options = Betterlytics_Options::get_options();
-		$hooks   = isset( $options['hooks'] ) ? $options['hooks'] : array();
+		$hooks   = isset( $options['hooks'] ) ? $options['hooks'] : [];
 
 		foreach ( $hooks as $hook_config ) {
 			if ( empty( $hook_config['enabled'] ) ) {
@@ -71,9 +71,9 @@ class Betterlytics_Hooks {
 	 * @return array Event properties.
 	 */
 	private function build_event_properties( $wp_hook, $args ) {
-		$properties = array(
+		$properties = [
 			'wp_hook' => $wp_hook,
-		);
+		];
 
 		// Add hook-specific properties (no PII).
 		switch ( $wp_hook ) {
@@ -139,12 +139,12 @@ class Betterlytics_Hooks {
 		global $betterlytics_queued_events;
 
 		if ( ! isset( $betterlytics_queued_events ) ) {
-			$betterlytics_queued_events = array();
+			$betterlytics_queued_events = [];
 		}
 
-		$betterlytics_queued_events[] = array(
+		$betterlytics_queued_events[] = [
 			'name'       => $event_name,
 			'properties' => $properties,
-		);
+		];
 	}
 }

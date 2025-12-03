@@ -70,6 +70,7 @@ window.betterlytics = window.betterlytics || {
 	}
 };
 </script>
+<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- External analytics script with data attributes cannot use wp_enqueue_script(). ?>
 <script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>"></script>
 		<?php
 	}

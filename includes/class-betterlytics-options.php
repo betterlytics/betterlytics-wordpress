@@ -28,14 +28,14 @@ class Betterlytics_Options {
 	 *
 	 * @var array
 	 */
-	const DEFAULTS = array(
+	const DEFAULTS = [
 		'site_id'         => '',
 		'server_url'      => 'https://betterlytics.io/track',
 		'script_url'      => 'https://betterlytics.io/analytics.js',
 		'enabled'         => false,
 		'track_logged_in' => true,
-		'hooks'           => array(),
-	);
+		'hooks'           => [],
+	];
 
 	/**
 	 * Get all plugin options.
@@ -44,7 +44,7 @@ class Betterlytics_Options {
 	 * @return array Plugin options merged with defaults.
 	 */
 	public static function get_options() {
-		$options = get_option( self::OPTION_NAME, array() );
+		$options = get_option( self::OPTION_NAME, [] );
 		return wp_parse_args( $options, self::DEFAULTS );
 	}
 
@@ -52,19 +52,19 @@ class Betterlytics_Options {
 	 * Get a specific option value.
 	 *
 	 * @since  1.0.0
-	 * @param  string $key     The option key.
-	 * @param  mixed  $default Optional. Default value if key doesn't exist.
+	 * @param  string $key           The option key.
+	 * @param  mixed  $default_value Optional. Default value if key doesn't exist.
 	 * @return mixed The option value.
 	 */
-	public static function get( $key, $default = null ) {
+	public static function get( $key, $default_value = null ) {
 		$options = self::get_options();
 
 		if ( isset( $options[ $key ] ) ) {
 			return $options[ $key ];
 		}
 
-		if ( null !== $default ) {
-			return $default;
+		if ( null !== $default_value ) {
+			return $default_value;
 		}
 
 		return isset( self::DEFAULTS[ $key ] ) ? self::DEFAULTS[ $key ] : null;

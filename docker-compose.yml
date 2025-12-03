@@ -1,4 +1,7 @@
 services:
+  # ===================
+  # Development
+  # ===================
   wordpress:
     image: wordpress:6.7-php8.2-apache
     ports:
@@ -15,6 +18,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     networks:
       - betterlytics
 
@@ -35,25 +44,66 @@ services:
     networks:
       - betterlytics
 
-  # Test environment
-  wordpress-test:
-    image: wordpress:6.7-php8.2-apache
+  # One-time WordPress setup (runs after WordPress is healthy)
+  setup:
+    image: wordpress:cli
     environment:
-      WORDPRESS_DB_HOST: db-test
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress_test
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
     volumes:
-      - wordpress_test_data:/var/www/html
+      - wordpress_data:/var/www/html
       - .:/var/www/html/wp-content/plugins/betterlytics
     depends_on:
-      db-test:
+      wordpress:
         condition: service_healthy
     networks:
       - betterlytics
-    profiles:
-      - test
+    command: >
+      sh -c '
+        if ! wp core is-installed --allow-root 2>/dev/null; then
+          echo "Installing WordPress..." &&
+          wp core install \
+            --url="http://localhost:${WORDPRESS_PORT:-8888}" \
+            --title="Betterlytics Dev" \
+            --admin_user=admin \
+            --admin_password=admin \
+            --admin_email=admin@example.com \
+            --skip-email \
+            --allow-root &&
+          echo "Activating Betterlytics plugin..." &&
+          wp plugin activate betterlytics --allow-root &&
+          echo "WordPress setup complete!"
+        else
+          echo "WordPress already installed."
+        fi
+      '
 
+  # ===================
+  # Linting
+  # ===================
+  lint:
+    image: composer:latest
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sh -c "composer install && vendor/bin/phpcs"
+    profiles:
+      - lint
+
+  lint-fix:
+    image: composer:latest
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: sh -c "composer install && vendor/bin/phpcbf"
+    profiles:
+      - lint-fix
+
+  # ===================
+  # Testing
+  # ===================
   db-test:
     image: mysql:8.0
     environment:
@@ -73,8 +123,7 @@ services:
     profiles:
       - test
 
-  # PHPUnit test runner
-  phpunit:
+  test:
     build:
       context: .
       dockerfile: Dockerfile.test
@@ -96,10 +145,42 @@ services:
     profiles:
       - test
 
+  # ===================
+  # Build
+  # ===================
+  build:
+    image: alpine:latest
+    volumes:
+      - .:/app
+      - ./build:/app/build
+    working_dir: /app
+    command: >
+      sh -c "
+        apk add --no-cache zip &&
+        mkdir -p build &&
+        zip -r build/betterlytics.zip . \
+          -x '*.git*' \
+          -x 'vendor/*' \
+          -x 'tests/*' \
+          -x 'bin/*' \
+          -x 'build/*' \
+          -x 'docker-compose.yml' \
+          -x 'Dockerfile*' \
+          -x 'Makefile' \
+          -x 'phpunit.xml*' \
+          -x 'phpcs.xml*' \
+          -x 'composer.*' \
+          -x '.editorconfig' \
+          -x '.env*' \
+          -x '.github/*' &&
+        echo 'Build complete: build/betterlytics.zip'
+      "
+    profiles:
+      - build
+
 volumes:
   wordpress_data:
   db_data:
-  wordpress_test_data:
   db_test_data:
   phpunit_cache:
 

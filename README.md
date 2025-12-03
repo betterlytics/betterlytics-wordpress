@@ -114,8 +114,7 @@ $site_id = Betterlytics_Options::get( 'site_id' );
 
 ### Requirements
 
-- Docker & Docker Compose
-- Make (optional, for convenience commands)
+- [Docker](https://docs.docker.com/get-docker/) & Docker Compose
 
 ### Quick Start
 
@@ -125,55 +124,55 @@ cp .env.example .env
 
 # Start WordPress development environment
 docker compose up -d
-
-# Or using Make
-make start
 ```
 
 WordPress will be available at **http://localhost:8888** (or the port you set in `.env`).
+
+Default WordPress admin credentials:
+- **Username**: `admin`
+- **Password**: `admin`
+
+The plugin is automatically activated on first run.
 
 ### Available Commands
 
 ```bash
 # Start development environment
-make start
+docker compose up -d
 
 # Stop development environment
-make stop
+docker compose down
 
 # View logs
-make logs
-
-# Open shell in WordPress container
-make shell
-
-# Run PHPUnit tests
-make test
+docker compose logs -f
 
 # Run PHP linting (PHPCS)
-make lint
+docker compose --profile lint run --rm lint
 
 # Auto-fix linting issues
-make lint-fix
+docker compose --profile lint-fix run --rm lint-fix
+
+# Run PHPUnit tests
+docker compose --profile test run --rm test
 
 # Build plugin zip
-make build
+docker compose --profile build run --rm build
 
-# Clean up everything
-make clean
+# Clean up everything (including volumes)
+docker compose down -v
 ```
 
 ### Running Tests
 
 ```bash
 # Run all tests
-make test
+docker compose --profile test run --rm test
 
-# Run specific test
-make test-filter FILTER=test_get_options_returns_defaults
+# Run specific test file
+docker compose --profile test run --rm test vendor/bin/phpunit tests/test-options.php
 
-# Run tests with verbose output
-make test-verbose
+# Run with verbose output
+docker compose --profile test run --rm test vendor/bin/phpunit --verbose
 ```
 
 ### Coding Standards
@@ -182,10 +181,10 @@ This plugin follows the [WordPress Coding Standards](https://developer.wordpress
 
 ```bash
 # Check coding standards
-make lint
+docker compose --profile lint run --rm lint
 
 # Auto-fix issues
-make lint-fix
+docker compose --profile lint-fix run --rm lint-fix
 ```
 
 ### Project Structure
@@ -214,7 +213,6 @@ betterlytics-wordpress/
 ├── uninstall.php             # Cleanup on uninstall
 ├── docker-compose.yml        # Docker development environment
 ├── Dockerfile.test           # Test runner container
-├── Makefile                  # Convenience commands
 ├── composer.json             # PHP dependencies
 ├── phpcs.xml.dist            # PHPCS configuration
 └── phpunit.xml.dist          # PHPUnit configuration

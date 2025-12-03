@@ -69,7 +69,7 @@ class Betterlytics_Admin {
 		wp_enqueue_style(
 			$this->plugin_name,
 			BETTERLYTICS_PLUGIN_URL . 'admin/css/betterlytics-admin.css',
-			array(),
+			[],
 			$this->version,
 			'all'
 		);
@@ -89,7 +89,7 @@ class Betterlytics_Admin {
 		wp_enqueue_script(
 			$this->plugin_name,
 			BETTERLYTICS_PLUGIN_URL . 'admin/js/betterlytics-admin.js',
-			array( 'jquery' ),
+			[ 'jquery' ],
 			$this->version,
 			true
 		);
@@ -97,16 +97,16 @@ class Betterlytics_Admin {
 		wp_localize_script(
 			$this->plugin_name,
 			'betterlyticsAdmin',
-			array(
+			[
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'betterlytics_admin' ),
-				'hooks'   => Betterlytics_Options::get( 'hooks', array() ),
-				'strings' => array(
+				'hooks'   => Betterlytics_Options::get( 'hooks', [] ),
+				'strings' => [
 					'confirmDelete' => __( 'Are you sure you want to delete this hook?', 'betterlytics' ),
 					'saved'         => __( 'Settings saved.', 'betterlytics' ),
 					'error'         => __( 'An error occurred. Please try again.', 'betterlytics' ),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -121,7 +121,7 @@ class Betterlytics_Admin {
 			__( 'Betterlytics', 'betterlytics' ),
 			'manage_options',
 			$this->page_slug,
-			array( $this, 'render_settings_page' )
+			[ $this, 'render_settings_page' ]
 		);
 	}
 
@@ -134,24 +134,24 @@ class Betterlytics_Admin {
 		register_setting(
 			'betterlytics_settings',
 			'betterlytics_options',
-			array(
+			[
 				'type'              => 'array',
-				'sanitize_callback' => array( $this, 'sanitize_options' ),
-			)
+				'sanitize_callback' => [ $this, 'sanitize_options' ],
+			]
 		);
 
 		// General Settings Section.
 		add_settings_section(
 			'betterlytics_general',
 			__( 'General Settings', 'betterlytics' ),
-			array( $this, 'render_general_section' ),
+			[ $this, 'render_general_section' ],
 			$this->page_slug
 		);
 
 		add_settings_field(
 			'enabled',
 			__( 'Enable Tracking', 'betterlytics' ),
-			array( $this, 'render_enabled_field' ),
+			[ $this, 'render_enabled_field' ],
 			$this->page_slug,
 			'betterlytics_general'
 		);
@@ -159,7 +159,7 @@ class Betterlytics_Admin {
 		add_settings_field(
 			'site_id',
 			__( 'Site ID', 'betterlytics' ),
-			array( $this, 'render_site_id_field' ),
+			[ $this, 'render_site_id_field' ],
 			$this->page_slug,
 			'betterlytics_general'
 		);
@@ -167,7 +167,7 @@ class Betterlytics_Admin {
 		add_settings_field(
 			'server_url',
 			__( 'Server URL', 'betterlytics' ),
-			array( $this, 'render_server_url_field' ),
+			[ $this, 'render_server_url_field' ],
 			$this->page_slug,
 			'betterlytics_general'
 		);
@@ -175,7 +175,7 @@ class Betterlytics_Admin {
 		add_settings_field(
 			'script_url',
 			__( 'Script URL', 'betterlytics' ),
-			array( $this, 'render_script_url_field' ),
+			[ $this, 'render_script_url_field' ],
 			$this->page_slug,
 			'betterlytics_general'
 		);
@@ -183,7 +183,7 @@ class Betterlytics_Admin {
 		add_settings_field(
 			'track_logged_in',
 			__( 'Track Logged-in Users', 'betterlytics' ),
-			array( $this, 'render_track_logged_in_field' ),
+			[ $this, 'render_track_logged_in_field' ],
 			$this->page_slug,
 			'betterlytics_general'
 		);
@@ -221,18 +221,18 @@ class Betterlytics_Admin {
 	 * @return array Sanitized hooks.
 	 */
 	public function sanitize_hooks( $hooks ) {
-		$sanitized = array();
+		$sanitized = [];
 
 		foreach ( $hooks as $hook ) {
 			if ( empty( $hook['wp_hook'] ) || empty( $hook['event_name'] ) ) {
 				continue;
 			}
 
-			$sanitized[] = array(
+			$sanitized[] = [
 				'wp_hook'    => sanitize_text_field( $hook['wp_hook'] ),
 				'event_name' => sanitize_text_field( $hook['event_name'] ),
 				'enabled'    => ! empty( $hook['enabled'] ),
-			);
+			];
 		}
 
 		return $sanitized;
@@ -344,23 +344,23 @@ class Betterlytics_Admin {
 		check_ajax_referer( 'betterlytics_admin', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Permission denied.', 'betterlytics' ) ) );
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'betterlytics' ) ] );
 		}
 
-		$hooks = array();
+		$hooks = [];
 		if ( isset( $_POST['hooks'] ) ) {
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized in sanitize_hooks().
 			$hooks = json_decode( wp_unslash( $_POST['hooks'] ), true );
 		}
 
 		if ( ! is_array( $hooks ) ) {
-			$hooks = array();
+			$hooks = [];
 		}
 
 		$options          = Betterlytics_Options::get_options();
 		$options['hooks'] = $this->sanitize_hooks( $hooks );
 		Betterlytics_Options::update_options( $options );
 
-		wp_send_json_success( array( 'message' => __( 'Hooks saved successfully.', 'betterlytics' ) ) );
+		wp_send_json_success( [ 'message' => __( 'Hooks saved successfully.', 'betterlytics' ) ] );
 	}
 }
