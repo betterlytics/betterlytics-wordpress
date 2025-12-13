@@ -164,6 +164,7 @@ services:
           -x 'tests/*' \
           -x 'bin/*' \
           -x 'build/*' \
+          -x 'demo/*' \
           -x 'docker-compose.yml' \
           -x 'Dockerfile*' \
           -x 'Makefile' \
@@ -177,6 +178,91 @@ services:
       "
     profiles:
       - build
+
+  # ===================
+  # Demo (WooCommerce integration testing)
+  # ===================
+  demo-setup:
+    image: wordpress:cli
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
+    volumes:
+      - wordpress_data:/var/www/html
+      - .:/var/www/html/wp-content/plugins/betterlytics
+      - ./demo/mu-plugins:/var/www/html/wp-content/mu-plugins
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    networks:
+      - betterlytics
+    profiles:
+      - demo
+    command: >
+      sh -c '
+        echo "Setting up demo environment..." &&
+
+        # Install and activate WooCommerce
+        if ! wp plugin is-installed woocommerce 2>/dev/null; then
+          echo "Installing WooCommerce..." &&
+          wp plugin install woocommerce --activate
+        else
+          echo "WooCommerce already installed, activating..." &&
+          wp plugin activate woocommerce 2>/dev/null || true
+        fi &&
+
+        # Run WooCommerce setup wizard pages (skip actual wizard)
+        wp option update woocommerce_store_address "123 Demo Street" &&
+        wp option update woocommerce_store_city "Demo City" &&
+        wp option update woocommerce_default_country "US:CA" &&
+        wp option update woocommerce_store_postcode "90210" &&
+        wp option update woocommerce_currency "USD" &&
+        wp option update woocommerce_product_type "both" &&
+        wp option update woocommerce_allow_tracking "no" &&
+        wp option update --format=json woocommerce_onboarding_profile "{\"skipped\":true}" &&
+
+        # Create WooCommerce pages if they do not exist
+        wp option update woocommerce_queue_flush_rewrite_rules "yes" &&
+
+        # Create a demo product using raw post creation (wp wc requires REST API)
+        PRODUCT_COUNT=$$(wp post list --post_type=product --format=count) &&
+        if [ "$$PRODUCT_COUNT" -eq "0" ]; then
+          echo "Creating demo product..." &&
+          PRODUCT_ID=$$(wp post create \
+            --post_type=product \
+            --post_title="Demo Product" \
+            --post_name="demo-product" \
+            --post_status=publish \
+            --post_content="A demo product for testing Betterlytics events." \
+            --post_excerpt="Demo product for testing." \
+            --porcelain) &&
+          wp post meta update $$PRODUCT_ID _price "19.99" &&
+          wp post meta update $$PRODUCT_ID _regular_price "19.99" &&
+          wp post meta update $$PRODUCT_ID _stock_status "instock" &&
+          wp post meta update $$PRODUCT_ID _visibility "visible" &&
+          echo "Created product ID: $$PRODUCT_ID"
+        else
+          echo "Demo product already exists."
+        fi &&
+
+        # Create a demo page for testing custom events
+        if ! wp post list --post_type=page --name=betterlytics-test --format=ids | grep -q .; then
+          echo "Creating test page..." &&
+          wp post create \
+            --post_type=page \
+            --post_title="Betterlytics Test Page" \
+            --post_name="betterlytics-test" \
+            --post_status=publish \
+            --post_content="<!-- This page content is rendered by the betterlytics-demo mu-plugin -->"
+        else
+          echo "Test page already exists."
+        fi &&
+
+        echo "Demo setup complete!"
+      '
 
 volumes:
   wordpress_data:

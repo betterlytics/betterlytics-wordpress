@@ -62,7 +62,7 @@ class Betterlytics_Admin {
 	 * @param string $hook The current admin page hook.
 	 */
 	public function enqueue_styles( $hook ) {
-		if ( 'settings_page_betterlytics' !== $hook ) {
+		if ( 'toplevel_page_betterlytics' !== $hook ) {
 			return;
 		}
 
@@ -82,7 +82,7 @@ class Betterlytics_Admin {
 	 * @param string $hook The current admin page hook.
 	 */
 	public function enqueue_scripts( $hook ) {
-		if ( 'settings_page_betterlytics' !== $hook ) {
+		if ( 'toplevel_page_betterlytics' !== $hook ) {
 			return;
 		}
 
@@ -116,12 +116,17 @@ class Betterlytics_Admin {
 	 * @since 1.0.0
 	 */
 	public function add_admin_menu() {
-		add_options_page(
+		$icon_svg = file_get_contents( BETTERLYTICS_PLUGIN_DIR . 'public/logo/betterlytics-logo-light-simple.svg' );
+		$icon     = 'data:image/svg+xml;base64,' . base64_encode( $icon_svg );
+
+		add_menu_page(
 			__( 'Betterlytics Settings', 'betterlytics' ),
 			__( 'Betterlytics', 'betterlytics' ),
 			'manage_options',
 			$this->page_slug,
-			[ $this, 'render_settings_page' ]
+			[ $this, 'render_settings_page' ],
+			$icon,
+			100
 		);
 	}
 

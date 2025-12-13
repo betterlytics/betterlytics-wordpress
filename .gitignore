@@ -39,3 +39,4 @@ composer.lock
 
 # Coverage reports
 /coverage/
+.claude/
