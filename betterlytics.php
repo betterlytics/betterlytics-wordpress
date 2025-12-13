@@ -11,7 +11,7 @@
  * Plugin Name:       Betterlytics
  * Plugin URI:        https://github.com/betterlytics/betterlytics-wordpress
  * Description:       Privacy-first analytics for WordPress. Automatically adds the Betterlytics tracking script and provides easy WordPress action hooks integration.
- * Version:           1.0.0
+ * Version:           1.0.2
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Betterlytics
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'BETTERLYTICS_VERSION', '1.0.0' );
+define( 'BETTERLYTICS_VERSION', '1.0.2' );
 
 /**
  * Plugin base file.
@@ -65,6 +65,27 @@ function betterlytics_deactivate() {
 
 register_activation_hook( __FILE__, 'betterlytics_activate' );
 register_deactivation_hook( __FILE__, 'betterlytics_deactivate' );
+
+/**
+ * Add settings link to plugin action links.
+ *
+ * @param array $links Existing plugin action links.
+ * @return array Modified plugin action links.
+ */
+function betterlytics_plugin_action_links( $links ) {
+	$settings_link = '<a href="' . admin_url( 'admin.php?page=betterlytics-settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';
+	array_unshift( $links, $settings_link );
+
+	// Add dashboard link if site_id is configured.
+	$options = get_option( 'betterlytics_options', [] );
+	if ( ! empty( $options['site_id'] ) ) {
+		$dashboard_link = '<a href="https://www.betterlytics.io/dashboard/' . esc_attr( $options['site_id'] ) . '" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
+		array_unshift( $links, $dashboard_link );
+	}
+
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'betterlytics_plugin_action_links' );
 
 /**
  * The core plugin class that is used to define internationalization,

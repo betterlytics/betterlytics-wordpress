@@ -124,7 +124,9 @@ class Betterlytics {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+		$this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'dashboard_link_script' );
 		$this->loader->add_action( 'wp_ajax_betterlytics_save_hooks', $plugin_admin, 'ajax_save_hooks' );
+		$this->loader->add_action( 'wp_ajax_betterlytics_save_events', $plugin_admin, 'ajax_save_events' );
 	}
 
 	/**

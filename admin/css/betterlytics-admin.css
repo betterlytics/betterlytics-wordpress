@@ -10,20 +10,192 @@
 }
 
 .betterlytics-settings h1 {
+	margin-bottom: 10px;
+}
+
+.betterlytics-page-description {
+	color: #646970;
 	margin-bottom: 20px;
 }
 
-.betterlytics-settings hr {
-	margin: 30px 0;
+/* Home Page */
+.betterlytics-home h2 {
+	margin-top: 30px;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #c3c4c7;
 }
 
-/* Hooks Table */
+.betterlytics-home h2:first-of-type {
+	margin-top: 20px;
+}
+
+/* Setup Steps */
+.betterlytics-setup-steps {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	padding: 20px;
+}
+
+.betterlytics-step {
+	display: flex;
+	gap: 15px;
+	padding: 15px 0;
+	border-bottom: 1px solid #f0f0f1;
+	opacity: 0.5;
+}
+
+.betterlytics-step:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.betterlytics-step:first-child {
+	padding-top: 0;
+}
+
+.betterlytics-step.current,
+.betterlytics-step.completed {
+	opacity: 1;
+}
+
+.betterlytics-step .step-number {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: #dcdcde;
+	color: #50575e;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.betterlytics-step.current .step-number {
+	background: #2271b1;
+	color: #fff;
+}
+
+.betterlytics-step.completed .step-number {
+	background: #00a32a;
+	color: #fff;
+}
+
+.betterlytics-step .step-content h3 {
+	margin: 0 0 5px;
+	font-size: 14px;
+}
+
+.betterlytics-step .step-content p {
+	margin: 0 0 10px;
+	color: #646970;
+}
+
+.betterlytics-step .step-content p:last-child {
+	margin-bottom: 0;
+}
+
+.betterlytics-step .step-status {
+	color: #00a32a;
+	font-weight: 500;
+}
+
+.betterlytics-step .step-status .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	vertical-align: text-bottom;
+}
+
+/* Resources */
+.betterlytics-resources {
+	margin-top: 30px;
+}
+
+.betterlytics-resources ul {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.betterlytics-resources li {
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.betterlytics-resources li:last-child {
+	border-bottom: none;
+}
+
+.betterlytics-resources a {
+	display: block;
+	padding: 12px 15px;
+	text-decoration: none;
+}
+
+.betterlytics-resources a:hover {
+	background: #f6f7f7;
+}
+
+.betterlytics-resources .dashicons {
+	margin-right: 8px;
+	color: #646970;
+}
+
+/* Tabs */
+.betterlytics-tabs {
+	margin-bottom: 0;
+}
+
+.betterlytics-tab-content {
+	display: none;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-top: none;
+	padding: 20px;
+}
+
+.betterlytics-tab-content.active {
+	display: block;
+}
+
+.betterlytics-tab-content > p.description:first-child {
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+
+/* Standard Events Tab */
+#tab-standard h2 {
+	margin-top: 30px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #c3c4c7;
+}
+
+#tab-standard h2:first-of-type {
+	margin-top: 0;
+}
+
+#tab-standard .form-table th {
+	width: 180px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+#tab-standard .form-table td {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+/* Custom Hooks Table */
 #betterlytics-hooks-table {
-	margin: 20px 0;
+	margin-bottom: 15px;
 }
 
 #betterlytics-hooks-table .column-enabled {
-	width: 80px;
+	width: 60px;
+	text-align: center;
 }
 
 #betterlytics-hooks-table .column-wp-hook {
@@ -35,7 +207,16 @@
 }
 
 #betterlytics-hooks-table .column-actions {
-	width: 100px;
+	width: 80px;
+	text-align: center;
+}
+
+#betterlytics-hooks-table td.column-enabled {
+	text-align: center;
+}
+
+#betterlytics-hooks-table td.column-actions {
+	text-align: center;
 }
 
 #betterlytics-hooks-table input[type="text"] {
@@ -52,7 +233,11 @@
 	color: #666;
 }
 
-/* Buttons */
+/* Hooks Actions */
+.betterlytics-hooks-actions {
+	margin-top: 15px;
+}
+
 #betterlytics-add-hook {
 	margin-right: 10px;
 }
@@ -107,4 +292,10 @@
 
 .betterlytics-delete-hook:hover {
 	color: #a00;
+}
+
+.betterlytics-delete-hook .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
 }

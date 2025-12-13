@@ -35,13 +35,31 @@ class Betterlytics_Admin {
 	private $version;
 
 	/**
+	 * The main menu slug.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string $menu_slug The main menu slug.
+	 */
+	private $menu_slug = 'betterlytics';
+
+	/**
+	 * The events page slug.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string $events_slug The events page slug.
+	 */
+	private $events_slug = 'betterlytics-events';
+
+	/**
 	 * The settings page slug.
 	 *
 	 * @since  1.0.0
 	 * @access private
-	 * @var    string $page_slug The settings page slug.
+	 * @var    string $settings_slug The settings page slug.
 	 */
-	private $page_slug = 'betterlytics';
+	private $settings_slug = 'betterlytics-settings';
 
 	/**
 	 * Initialize the class and set its properties.
@@ -62,7 +80,7 @@ class Betterlytics_Admin {
 	 * @param string $hook The current admin page hook.
 	 */
 	public function enqueue_styles( $hook ) {
-		if ( 'toplevel_page_betterlytics' !== $hook ) {
+		if ( strpos( $hook, 'betterlytics' ) === false ) {
 			return;
 		}
 
@@ -82,7 +100,8 @@ class Betterlytics_Admin {
 	 * @param string $hook The current admin page hook.
 	 */
 	public function enqueue_scripts( $hook ) {
-		if ( 'toplevel_page_betterlytics' !== $hook ) {
+		// Only load JS on Events page (for tabs and hooks management).
+		if ( 'betterlytics_page_betterlytics-events' !== $hook ) {
 			return;
 		}
 
@@ -111,22 +130,69 @@ class Betterlytics_Admin {
 	}
 
 	/**
-	 * Add admin menu page.
+	 * Add admin menu and subpages.
 	 *
 	 * @since 1.0.0
 	 */
 	public function add_admin_menu() {
+		global $submenu;
+
 		$icon_svg = file_get_contents( BETTERLYTICS_PLUGIN_DIR . 'public/logo/betterlytics-logo-light-simple.svg' );
 		$icon     = 'data:image/svg+xml;base64,' . base64_encode( $icon_svg );
 
+		// Add main menu page (Home).
 		add_menu_page(
-			__( 'Betterlytics Settings', 'betterlytics' ),
+			__( 'Betterlytics', 'betterlytics' ),
 			__( 'Betterlytics', 'betterlytics' ),
 			'manage_options',
-			$this->page_slug,
-			[ $this, 'render_settings_page' ],
+			$this->menu_slug,
+			[ $this, 'render_home_page' ],
 			$icon,
 			100
+		);
+
+		// Add Home submenu (replaces default submenu).
+		add_submenu_page(
+			$this->menu_slug,
+			__( 'Home', 'betterlytics' ),
+			__( 'Home', 'betterlytics' ),
+			'manage_options',
+			$this->menu_slug,
+			[ $this, 'render_home_page' ]
+		);
+
+		// Add Dashboard external link.
+		$options       = Betterlytics_Options::get_options();
+		$dashboard_url = 'https://www.betterlytics.io/dashboard';
+		if ( ! empty( $options['site_id'] ) ) {
+			$dashboard_url .= '/' . $options['site_id'];
+		}
+
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to add external link to submenu.
+		$submenu[ $this->menu_slug ][] = [
+			__( 'Dashboard', 'betterlytics' ),
+			'manage_options',
+			$dashboard_url,
+		];
+
+		// Add Events submenu.
+		add_submenu_page(
+			$this->menu_slug,
+			__( 'Events', 'betterlytics' ),
+			__( 'Events', 'betterlytics' ),
+			'manage_options',
+			$this->events_slug,
+			[ $this, 'render_events_page' ]
+		);
+
+		// Add Settings submenu.
+		add_submenu_page(
+			$this->menu_slug,
+			__( 'Settings', 'betterlytics' ),
+			__( 'Settings', 'betterlytics' ),
+			'manage_options',
+			$this->settings_slug,
+			[ $this, 'render_settings_page' ]
 		);
 	}
 
@@ -145,19 +211,28 @@ class Betterlytics_Admin {
 			]
 		);
 
+		register_setting(
+			'betterlytics_events',
+			'betterlytics_options',
+			[
+				'type'              => 'array',
+				'sanitize_callback' => [ $this, 'sanitize_options' ],
+			]
+		);
+
 		// General Settings Section.
 		add_settings_section(
 			'betterlytics_general',
-			__( 'General Settings', 'betterlytics' ),
-			[ $this, 'render_general_section' ],
-			$this->page_slug
+			'',
+			'__return_empty_string',
+			$this->settings_slug
 		);
 
 		add_settings_field(
 			'enabled',
 			__( 'Enable Tracking', 'betterlytics' ),
 			[ $this, 'render_enabled_field' ],
-			$this->page_slug,
+			$this->settings_slug,
 			'betterlytics_general'
 		);
 
@@ -165,7 +240,7 @@ class Betterlytics_Admin {
 			'site_id',
 			__( 'Site ID', 'betterlytics' ),
 			[ $this, 'render_site_id_field' ],
-			$this->page_slug,
+			$this->settings_slug,
 			'betterlytics_general'
 		);
 
@@ -173,7 +248,7 @@ class Betterlytics_Admin {
 			'server_url',
 			__( 'Server URL', 'betterlytics' ),
 			[ $this, 'render_server_url_field' ],
-			$this->page_slug,
+			$this->settings_slug,
 			'betterlytics_general'
 		);
 
@@ -181,7 +256,7 @@ class Betterlytics_Admin {
 			'script_url',
 			__( 'Script URL', 'betterlytics' ),
 			[ $this, 'render_script_url_field' ],
-			$this->page_slug,
+			$this->settings_slug,
 			'betterlytics_general'
 		);
 
@@ -189,7 +264,7 @@ class Betterlytics_Admin {
 			'track_logged_in',
 			__( 'Track Logged-in Users', 'betterlytics' ),
 			[ $this, 'render_track_logged_in_field' ],
-			$this->page_slug,
+			$this->settings_slug,
 			'betterlytics_general'
 		);
 	}
@@ -209,6 +284,18 @@ class Betterlytics_Admin {
 		$options['server_url']      = esc_url_raw( isset( $input['server_url'] ) ? $input['server_url'] : 'https://betterlytics.io/track' );
 		$options['script_url']      = esc_url_raw( isset( $input['script_url'] ) ? $input['script_url'] : 'https://betterlytics.io/analytics.js' );
 		$options['track_logged_in'] = ! empty( $input['track_logged_in'] );
+
+		// Event tracking options.
+		$options['track_404']        = ! empty( $input['track_404'] );
+		$options['track_search']     = ! empty( $input['track_search'] );
+		$options['track_outbound']   = ! empty( $input['track_outbound'] );
+		$options['track_downloads']  = ! empty( $input['track_downloads'] );
+		$options['track_css_events'] = ! empty( $input['track_css_events'] );
+
+		// WooCommerce options.
+		$options['woo_add_to_cart'] = ! empty( $input['woo_add_to_cart'] );
+		$options['woo_checkout']    = ! empty( $input['woo_checkout'] );
+		$options['woo_purchase']    = ! empty( $input['woo_purchase'] );
 
 		// Preserve hooks - they're saved separately via AJAX.
 		if ( isset( $input['hooks'] ) && is_array( $input['hooks'] ) ) {
@@ -244,6 +331,32 @@ class Betterlytics_Admin {
 	}
 
 	/**
+	 * Render the home page.
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_home_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		include BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-home-display.php';
+	}
+
+	/**
+	 * Render the events page.
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_events_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		include BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-events-display.php';
+	}
+
+	/**
 	 * Render the settings page.
 	 *
 	 * @since 1.0.0
@@ -253,16 +366,31 @@ class Betterlytics_Admin {
 			return;
 		}
 
-		include BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-admin-display.php';
+		include BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-settings-display.php';
 	}
 
 	/**
-	 * Render general section description.
+	 * Add target="_blank" to dashboard link in admin menu.
+	 * Runs on all admin pages since the menu is global.
 	 *
 	 * @since 1.0.0
 	 */
-	public function render_general_section() {
-		echo '<p>' . esc_html__( 'Configure your Betterlytics tracking settings. You can find your Site ID in the Betterlytics dashboard under Integration.', 'betterlytics' ) . '</p>';
+	public function dashboard_link_script() {
+		?>
+		<script>
+		(function(){
+			function setTarget() {
+				var link = document.querySelector('#adminmenu a[href*="betterlytics.io"]');
+				if (link) { link.target = '_blank'; link.rel = 'noopener'; }
+			}
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', setTarget);
+			} else {
+				setTarget();
+			}
+		})();
+		</script>
+		<?php
 	}
 
 	/**
@@ -341,7 +469,7 @@ class Betterlytics_Admin {
 	}
 
 	/**
-	 * AJAX handler for saving hooks.
+	 * AJAX handler for saving hooks (legacy).
 	 *
 	 * @since 1.0.0
 	 */
@@ -367,5 +495,60 @@ class Betterlytics_Admin {
 		Betterlytics_Options::update_options( $options );
 
 		wp_send_json_success( [ 'message' => __( 'Hooks saved successfully.', 'betterlytics' ) ] );
+	}
+
+	/**
+	 * AJAX handler for saving events (built-in and custom hooks).
+	 *
+	 * @since 1.0.1
+	 */
+	public function ajax_save_events() {
+		check_ajax_referer( 'betterlytics_admin', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'betterlytics' ) ] );
+		}
+
+		$options = Betterlytics_Options::get_options();
+
+		// Handle built-in events.
+		if ( isset( $_POST['builtin_events'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized below.
+			$builtin_events = json_decode( wp_unslash( $_POST['builtin_events'] ), true );
+
+			if ( is_array( $builtin_events ) ) {
+				// Map of valid option keys.
+				$valid_keys = [
+					'track_404',
+					'track_search',
+					'track_outbound',
+					'track_downloads',
+					'track_css_events',
+					'woo_add_to_cart',
+					'woo_checkout',
+					'woo_purchase',
+				];
+
+				foreach ( $valid_keys as $key ) {
+					$options[ $key ] = isset( $builtin_events[ $key ] ) && $builtin_events[ $key ] === true;
+				}
+			}
+		}
+
+		// Handle custom hooks.
+		if ( isset( $_POST['custom_hooks'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized in sanitize_hooks().
+			$custom_hooks = json_decode( wp_unslash( $_POST['custom_hooks'] ), true );
+
+			if ( ! is_array( $custom_hooks ) ) {
+				$custom_hooks = [];
+			}
+
+			$options['hooks'] = $this->sanitize_hooks( $custom_hooks );
+		}
+
+		Betterlytics_Options::update_options( $options );
+
+		wp_send_json_success( [ 'message' => __( 'Events saved successfully.', 'betterlytics' ) ] );
 	}
 }

@@ -35,6 +35,18 @@ class Betterlytics_Options {
 		'enabled'         => false,
 		'track_logged_in' => true,
 		'hooks'           => [],
+
+		// Event tracking options.
+		'track_404'        => false,
+		'track_search'     => false,
+		'track_outbound'   => false,
+		'track_downloads'  => false,
+		'track_css_events' => false,
+
+		// WooCommerce options.
+		'woo_add_to_cart' => false,
+		'woo_checkout'    => false,
+		'woo_purchase'    => false,
 	];
 
 	/**
