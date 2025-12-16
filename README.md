@@ -34,6 +34,10 @@ If you're self-hosting Betterlytics, update the Server URL and Script URL to poi
 - **Server URL**: `https://your-instance.com/track`
 - **Script URL**: `https://your-instance.com/analytics.js`
 
+### Automated Configuration (CI/CD)
+
+Need to configure the plugin via deployment pipelines, WP-CLI, or infrastructure-as-code? See [CONFIGURATION.md](CONFIGURATION.md) for WP-CLI commands, environment variables, Ansible playbooks, and more.
+
 ## WordPress Hooks Integration
 
 The plugin allows you to map WordPress actions to Betterlytics events. When a WordPress hook fires, it automatically sends a custom event.

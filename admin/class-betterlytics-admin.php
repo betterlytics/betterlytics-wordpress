@@ -85,9 +85,17 @@ class Betterlytics_Admin {
 		}
 
 		wp_enqueue_style(
+			$this->plugin_name . '-banner',
+			BETTERLYTICS_PLUGIN_URL . 'admin/css/components/setup-banner.css',
+			[],
+			$this->version,
+			'all'
+		);
+
+		wp_enqueue_style(
 			$this->plugin_name,
 			BETTERLYTICS_PLUGIN_URL . 'admin/css/betterlytics-admin.css',
-			[],
+			[ $this->plugin_name . '-banner' ],
 			$this->version,
 			'all'
 		);
@@ -141,6 +149,7 @@ class Betterlytics_Admin {
 		$icon     = 'data:image/svg+xml;base64,' . base64_encode( $icon_svg );
 
 		// Add main menu page (Home).
+		// Position 58 places it after WooCommerce (55-56), near analytics items.
 		add_menu_page(
 			__( 'Betterlytics', 'betterlytics' ),
 			__( 'Betterlytics', 'betterlytics' ),
@@ -148,7 +157,7 @@ class Betterlytics_Admin {
 			$this->menu_slug,
 			[ $this, 'render_home_page' ],
 			$icon,
-			100
+			58
 		);
 
 		// Add Home submenu (replaces default submenu).
@@ -279,27 +288,32 @@ class Betterlytics_Admin {
 	public function sanitize_options( $input ) {
 		$options = Betterlytics_Options::get_options();
 
-		$options['enabled']         = ! empty( $input['enabled'] );
-		$options['site_id']         = sanitize_text_field( isset( $input['site_id'] ) ? $input['site_id'] : '' );
-		$options['server_url']      = esc_url_raw( isset( $input['server_url'] ) ? $input['server_url'] : 'https://betterlytics.io/track' );
-		$options['script_url']      = esc_url_raw( isset( $input['script_url'] ) ? $input['script_url'] : 'https://betterlytics.io/analytics.js' );
-		$options['track_logged_in'] = ! empty( $input['track_logged_in'] );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by settings API.
+		$page = isset( $_POST['option_page'] ) ? sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) : '';
 
-		// Event tracking options.
-		$options['track_404']        = ! empty( $input['track_404'] );
-		$options['track_search']     = ! empty( $input['track_search'] );
-		$options['track_outbound']   = ! empty( $input['track_outbound'] );
-		$options['track_downloads']  = ! empty( $input['track_downloads'] );
-		$options['track_css_events'] = ! empty( $input['track_css_events'] );
+		// Settings page fields.
+		if ( 'betterlytics_settings' === $page ) {
+			$options['enabled']         = ! empty( $input['enabled'] );
+			$options['site_id']         = sanitize_text_field( $input['site_id'] ?? '' );
+			$options['server_url']      = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/track' );
+			$options['script_url']      = esc_url_raw( $input['script_url'] ?? 'https://betterlytics.io/analytics.js' );
+			$options['track_logged_in'] = ! empty( $input['track_logged_in'] );
+		}
 
-		// WooCommerce options.
-		$options['woo_add_to_cart'] = ! empty( $input['woo_add_to_cart'] );
-		$options['woo_checkout']    = ! empty( $input['woo_checkout'] );
-		$options['woo_purchase']    = ! empty( $input['woo_purchase'] );
+		// Events page fields.
+		if ( 'betterlytics_events' === $page ) {
+			$options['track_404']        = ! empty( $input['track_404'] );
+			$options['track_search']     = ! empty( $input['track_search'] );
+			$options['track_outbound']   = ! empty( $input['track_outbound'] );
+			$options['track_downloads']  = ! empty( $input['track_downloads'] );
+			$options['track_css_events'] = ! empty( $input['track_css_events'] );
+			$options['woo_add_to_cart']  = ! empty( $input['woo_add_to_cart'] );
+			$options['woo_checkout']     = ! empty( $input['woo_checkout'] );
+			$options['woo_purchase']     = ! empty( $input['woo_purchase'] );
 
-		// Preserve hooks - they're saved separately via AJAX.
-		if ( isset( $input['hooks'] ) && is_array( $input['hooks'] ) ) {
-			$options['hooks'] = $this->sanitize_hooks( $input['hooks'] );
+			if ( isset( $input['hooks'] ) && is_array( $input['hooks'] ) ) {
+				$options['hooks'] = $this->sanitize_hooks( $input['hooks'] );
+			}
 		}
 
 		return $options;
@@ -367,6 +381,19 @@ class Betterlytics_Admin {
 		}
 
 		include BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-settings-display.php';
+	}
+
+	/**
+	 * Hide WordPress admin notices on Betterlytics pages for cleaner UI.
+	 *
+	 * @since 1.0.0
+	 */
+	public function hide_admin_notices() {
+		$screen = get_current_screen();
+		if ( $screen && strpos( $screen->id, 'betterlytics' ) !== false ) {
+			remove_all_actions( 'admin_notices' );
+			remove_all_actions( 'all_admin_notices' );
+		}
 	}
 
 	/**
@@ -550,5 +577,32 @@ class Betterlytics_Admin {
 		Betterlytics_Options::update_options( $options );
 
 		wp_send_json_success( [ 'message' => __( 'Events saved successfully.', 'betterlytics' ) ] );
+	}
+
+	/**
+	 * AJAX handler for dismissing the setup banner.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ajax_dismiss_setup_banner() {
+		check_ajax_referer( 'betterlytics_admin', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( [ 'message' => __( 'Permission denied.', 'betterlytics' ) ] );
+		}
+
+		update_user_meta( get_current_user_id(), 'betterlytics_setup_banner_dismissed', true );
+
+		wp_send_json_success();
+	}
+
+	/**
+	 * Check if the setup banner has been dismissed by the current user.
+	 *
+	 * @since 1.0.0
+	 * @return bool True if dismissed.
+	 */
+	public static function is_setup_banner_dismissed() {
+		return (bool) get_user_meta( get_current_user_id(), 'betterlytics_setup_banner_dismissed', true );
 	}
 }

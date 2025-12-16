@@ -52,7 +52,22 @@ class Betterlytics_Public {
 	 * @since 1.0.0
 	 */
 	public function inject_tracking_script() {
+		// Debug: Log tracking check.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$options         = Betterlytics_Options::get_options();
+			$tracking_status = Betterlytics_Options::is_tracking_enabled() ? 'ENABLED' : 'DISABLED';
+			error_log( '[Betterlytics] Tracking status: ' . $tracking_status );
+			error_log( '[Betterlytics] Options: ' . wp_json_encode( $options ) );
+		}
+
 		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				echo "<!-- Betterlytics: Tracking DISABLED -->\n";
+				echo '<!-- Reason: enabled=' . ( $options['enabled'] ? 'true' : 'false' );
+				echo ', site_id=' . ( empty( $options['site_id'] ) ? 'EMPTY' : 'set' );
+				echo ', track_logged_in=' . ( $options['track_logged_in'] ? 'true' : 'false' );
+				echo ', is_user_logged_in=' . ( is_user_logged_in() ? 'true' : 'false' ) . " -->\n";
+			}
 			return;
 		}
 
@@ -60,6 +75,14 @@ class Betterlytics_Public {
 		$site_id    = esc_attr( $options['site_id'] );
 		$server_url = esc_url( $options['server_url'] );
 		$script_url = esc_url( $options['script_url'] );
+
+		// Debug: Output configuration as HTML comment.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			echo "<!-- Betterlytics: Tracking ENABLED -->\n";
+			echo '<!-- Site ID: ' . esc_html( $site_id ) . " -->\n";
+			echo '<!-- Server URL: ' . esc_html( $server_url ) . " -->\n";
+			echo '<!-- Script URL: ' . esc_html( $script_url ) . " -->\n";
+		}
 
 		// Output async event queue for reliable tracking before script loads.
 		?>
@@ -69,6 +92,13 @@ window.betterlytics = window.betterlytics || {
 		(window.betterlytics.q = window.betterlytics.q || []).push(arguments);
 	}
 };
+<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
+console.log('[Betterlytics] Script injected', {
+	siteId: '<?php echo esc_js( $site_id ); ?>',
+	serverUrl: '<?php echo esc_js( $server_url ); ?>',
+	scriptUrl: '<?php echo esc_js( $script_url ); ?>'
+});
+<?php endif; ?>
 </script>
 <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- External analytics script with data attributes cannot use wp_enqueue_script(). ?>
 <script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>"></script>

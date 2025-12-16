@@ -17,6 +17,17 @@
 class Betterlytics_Hooks {
 
 	/**
+	 * Built-in hook mappings: option_key => [ wp_hook, event_name ].
+	 *
+	 * @var array
+	 */
+	const BUILTIN_HOOKS = [
+		'woo_add_to_cart' => [ 'woocommerce_add_to_cart', 'add-to-cart' ],
+		'woo_checkout'    => [ 'woocommerce_checkout_process', 'begin-checkout' ],
+		'woo_purchase'    => [ 'woocommerce_thankyou', 'purchase' ],
+	];
+
+	/**
 	 * Register all configured WordPress hooks.
 	 *
 	 * @since 1.0.0
@@ -27,26 +38,40 @@ class Betterlytics_Hooks {
 		}
 
 		$options = Betterlytics_Options::get_options();
-		$hooks   = isset( $options['hooks'] ) ? $options['hooks'] : [];
+
+		// Register built-in hooks.
+		foreach ( self::BUILTIN_HOOKS as $option_key => list( $wp_hook, $event_name ) ) {
+			if ( ! empty( $options[ $option_key ] ) ) {
+				$this->register_hook( $wp_hook, $event_name );
+			}
+		}
+
+		// Register custom hooks.
+		$hooks = isset( $options['hooks'] ) ? $options['hooks'] : [];
 
 		foreach ( $hooks as $hook_config ) {
-			if ( empty( $hook_config['enabled'] ) ) {
-				continue;
+			if ( ! empty( $hook_config['enabled'] ) ) {
+				$this->register_hook( $hook_config['wp_hook'], $hook_config['event_name'] );
 			}
-
-			$wp_hook    = $hook_config['wp_hook'];
-			$event_name = $hook_config['event_name'];
-
-			// Register the WordPress hook.
-			add_action(
-				$wp_hook,
-				function ( ...$args ) use ( $wp_hook, $event_name ) {
-					$this->handle_hook_fired( $wp_hook, $event_name, $args );
-				},
-				10,
-				10
-			); // Accept up to 10 args.
 		}
+	}
+
+	/**
+	 * Register a single WordPress hook.
+	 *
+	 * @since 1.0.0
+	 * @param string $wp_hook    The WordPress hook name.
+	 * @param string $event_name The Betterlytics event name.
+	 */
+	private function register_hook( $wp_hook, $event_name ) {
+		add_action(
+			$wp_hook,
+			function ( ...$args ) use ( $wp_hook, $event_name ) {
+				$this->handle_hook_fired( $wp_hook, $event_name, $args );
+			},
+			10,
+			10
+		);
 	}
 
 	/**

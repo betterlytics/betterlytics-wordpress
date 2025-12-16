@@ -197,6 +197,8 @@ services:
     depends_on:
       wordpress:
         condition: service_healthy
+      setup:
+        condition: service_completed_successfully
     networks:
       - betterlytics
     profiles:
@@ -260,6 +262,10 @@ services:
         else
           echo "Test page already exists."
         fi &&
+
+        # Configure Betterlytics plugin from demo/config.json
+        echo "Configuring Betterlytics plugin..." &&
+        wp option update betterlytics_options --format=json < /var/www/html/wp-content/plugins/betterlytics/demo/config.json &&
 
         echo "Demo setup complete!"
       '

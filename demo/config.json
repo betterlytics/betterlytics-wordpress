@@ -1,0 +1,16 @@
+{
+	"site_id": "",
+	"server_url": "http://localhost:3001/event",
+	"script_url": "http://localhost:3006/analytics.js",
+	"enabled": true,
+	"track_logged_in": true,
+	"hooks": [],
+	"track_404": true,
+	"track_search": true,
+	"track_outbound": true,
+	"track_downloads": true,
+	"track_css_events": true,
+	"woo_add_to_cart": true,
+	"woo_checkout": true,
+	"woo_purchase": true
+}
