@@ -12,14 +12,14 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$options           = Betterlytics_Options::get_options();
-$has_woocommerce   = class_exists( 'WooCommerce' );
-$setup_incomplete  = empty( $options['site_id'] ) || empty( $options['enabled'] );
-$banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
-$show_setup_banner = $setup_incomplete && ! $banner_dismissed;
+$betterlytics_options           = Betterlytics_Options::get_options();
+$betterlytics_has_woocommerce   = class_exists( 'WooCommerce' );
+$betterlytics_setup_incomplete  = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
+$betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
+$betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
 ?>
 
-<?php if ( $show_setup_banner ) : ?>
+<?php if ( $betterlytics_show_setup_banner ) : ?>
 <div class="betterlytics-setup-banner" id="betterlytics-setup-banner">
 	<span class="dashicons dashicons-info"></span>
 	<p>
@@ -55,14 +55,14 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 
 	<p class="betterlytics-page-description">
 		<?php
-		$dashboard_url = 'https://www.betterlytics.io/dashboard';
-		if ( ! empty( $options['site_id'] ) ) {
-			$dashboard_url .= '/' . esc_attr( $options['site_id'] );
+		$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboard';
+		if ( ! empty( $betterlytics_options['site_id'] ) ) {
+			$betterlytics_dashboard_url .= '/' . esc_attr( $betterlytics_options['site_id'] );
 		}
 		printf(
 			/* translators: %s: link to Betterlytics dashboard */
 			esc_html__( 'Configure which events to track on your site. View your tracked events on your %s.', 'betterlytics' ),
-			'<a href="' . esc_url( $dashboard_url ) . '" target="_blank">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
+			'<a href="' . esc_url( $betterlytics_dashboard_url ) . '" target="_blank">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
 		);
 		?>
 	</p>
@@ -88,7 +88,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( '404 Error Pages', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[track_404]" value="1" <?php checked( ! empty( $options['track_404'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[track_404]" value="1" <?php checked( ! empty( $betterlytics_options['track_404'] ) ); ?>>
 								<?php esc_html_e( 'Track when visitors land on pages that don\'t exist', 'betterlytics' ); ?>
 							</label>
 						</td>
@@ -97,7 +97,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'Site Search', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[track_search]" value="1" <?php checked( ! empty( $options['track_search'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[track_search]" value="1" <?php checked( ! empty( $betterlytics_options['track_search'] ) ); ?>>
 								<?php esc_html_e( 'Track search queries on your site', 'betterlytics' ); ?>
 							</label>
 						</td>
@@ -112,7 +112,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'Outbound Links', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[track_outbound]" value="1" <?php checked( ! empty( $options['track_outbound'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[track_outbound]" value="1" <?php checked( ! empty( $betterlytics_options['track_outbound'] ) ); ?>>
 								<?php esc_html_e( 'Track clicks on links to external websites', 'betterlytics' ); ?>
 							</label>
 						</td>
@@ -121,7 +121,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'File Downloads', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[track_downloads]" value="1" <?php checked( ! empty( $options['track_downloads'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[track_downloads]" value="1" <?php checked( ! empty( $betterlytics_options['track_downloads'] ) ); ?>>
 								<?php esc_html_e( 'Track downloads of files (.pdf, .zip, .doc, etc.)', 'betterlytics' ); ?>
 							</label>
 						</td>
@@ -130,7 +130,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'CSS Class Events', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[track_css_events]" value="1" <?php checked( ! empty( $options['track_css_events'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[track_css_events]" value="1" <?php checked( ! empty( $betterlytics_options['track_css_events'] ) ); ?>>
 								<?php
 								printf(
 									/* translators: %s: CSS class example */
@@ -144,7 +144,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 				</tbody>
 			</table>
 
-			<?php if ( $has_woocommerce ) : ?>
+			<?php if ( $betterlytics_has_woocommerce ) : ?>
 			<h2><?php esc_html_e( 'WooCommerce', 'betterlytics' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -152,7 +152,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'Add to Cart', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[woo_add_to_cart]" value="1" <?php checked( ! empty( $options['woo_add_to_cart'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[woo_add_to_cart]" value="1" <?php checked( ! empty( $betterlytics_options['woo_add_to_cart'] ) ); ?>>
 								<?php esc_html_e( 'Track when products are added to the cart', 'betterlytics' ); ?>
 							</label>
 						</td>
@@ -161,7 +161,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'Begin Checkout', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[woo_checkout]" value="1" <?php checked( ! empty( $options['woo_checkout'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[woo_checkout]" value="1" <?php checked( ! empty( $betterlytics_options['woo_checkout'] ) ); ?>>
 								<?php esc_html_e( 'Track when customers start the checkout process', 'betterlytics' ); ?>
 							</label>
 						</td>
@@ -170,7 +170,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 						<th scope="row"><?php esc_html_e( 'Purchase Complete', 'betterlytics' ); ?></th>
 						<td>
 							<label>
-								<input type="checkbox" name="betterlytics_options[woo_purchase]" value="1" <?php checked( ! empty( $options['woo_purchase'] ) ); ?>>
+								<input type="checkbox" name="betterlytics_options[woo_purchase]" value="1" <?php checked( ! empty( $betterlytics_options['woo_purchase'] ) ); ?>>
 								<?php esc_html_e( 'Track completed purchases', 'betterlytics' ); ?>
 							</label>
 						</td>

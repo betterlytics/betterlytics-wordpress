@@ -12,13 +12,13 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$options           = Betterlytics_Options::get_options();
-$setup_incomplete  = empty( $options['site_id'] ) || empty( $options['enabled'] );
-$banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
-$show_setup_banner = $setup_incomplete && ! $banner_dismissed;
+$betterlytics_options           = Betterlytics_Options::get_options();
+$betterlytics_setup_incomplete  = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
+$betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
+$betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
 ?>
 
-<?php if ( $show_setup_banner ) : ?>
+<?php if ( $betterlytics_show_setup_banner ) : ?>
 <div class="betterlytics-setup-banner" id="betterlytics-setup-banner">
 	<span class="dashicons dashicons-info"></span>
 	<p>
@@ -53,10 +53,58 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 	<h1><?php esc_html_e( 'Settings', 'betterlytics' ); ?></h1>
 
 	<form action="options.php" method="post">
-		<?php
-		settings_fields( 'betterlytics_settings' );
-		do_settings_sections( 'betterlytics-settings' );
-		submit_button( __( 'Save Settings', 'betterlytics' ) );
-		?>
+		<?php settings_fields( 'betterlytics_settings' ); ?>
+
+		<table class="form-table" role="presentation">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="betterlytics_options[enabled]" value="1" <?php checked( $betterlytics_options['enabled'] ); ?>>
+							<?php esc_html_e( 'Enable Betterlytics tracking on this site', 'betterlytics' ); ?>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Site ID', 'betterlytics' ); ?></th>
+					<td>
+						<input type="text" name="betterlytics_options[site_id]" value="<?php echo esc_attr( $betterlytics_options['site_id'] ); ?>" class="regular-text" placeholder="your-site-id">
+						<p class="description">
+							<?php esc_html_e( 'Your unique Site ID from the Betterlytics dashboard.', 'betterlytics' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Server URL', 'betterlytics' ); ?></th>
+					<td>
+						<input type="url" name="betterlytics_options[server_url]" value="<?php echo esc_attr( $betterlytics_options['server_url'] ); ?>" class="regular-text" placeholder="https://betterlytics.io/track">
+						<p class="description">
+							<?php esc_html_e( 'The tracking server URL. Default is the Betterlytics cloud. Change this if you are self-hosting.', 'betterlytics' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Script URL', 'betterlytics' ); ?></th>
+					<td>
+						<input type="url" name="betterlytics_options[script_url]" value="<?php echo esc_attr( $betterlytics_options['script_url'] ); ?>" class="regular-text" placeholder="https://betterlytics.io/analytics.js">
+						<p class="description">
+							<?php esc_html_e( 'The tracking script URL. Default is the Betterlytics cloud. Change this if you are self-hosting.', 'betterlytics' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Track Logged-in Users', 'betterlytics' ); ?></th>
+					<td>
+						<label>
+							<input type="checkbox" name="betterlytics_options[track_logged_in]" value="1" <?php checked( $betterlytics_options['track_logged_in'] ); ?>>
+							<?php esc_html_e( 'Track logged-in users (disable to exclude admins/editors from analytics)', 'betterlytics' ); ?>
+						</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<?php submit_button( __( 'Save Settings', 'betterlytics' ) ); ?>
 	</form>
 </div>

@@ -12,9 +12,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$options    = Betterlytics_Options::get_options();
-$is_enabled = ! empty( $options['enabled'] );
-$has_site_id = ! empty( $options['site_id'] );
+$betterlytics_options     = Betterlytics_Options::get_options();
+$betterlytics_is_enabled  = ! empty( $betterlytics_options['enabled'] );
+$betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 ?>
 
 <div class="wrap betterlytics-settings betterlytics-home">
@@ -27,7 +27,7 @@ $has_site_id = ! empty( $options['site_id'] );
 	<div class="betterlytics-setup-steps">
 		<h2><?php esc_html_e( 'Setup', 'betterlytics' ); ?></h2>
 
-		<div class="betterlytics-step <?php echo $has_site_id ? 'completed' : 'current'; ?>">
+		<div class="betterlytics-step <?php echo $betterlytics_has_site_id ? 'completed' : 'current'; ?>">
 			<div class="step-number">1</div>
 			<div class="step-content">
 				<h3><?php esc_html_e( 'Get your Site ID', 'betterlytics' ); ?></h3>
@@ -40,7 +40,7 @@ $has_site_id = ! empty( $options['site_id'] );
 					);
 					?>
 				</p>
-				<?php if ( ! $has_site_id ) : ?>
+				<?php if ( ! $betterlytics_has_site_id ) : ?>
 				<p>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics-settings' ) ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Enter Site ID', 'betterlytics' ); ?>
@@ -55,18 +55,18 @@ $has_site_id = ! empty( $options['site_id'] );
 			</div>
 		</div>
 
-		<div class="betterlytics-step <?php echo $has_site_id ? ( $is_enabled ? 'completed' : 'current' ) : ''; ?>">
+		<div class="betterlytics-step <?php echo $betterlytics_has_site_id ? ( $betterlytics_is_enabled ? 'completed' : 'current' ) : ''; ?>">
 			<div class="step-number">2</div>
 			<div class="step-content">
 				<h3><?php esc_html_e( 'Enable tracking', 'betterlytics' ); ?></h3>
 				<p><?php esc_html_e( 'Turn on tracking to start collecting analytics data.', 'betterlytics' ); ?></p>
-				<?php if ( $has_site_id && ! $is_enabled ) : ?>
+				<?php if ( $betterlytics_has_site_id && ! $betterlytics_is_enabled ) : ?>
 				<p>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics-settings' ) ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
 					</a>
 				</p>
-				<?php elseif ( $is_enabled ) : ?>
+				<?php elseif ( $betterlytics_is_enabled ) : ?>
 				<p class="step-status">
 					<span class="dashicons dashicons-yes-alt"></span>
 					<?php esc_html_e( 'Tracking enabled', 'betterlytics' ); ?>
@@ -75,12 +75,12 @@ $has_site_id = ! empty( $options['site_id'] );
 			</div>
 		</div>
 
-		<div class="betterlytics-step <?php echo ( $has_site_id && $is_enabled ) ? 'current' : ''; ?>">
+		<div class="betterlytics-step <?php echo ( $betterlytics_has_site_id && $betterlytics_is_enabled ) ? 'current' : ''; ?>">
 			<div class="step-number">3</div>
 			<div class="step-content">
 				<h3><?php esc_html_e( 'Configure events (optional)', 'betterlytics' ); ?></h3>
 				<p><?php esc_html_e( 'Set up event tracking for downloads, outbound links, WooCommerce, and more.', 'betterlytics' ); ?></p>
-				<?php if ( $has_site_id && $is_enabled ) : ?>
+				<?php if ( $betterlytics_has_site_id && $betterlytics_is_enabled ) : ?>
 				<p>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics-events' ) ); ?>" class="button">
 						<?php esc_html_e( 'Configure Events', 'betterlytics' ); ?>

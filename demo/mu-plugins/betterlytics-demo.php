@@ -189,7 +189,7 @@ function betterlytics_demo_render_test_page( $content ) {
 
 			<?php
 			// Get a product to test with.
-			$products = wc_get_products( array( 'limit' => 1 ) );
+			$products = wc_get_products( [ 'limit' => 1 ] );
 			if ( ! empty( $products ) ) :
 				$product = $products[0];
 				?>
@@ -311,10 +311,10 @@ add_filter( 'the_content', 'betterlytics_demo_render_test_page', 20 );
  * Enable comments on the test page for testing comment_post hook.
  *
  * @param bool $open    Whether comments are open.
- * @param int  $post_id The post ID.
+ * @param int  $post_id The post ID (unused, required by filter signature).
  * @return bool
  */
-function betterlytics_demo_enable_comments( $open, $post_id ) {
+function betterlytics_demo_enable_comments( $open, $post_id ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	if ( is_page( 'betterlytics-test' ) ) {
 		return true;
 	}
@@ -353,14 +353,14 @@ function betterlytics_demo_admin_bar_link( $admin_bar ) {
 	}
 
 	$admin_bar->add_node(
-		array(
+		[
 			'id'    => 'betterlytics-demo',
 			'title' => 'Betterlytics Test',
 			'href'  => home_url( '/betterlytics-test/' ),
-			'meta'  => array(
+			'meta'  => [
 				'title' => 'Go to Betterlytics test page',
-			),
-		)
+			],
+		]
 	);
 }
 add_action( 'admin_bar_menu', 'betterlytics_demo_admin_bar_link', 100 );

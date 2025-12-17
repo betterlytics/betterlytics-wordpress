@@ -56,7 +56,9 @@ class Betterlytics_Public {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			$options         = Betterlytics_Options::get_options();
 			$tracking_status = Betterlytics_Options::is_tracking_enabled() ? 'ENABLED' : 'DISABLED';
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug only.
 			error_log( '[Betterlytics] Tracking status: ' . $tracking_status );
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug only.
 			error_log( '[Betterlytics] Options: ' . wp_json_encode( $options ) );
 		}
 
@@ -92,13 +94,13 @@ window.betterlytics = window.betterlytics || {
 		(window.betterlytics.q = window.betterlytics.q || []).push(arguments);
 	}
 };
-<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
+		<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
 console.log('[Betterlytics] Script injected', {
 	siteId: '<?php echo esc_js( $site_id ); ?>',
 	serverUrl: '<?php echo esc_js( $server_url ); ?>',
 	scriptUrl: '<?php echo esc_js( $script_url ); ?>'
 });
-<?php endif; ?>
+		<?php endif; ?>
 </script>
 <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- External analytics script with data attributes cannot use wp_enqueue_script(). ?>
 <script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>"></script>

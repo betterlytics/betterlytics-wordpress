@@ -29,12 +29,12 @@ class Betterlytics_Options {
 	 * @var array
 	 */
 	const DEFAULTS = [
-		'site_id'         => '',
-		'server_url'      => 'https://betterlytics.io/track',
-		'script_url'      => 'https://betterlytics.io/analytics.js',
-		'enabled'         => false,
-		'track_logged_in' => true,
-		'hooks'           => [],
+		'site_id'          => '',
+		'server_url'       => 'https://betterlytics.io/track',
+		'script_url'       => 'https://betterlytics.io/analytics.js',
+		'enabled'          => false,
+		'track_logged_in'  => true,
+		'hooks'            => [],
 
 		// Event tracking options.
 		'track_404'        => false,
@@ -44,9 +44,9 @@ class Betterlytics_Options {
 		'track_css_events' => false,
 
 		// WooCommerce options.
-		'woo_add_to_cart' => false,
-		'woo_checkout'    => false,
-		'woo_purchase'    => false,
+		'woo_add_to_cart'  => false,
+		'woo_checkout'     => false,
+		'woo_purchase'     => false,
 	];
 
 	/**
