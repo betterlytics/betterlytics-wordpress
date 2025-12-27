@@ -108,6 +108,42 @@ console.log('[Betterlytics] Script injected', {
 	}
 
 	/**
+	 * Enqueue JavaScript for client-side event tracking.
+	 *
+	 * @since 1.0.3
+	 */
+	public function enqueue_event_scripts() {
+		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
+			return;
+		}
+
+		$options = Betterlytics_Options::get_options();
+		$needs_js = ! empty( $options['track_outbound'] ) || ! empty( $options['track_downloads'] ) || ! empty( $options['track_css_events'] );
+
+		if ( ! $needs_js ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'betterlytics-events',
+			BETTERLYTICS_PLUGIN_URL . 'public/js/betterlytics-events.js',
+			array(),
+			$this->version,
+			true
+		);
+
+		wp_localize_script(
+			'betterlytics-events',
+			'betterlyticsEvents',
+			array(
+				'trackOutbound'  => ! empty( $options['track_outbound'] ),
+				'trackDownloads' => ! empty( $options['track_downloads'] ),
+				'trackCssEvents' => ! empty( $options['track_css_events'] ),
+			)
+		);
+	}
+
+	/**
 	 * Output queued events as JavaScript.
 	 *
 	 * @since 1.0.0

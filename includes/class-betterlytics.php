@@ -150,10 +150,12 @@ class Betterlytics {
 
 		$this->loader->add_action( 'wp_head', $plugin_public, 'inject_tracking_script', 1 );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'output_queued_events', 99 );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_event_scripts' );
 
 		// Initialize custom hooks integration.
 		$plugin_hooks = new Betterlytics_Hooks();
 		$this->loader->add_action( 'init', $plugin_hooks, 'register_configured_hooks' );
+		$this->loader->add_action( 'init', $plugin_hooks, 'register_page_hooks' );
 	}
 
 	/**

@@ -52,6 +52,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 
 <div class="wrap betterlytics-settings">
 	<h1><?php esc_html_e( 'Events', 'betterlytics' ); ?></h1>
+	<?php settings_errors(); ?>
 
 	<p class="betterlytics-page-description">
 		<?php
@@ -154,6 +155,15 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 							<label>
 								<input type="checkbox" name="betterlytics_options[woo_add_to_cart]" value="1" <?php checked( ! empty( $betterlytics_options['woo_add_to_cart'] ) ); ?>>
 								<?php esc_html_e( 'Track when products are added to the cart', 'betterlytics' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Remove from Cart', 'betterlytics' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="betterlytics_options[woo_remove_from_cart]" value="1" <?php checked( ! empty( $betterlytics_options['woo_remove_from_cart'] ) ); ?>>
+								<?php esc_html_e( 'Track when products are removed from the cart', 'betterlytics' ); ?>
 							</label>
 						</td>
 					</tr>

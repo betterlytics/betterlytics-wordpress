@@ -44,8 +44,9 @@ class Betterlytics_Options {
 		'track_css_events' => false,
 
 		// WooCommerce options.
-		'woo_add_to_cart'  => false,
-		'woo_checkout'     => false,
+		'woo_add_to_cart'      => false,
+		'woo_remove_from_cart' => false,
+		'woo_checkout'         => false,
 		'woo_purchase'     => false,
 	];
 

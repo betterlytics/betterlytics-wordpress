@@ -51,6 +51,7 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 
 <div class="wrap betterlytics-settings">
 	<h1><?php esc_html_e( 'Settings', 'betterlytics' ); ?></h1>
+	<?php settings_errors(); ?>
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'betterlytics_settings' ); ?>

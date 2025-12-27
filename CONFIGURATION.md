@@ -22,7 +22,8 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
   "track_css_events": false,
   "woo_add_to_cart": false,
   "woo_checkout": false,
-  "woo_purchase": false
+  "woo_purchase": false,
+  "woo_remove_from_cart": false
 }
 ```
 

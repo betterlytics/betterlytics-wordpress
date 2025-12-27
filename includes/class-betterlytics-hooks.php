@@ -22,9 +22,10 @@ class Betterlytics_Hooks {
 	 * @var array
 	 */
 	const BUILTIN_HOOKS = [
-		'woo_add_to_cart' => [ 'woocommerce_add_to_cart', 'add-to-cart' ],
-		'woo_checkout'    => [ 'woocommerce_checkout_process', 'begin-checkout' ],
-		'woo_purchase'    => [ 'woocommerce_thankyou', 'purchase' ],
+		'woo_add_to_cart'      => [ 'woocommerce_add_to_cart', 'add-to-cart' ],
+		'woo_remove_from_cart' => [ 'woocommerce_cart_item_removed', 'remove-from-cart' ],
+		'woo_checkout'         => [ 'woocommerce_checkout_process', 'begin-checkout' ],
+		'woo_purchase'         => [ 'woocommerce_thankyou', 'purchase' ],
 	];
 
 	/**
@@ -53,6 +54,39 @@ class Betterlytics_Hooks {
 			if ( ! empty( $hook_config['enabled'] ) ) {
 				$this->register_hook( $hook_config['wp_hook'], $hook_config['event_name'] );
 			}
+		}
+	}
+	/**
+	 * Register page-level event hooks (404, search).
+	 *
+	 * @since 1.0.3
+	 */
+	public function register_page_hooks() {
+		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
+			return;
+		}
+		add_action( 'template_redirect', [ $this, 'track_page_events' ] );
+	}
+
+	/**
+	 * Track page-level events (404, search).
+	 *
+	 * @since 1.0.3
+	 */
+	public function track_page_events() {
+		$options = Betterlytics_Options::get_options();
+
+		if ( ! empty( $options['track_404'] ) && is_404() ) {
+			global $wp;
+			$this->queue_event( '404', [
+				'path' => home_url( $wp->request ),
+			] );
+		}
+
+		if ( ! empty( $options['track_search'] ) && is_search() ) {
+			$this->queue_event( 'search', [
+				'query' => get_search_query(),
+			] );
 		}
 	}
 
@@ -128,6 +162,15 @@ class Betterlytics_Hooks {
 				}
 				if ( isset( $args[2] ) ) {
 					$properties['quantity'] = (int) $args[2];
+				}
+				if ( isset( $args[2] ) ) {
+					$properties['quantity'] = (int) $args[2];
+				}
+				break;
+
+			case 'woocommerce_cart_item_removed':
+				if ( isset( $args[0] ) ) {
+					$properties['cart_item_key'] = $args[0];
 				}
 				break;
 

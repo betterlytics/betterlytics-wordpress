@@ -165,7 +165,8 @@ class Betterlytics_Admin {
 			$options['track_outbound']   = ! empty( $input['track_outbound'] );
 			$options['track_downloads']  = ! empty( $input['track_downloads'] );
 			$options['track_css_events'] = ! empty( $input['track_css_events'] );
-			$options['woo_add_to_cart']  = ! empty( $input['woo_add_to_cart'] );
+			$options['woo_add_to_cart']      = ! empty( $input['woo_add_to_cart'] );
+			$options['woo_remove_from_cart'] = ! empty( $input['woo_remove_from_cart'] );
 			$options['woo_checkout']     = ! empty( $input['woo_checkout'] );
 			$options['woo_purchase']     = ! empty( $input['woo_purchase'] );
 
