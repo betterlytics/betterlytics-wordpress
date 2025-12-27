@@ -134,6 +134,20 @@ class Betterlytics_Hooks {
 			'wp_hook' => $wp_hook,
 		];
 
+		// Add custom configured metadata.
+		$options = Betterlytics_Options::get_options();
+		if ( isset( $options['hooks'] ) ) {
+			foreach ( $options['hooks'] as $hook_config ) {
+				if ( $hook_config['wp_hook'] === $wp_hook && ! empty( $hook_config['metadata'] ) ) {
+					foreach ( $hook_config['metadata'] as $meta ) {
+						$properties[ $meta['key'] ] = $this->resolve_value( $meta['value'], $args );
+					}
+					// If we found the matching config, we can stop searching.
+					break;
+				}
+			}
+		}
+
 		// Add hook-specific properties (no PII).
 		switch ( $wp_hook ) {
 			case 'wp_login':
@@ -159,9 +173,6 @@ class Betterlytics_Hooks {
 			case 'woocommerce_add_to_cart':
 				if ( isset( $args[1] ) ) {
 					$properties['product_id'] = (int) $args[1];
-				}
-				if ( isset( $args[2] ) ) {
-					$properties['quantity'] = (int) $args[2];
 				}
 				if ( isset( $args[2] ) ) {
 					$properties['quantity'] = (int) $args[2];
@@ -194,6 +205,54 @@ class Betterlytics_Hooks {
 		}
 
 		return $properties;
+	}
+
+	/**
+	 * Resolve a value pattern against hook arguments.
+	 *
+	 * Supports:
+	 * - {0} - Argument at index 0
+	 * - {0->prop} - Property of object at index 0
+	 * - {0[key]} - specific key of array at index 0
+	 *
+	 * @since 1.1.0
+	 * @param string $pattern The pattern string.
+	 * @param array  $args    The hook arguments.
+	 * @return string Resolved value.
+	 */
+	private function resolve_value( $pattern, $args ) {
+		return preg_replace_callback( '/\{(\d+)(?:->([a-zA-Z0-9_]+)|\[([a-zA-Z0-9_]+)\])?\}/', function ( $matches ) use ( $args ) {
+			$index = (int) $matches[1];
+			$value = isset( $args[ $index ] ) ? $args[ $index ] : null;
+
+			if ( ! $value ) {
+				return '';
+			}
+
+			// Handle property access ->.
+			if ( ! empty( $matches[2] ) ) {
+				$prop = $matches[2];
+				return isset( $value->$prop ) ? $value->$prop : '';
+			}
+
+			// Handle array access [].
+			if ( ! empty( $matches[3] ) ) {
+				$key = $matches[3];
+				return isset( $value[ $key ] ) ? $value[ $key ] : '';
+			}
+
+			// Return the direct value (if scalar).
+			if ( is_scalar( $value ) ) {
+				return $value;
+			}
+            
+            // If it's an object/array but no accessor specified, try to cast to string or nothing
+            if ( is_object( $value ) && method_exists( $value, '__toString' ) ) {
+                return (string) $value;
+            }
+
+			return '';
+		}, $pattern );
 	}
 
 	/**

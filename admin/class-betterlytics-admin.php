@@ -193,11 +193,25 @@ class Betterlytics_Admin {
 				continue;
 			}
 
-			$sanitized[] = [
+			$clean_hook = [
 				'wp_hook'    => sanitize_text_field( $hook['wp_hook'] ),
 				'event_name' => sanitize_text_field( $hook['event_name'] ),
 				'enabled'    => ! empty( $hook['enabled'] ),
+				'metadata'   => [],
 			];
+
+			if ( isset( $hook['metadata'] ) && is_array( $hook['metadata'] ) ) {
+				foreach ( $hook['metadata'] as $meta ) {
+					if ( ! empty( $meta['key'] ) && isset( $meta['value'] ) ) {
+						$clean_hook['metadata'][] = [
+							'key'   => sanitize_key( $meta['key'] ),
+							'value' => sanitize_text_field( $meta['value'] ),
+						];
+					}
+				}
+			}
+
+			$sanitized[] = $clean_hook;
 		}
 
 		return $sanitized;

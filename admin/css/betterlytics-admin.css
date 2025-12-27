@@ -299,3 +299,65 @@
 	width: 18px;
 	height: 18px;
 }
+
+/* Metadata Row */
+.betterlytics-metadata-row {
+	display: none;
+	background-color: #f6f7f7;
+}
+
+.betterlytics-metadata-row.active {
+	display: table-row;
+}
+
+.betterlytics-metadata-wrapper {
+	padding: 15px 20px;
+}
+
+.betterlytics-metadata-table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	margin-top: 10px;
+}
+
+.betterlytics-metadata-table th,
+.betterlytics-metadata-table td {
+	padding: 8px 12px;
+	text-align: left;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.betterlytics-metadata-table th {
+	background: #f0f0f1;
+	font-weight: 600;
+}
+
+.betterlytics-metadata-table tr:last-child td {
+	border-bottom: none;
+}
+
+.betterlytics-metadata-wrapper h4 {
+	margin: 0 0 10px;
+}
+
+.betterlytics-add-metadata {
+	margin-top: 10px !important;
+}
+
+.betterlytics-metadata-key,
+.betterlytics-metadata-value {
+	width: 100%;
+}
+
+.betterlytics-delete-metadata {
+	color: #b32d2e;
+	cursor: pointer;
+	border: none;
+	background: transparent;
+}
+
+.betterlytics-delete-metadata:hover {
+	color: #a00;
+}

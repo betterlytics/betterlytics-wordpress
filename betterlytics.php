@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'BETTERLYTICS_VERSION', '1.0.2' );
+define( 'BETTERLYTICS_VERSION', '1.1.0' );
 
 /**
  * Plugin base file.
