@@ -4,7 +4,17 @@
 	"script_url": "http://localhost:3006/analytics.js",
 	"enabled": true,
 	"track_logged_in": true,
-	"hooks": [],
+	"hooks": [
+		{
+			"wp_hook": "wp_login",
+			"event_name": "login_debug",
+			"enabled": true,
+			"metadata": [
+				{ "key": "login_user", "value": "{0}" },
+				{ "key": "user_email", "value": "{1->user_email}" }
+			]
+		}
+	],
 	"track_404": true,
 	"track_search": true,
 	"track_outbound": true,

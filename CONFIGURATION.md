@@ -13,6 +13,15 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
   "track_logged_in": false,
   "hooks": [
     { "wp_hook": "wp_login", "event_name": "user-login", "enabled": true },
+    {
+      "wp_hook": "user_register",
+      "event_name": "sign-up",
+      "enabled": true,
+      "metadata": [
+        { "key": "user_id", "value": "{0}" },
+        { "key": "email", "value": "{1->user_email}" }
+      ]
+    },
     { "wp_hook": "woocommerce_thankyou", "event_name": "purchase", "enabled": true }
   ],
   "track_404": false,
