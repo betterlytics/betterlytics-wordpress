@@ -361,3 +361,45 @@
 .betterlytics-delete-metadata:hover {
 	color: #a00;
 }
+
+/* Sticky Footer for Save Actions */
+.betterlytics-sticky-footer {
+	position: fixed;
+	bottom: 0;
+	left: 160px; /* Default WP admin menu width */
+	right: 0;
+	background: #fff;
+	border-top: 1px solid #ddd;
+	padding: 10px 20px;
+	z-index: 999;
+	box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+/* Adjust for collapsed menu */
+body.folded .betterlytics-sticky-footer {
+	left: 36px;
+}
+
+/* Responsive adjustment for mobile */
+@media screen and (max-width: 782px) {
+	.betterlytics-sticky-footer {
+		left: 0;
+	}
+}
+
+/* Ensure content doesn't get hidden behind footer */
+.betterlytics-tab-content {
+	padding-bottom: 60px;
+}
+
+.betterlytics-sticky-footer .button {
+	margin-right: 10px;
+}
+
+.betterlytics-sticky-footer #betterlytics-hooks-status {
+	margin-left: 10px;
+	font-weight: bold;
+}

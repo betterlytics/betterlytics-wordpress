@@ -42,13 +42,15 @@
 		bindEvents: function() {
 			$( '.betterlytics-tabs .nav-tab' ).on( 'click', this.switchTab.bind( this ) );
 			$( '#betterlytics-add-hook' ).on( 'click', this.addHook.bind( this ) );
-			$( '#betterlytics-save-hooks' ).on( 'click', this.saveHooks.bind( this ) );
 			
 			var $list = $( '#betterlytics-hooks-list' );
 			$list.on( 'click', '.betterlytics-delete-hook', this.deleteHook.bind( this ) );
 			$list.on( 'click', '.betterlytics-toggle-metadata', this.toggleMetadata.bind( this ) );
 			$list.on( 'click', '.betterlytics-add-metadata', this.addMetadata.bind( this ) );
 			$list.on( 'click', '.betterlytics-delete-metadata', this.deleteMetadata.bind( this ) );
+
+			// Sync inputs to model
+			$list.on( 'change input', 'input', this.updateModel.bind( this ) );
 
 			// Listen for changes on built-in setting toggles
 			$( 'input[name^="betterlytics_options[woo_"]' ).on( 'change', this.handleBuiltinToggle.bind( this ) );
@@ -157,20 +159,23 @@
 			
 			var metadataHtml = '';
 			if ( hook.metadata && hook.metadata.length ) {
-				hook.metadata.forEach( function( meta ) {
-					metadataHtml += this.renderMetadataItem( meta );
+				hook.metadata.forEach( function( meta, metaIndex ) {
+					metadataHtml += this.renderMetadataItem( meta, index, metaIndex );
 				}.bind( this ) );
 			}
 
+			// Name attributes are critical for native form submission
+			var namePrefix = 'betterlytics_options[hooks][' + index + ']';
+
 			return '<tr data-index="' + index + '">' +
 				'<td class="column-enabled">' +
-				'<input type="checkbox" class="hook-enabled" ' + checked + '>' +
+				'<input type="checkbox" name="' + namePrefix + '[enabled]" class="hook-enabled" value="true" ' + checked + '>' +
 				'</td>' +
 				'<td class="column-wp-hook">' +
-				'<input type="text" class="regular-text wp-hook-input" value="' + this.escapeHtml( hook.wp_hook || '' ) + '" placeholder="wp_hook_name">' +
+				'<input type="text" name="' + namePrefix + '[wp_hook]" class="regular-text wp-hook-input" value="' + this.escapeHtml( hook.wp_hook || '' ) + '" placeholder="wp_hook_name">' +
 				'</td>' +
 				'<td class="column-event-name">' +
-				'<input type="text" class="regular-text event-name-input" value="' + this.escapeHtml( hook.event_name || '' ) + '" placeholder="Event Name">' +
+				'<input type="text" name="' + namePrefix + '[event_name]" class="regular-text event-name-input" value="' + this.escapeHtml( hook.event_name || '' ) + '" placeholder="Event Name">' +
 				'</td>' +
 				'<td class="column-actions">' +
 				'<button type="button" class="button button-small betterlytics-toggle-metadata" title="Configure Metadata"><span class="dashicons dashicons-admin-generic"></span></button> ' +
@@ -192,10 +197,11 @@
 				'</tr>';
 		},
 		
-		renderMetadataItem: function( meta ) {
+		renderMetadataItem: function( meta, hookIndex, metaIndex ) {
+			var namePrefix = 'betterlytics_options[hooks][' + hookIndex + '][metadata][' + metaIndex + ']';
 			return '<tr>' +
-				'<td><input type="text" class="betterlytics-metadata-key" value="' + this.escapeHtml( meta.key || '' ) + '" placeholder="e.g. order_id"></td>' +
-				'<td><input type="text" class="betterlytics-metadata-value" value="' + this.escapeHtml( meta.value || '' ) + '" placeholder="e.g. {0}"></td>' +
+				'<td><input type="text" name="' + namePrefix + '[key]" class="betterlytics-metadata-key" value="' + this.escapeHtml( meta.key || '' ) + '" placeholder="e.g. order_id"></td>' +
+				'<td><input type="text" name="' + namePrefix + '[value]" class="betterlytics-metadata-value" value="' + this.escapeHtml( meta.value || '' ) + '" placeholder="e.g. {0}"></td>' +
 				'<td><button type="button" class="betterlytics-delete-metadata"><span class="dashicons dashicons-no"></span></button></td>' +
 				'</tr>';
 		},
@@ -211,14 +217,70 @@
 		
 		addMetadata: function( e ) {
 			e.preventDefault();
-			var $tbody = $( e.currentTarget ).prev( 'table' ).find( 'tbody' );
-			$tbody.append( this.renderMetadataItem( {} ) );
+			var $btn = $( e.currentTarget );
+			var hookIndex = $btn.closest( '.betterlytics-metadata-row' ).data( 'index' );
+			
+			if ( ! this.hooks[ hookIndex ].metadata ) {
+				this.hooks[ hookIndex ].metadata = [];
+			}
+			
+			this.hooks[ hookIndex ].metadata.push( {} );
+			
+			// Re-render only affects this hook row ideally, but renderHooks does all.
+			// To keep it simple and robust (indices), we re-render all.
+			// Focus management might be tricky, but for clicking 'Add' button it's okay.
+			this.renderHooks();
+
+			// Expand the metadata row again
+			var $newRow = $( '#betterlytics-hooks-list' ).find( 'tr[data-index="' + hookIndex + '"]' );
+			$newRow.next( '.betterlytics-metadata-row' ).addClass( 'active' );
 		},
 		
 		deleteMetadata: function( e ) {
 			e.preventDefault();
-			if ( confirm( 'Remove this metadata field?' ) ) {
-				$( e.currentTarget ).closest( 'tr' ).remove();
+			if ( ! confirm( 'Remove this metadata field?' ) ) {
+				return;
+			}
+			
+			var $btn = $( e.currentTarget );
+			var $tr = $btn.closest( 'tr' );
+			var metaIndex = $tr.index();
+			var hookIndex = $tr.closest( '.betterlytics-metadata-row' ).data( 'index' );
+			
+			if ( this.hooks[ hookIndex ] && this.hooks[ hookIndex ].metadata ) {
+				this.hooks[ hookIndex ].metadata.splice( metaIndex, 1 );
+				this.renderHooks();
+				// Expand meta again
+				var $newRow = $( '#betterlytics-hooks-list' ).find( 'tr[data-index="' + hookIndex + '"]' );
+				$newRow.next( '.betterlytics-metadata-row' ).addClass( 'active' );
+			}
+		},
+
+		updateModel: function( e ) {
+			var $input = $( e.target );
+			var $tr = $input.closest( 'tr' );
+			
+			// Check if it's metadata
+			if ( $input.hasClass( 'betterlytics-metadata-key' ) || $input.hasClass( 'betterlytics-metadata-value' ) ) {
+				var metaIndex = $tr.index();
+				var hookIndex = $tr.closest( '.betterlytics-metadata-row' ).data( 'index' );
+				var field = $input.hasClass( 'betterlytics-metadata-key' ) ? 'key' : 'value';
+				
+				if ( this.hooks[ hookIndex ] && this.hooks[ hookIndex ].metadata[ metaIndex ] ) {
+					this.hooks[ hookIndex ].metadata[ metaIndex ][ field ] = $input.val();
+				}
+			} else {
+				// Main hook property
+				var index = $tr.data( 'index' );
+				if ( typeof index !== 'undefined' && this.hooks[ index ] ) {
+					if ( $input.hasClass( 'wp-hook-input' ) ) {
+						this.hooks[ index ].wp_hook = $input.val();
+					} else if ( $input.hasClass( 'event-name-input' ) ) {
+						this.hooks[ index ].event_name = $input.val();
+					} else if ( $input.hasClass( 'hook-enabled' ) ) {
+						this.hooks[ index ].enabled = $input.is( ':checked' );
+					}
+				}
 			}
 		},
 
@@ -260,94 +322,6 @@
 			this.renderHooks();
 		},
 
-		collectHooksFromUI: function() {
-			var hooks = [];
-
-			$( '#betterlytics-hooks-list tr[data-index]' ).each( function() {
-				var $row = $( this );
-				var index = $row.data( 'index' );
-				var $metaRow = $row.next( '.betterlytics-metadata-row' );
-				
-				var wpHook = $row.find( '.wp-hook-input' ).val().trim();
-				var eventName = $row.find( '.event-name-input' ).val().trim();
-
-				// Only include hooks with both fields filled.
-				if ( wpHook && eventName ) {
-					var metadata = [];
-					$metaRow.find( 'tbody tr' ).each( function() {
-						var key = $( this ).find( '.betterlytics-metadata-key' ).val().trim();
-						var value = $( this ).find( '.betterlytics-metadata-value' ).val().trim();
-						if ( key && value ) {
-							metadata.push( { key: key, value: value } );
-						}
-					} );
-				
-					hooks.push( {
-						wp_hook: wpHook,
-						event_name: eventName,
-						enabled: $row.find( '.hook-enabled' ).is( ':checked' ),
-						metadata: metadata
-					} );
-				}
-			} );
-
-			return hooks;
-		},
-
-		saveHooks: function() {
-			var $status = $( '#betterlytics-hooks-status' );
-			var $button = $( '#betterlytics-save-hooks' );
-			var hooks = this.collectHooksFromUI();
-
-			$button.prop( 'disabled', true );
-			$status.text( 'Saving...' ).removeClass( 'success error' );
-
-			$.ajax( {
-				url: betterlyticsAdmin.ajaxUrl,
-				type: 'POST',
-				data: {
-					action: 'betterlytics_save_hooks',
-					nonce: betterlyticsAdmin.nonce,
-					hooks: JSON.stringify( hooks )
-				},
-				success: function( response ) {
-					if ( response.success ) {
-						this.hooks = hooks;
-						this.renderHooks();
-						
-						// Show native WP notice
-						$( '.notice' ).remove(); // Remove existing
-						var $notice = $( '<div id="message" class="notice notice-success is-dismissible"><p>' + betterlyticsAdmin.strings.saved + '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>' );
-						$( '.betterlytics-settings h1' ).after( $notice );
-						
-						// Initialize dismissal behavior
-						if ( window.wp && window.wp.a11y && window.wp.a11y.speak ) {
-							window.wp.a11y.speak( betterlyticsAdmin.strings.saved );
-						}
-						$notice.on( 'click', '.notice-dismiss', function() {
-							$notice.fadeTo( 100, 0, function() {
-								$notice.slideUp( 100, function() {
-									$notice.remove();
-								} );
-							} );
-						} );
-
-						// Scroll to top
-						$( 'html, body' ).animate( { scrollTop: 0 }, 'slow' );
-						
-					} else {
-						alert( response.data.message || betterlyticsAdmin.strings.error );
-					}
-				}.bind( this ),
-				error: function() {
-					alert( betterlyticsAdmin.strings.error );
-				},
-				complete: function() {
-					$button.prop( 'disabled', false );
-				}
-			} );
-		},
-
 		escapeHtml: function( str ) {
 			if ( ! str ) {
 				return '';
@@ -361,4 +335,5 @@
 	$( document ).ready( function() {
 		BetterlyticsAdmin.init();
 	} );
+
 }( jQuery ) );

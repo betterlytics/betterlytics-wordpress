@@ -56,8 +56,16 @@ class Betterlytics_Hooks {
 
 		// Register built-in hooks (if enabled and not already registered).
 		foreach ( self::BUILTIN_HOOKS as $option_key => list( $wp_hook, $event_name ) ) {
-			// Option is now an array { enabled: bool, metadata: [] }
-			if ( ! empty( $options[ $option_key ]['enabled'] ) && ! in_array( $wp_hook, $registered_hooks, true ) ) {
+			$enabled = false;
+			if ( isset( $options[ $option_key ] ) ) {
+				if ( is_array( $options[ $option_key ] ) && ! empty( $options[ $option_key ]['enabled'] ) ) {
+					$enabled = true;
+				} elseif ( ! is_array( $options[ $option_key ] ) && ! empty( $options[ $option_key ] ) ) {
+					$enabled = true;
+				}
+			}
+
+			if ( $enabled && ! in_array( $wp_hook, $registered_hooks, true ) ) {
 				$this->register_hook( $wp_hook, $event_name );
 			}
 		}

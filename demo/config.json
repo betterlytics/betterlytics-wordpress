@@ -30,6 +30,10 @@
 	"track_downloads": { "enabled": true },
 	"track_css_events": { "enabled": true },
 	
+	"track_wp_login": false,
+	"track_wp_logout": false,
+	"track_user_register": false,
+	
 	"woo_add_to_cart": { "enabled": true },
 	"woo_remove_from_cart": { "enabled": true },
 	"woo_checkout": { "enabled": true },
