@@ -13,14 +13,25 @@
 				{ "key": "login_user", "value": "{0}" },
 				{ "key": "user_email", "value": "{1->user_email}" }
 			]
+		},
+		{
+			"wp_hook": "user_register",
+			"event_name": "user_signup",
+			"enabled": true,
+			"metadata": [
+				{ "key": "user_id", "value": "{0}" }
+			]
 		}
 	],
-	"track_404": true,
-	"track_search": true,
-	"track_outbound": true,
-	"track_downloads": true,
-	"track_css_events": true,
-	"woo_add_to_cart": true,
-	"woo_checkout": true,
-	"woo_purchase": true
+	
+	"track_404": { "enabled": true },
+	"track_search": { "enabled": true },
+	"track_outbound": { "enabled": true },
+	"track_downloads": { "enabled": true },
+	"track_css_events": { "enabled": true },
+	
+	"woo_add_to_cart": { "enabled": true },
+	"woo_remove_from_cart": { "enabled": true },
+	"woo_checkout": { "enabled": true },
+	"woo_purchase": { "enabled": true }
 }

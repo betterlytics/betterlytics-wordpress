@@ -10,23 +10,32 @@
 
 	var BetterlyticsAdmin = {
 		hooks: [],
+		builtinHooks: {},
 
 		init: function() {
 			this.initTabs();
-			this.bindEvents();
-
-			// Load hooks from localized data.
-			if ( typeof betterlyticsAdmin !== 'undefined' && betterlyticsAdmin.hooks ) {
-				this.hooks = betterlyticsAdmin.hooks;
+			// Load data from localized script
+			if ( typeof betterlyticsAdmin !== 'undefined' ) {
+				if ( betterlyticsAdmin.hooks ) {
+					this.hooks = betterlyticsAdmin.hooks;
+				}
+				if ( betterlyticsAdmin.builtinHooks ) {
+					this.builtinHooks = betterlyticsAdmin.builtinHooks;
+				}
 			}
 
+			this.syncBuiltinsToList();
+			this.bindEvents();
 			this.renderHooks();
 		},
 
 		initTabs: function() {
 			var hash = window.location.hash.replace( '#', '' );
-			if ( hash && $( '#tab-' + hash ).length ) {
+			var validTabs = ['browser', 'server'];
+			if ( hash && validTabs.indexOf( hash ) !== -1 ) {
 				this.activateTab( hash );
+			} else {
+				this.activateTab( 'browser' );
 			}
 		},
 
@@ -40,6 +49,75 @@
 			$list.on( 'click', '.betterlytics-toggle-metadata', this.toggleMetadata.bind( this ) );
 			$list.on( 'click', '.betterlytics-add-metadata', this.addMetadata.bind( this ) );
 			$list.on( 'click', '.betterlytics-delete-metadata', this.deleteMetadata.bind( this ) );
+
+			// Listen for changes on built-in setting toggles
+			$( 'input[name^="betterlytics_options[woo_"]' ).on( 'change', this.handleBuiltinToggle.bind( this ) );
+		},
+
+		syncBuiltinsToList: function() {
+			// Iterate over all built-in hooks/options.
+			// If the option checkbox is checked, ensure it exists in this.hooks.
+			var self = this;
+			$.each( this.builtinHooks, function( optionKey, config ) {
+				var wpHook = config[0];
+				var eventName = config[1];
+				// Selector updated for new array format: betterlytics_options[key][enabled]
+				var $checkbox = $( 'input[name="betterlytics_options[' + optionKey + '][enabled]"]' );
+
+				if ( $checkbox.is( ':checked' ) ) {
+					// Check if already in hooks list
+					var exists = self.hooks.some( function( h ) {
+						return h.wp_hook === wpHook;
+					} );
+
+					if ( ! exists ) {
+						self.hooks.push( {
+							wp_hook: wpHook,
+							event_name: eventName,
+							enabled: true,
+							metadata: []
+						} );
+					}
+				}
+			} );
+		},
+
+		handleBuiltinToggle: function( e ) {
+			var $checkbox = $( e.currentTarget );
+			var optionName = $checkbox.attr( 'name' ); // betterlytics_options[woo_add_to_cart][enabled]
+			var match = optionName.match( /\[(woo_[a-z_]+)\]/ );
+			
+			if ( ! match ) return;
+
+			var optionKey = match[1];
+			var config = this.builtinHooks[ optionKey ];
+			if ( ! config ) return;
+
+			var wpHook = config[0];
+			var eventName = config[1];
+
+			if ( $checkbox.is( ':checked' ) ) {
+				// Add to list if not exists
+				var exists = this.hooks.some( function( h ) {
+					return h.wp_hook === wpHook;
+				} );
+
+				if ( ! exists ) {
+					this.hooks.push( {
+						wp_hook: wpHook,
+						event_name: eventName,
+						enabled: true,
+						metadata: []
+					} );
+					this.renderHooks();
+				}
+			} else {
+				// Remove from list
+				this.hooks = this.hooks.filter( function( h ) {
+					return h.wp_hook !== wpHook;
+				} );
+				this.renderHooks();
+			}
 		},
 
 		switchTab: function( e ) {
@@ -167,6 +245,16 @@
 
 			var $row = $( e.currentTarget ).closest( 'tr' );
 			var index = $row.data( 'index' );
+			var hook = this.hooks[ index ];
+
+			// Sync back to settings toggle: if this hook matches a built-in, uncheck it.
+			var self = this;
+			$.each( this.builtinHooks, function( optionKey, config ) {
+				if ( config[0] === hook.wp_hook ) {
+					// Selector updated for new array format: betterlytics_options[key][enabled]
+					$( 'input[name="betterlytics_options[' + optionKey + '][enabled]"]' ).prop( 'checked', false );
+				}
+			} );
 
 			this.hooks.splice( index, 1 );
 			this.renderHooks();
@@ -226,19 +314,36 @@
 					if ( response.success ) {
 						this.hooks = hooks;
 						this.renderHooks();
-						$status.text( betterlyticsAdmin.strings.saved ).addClass( 'success' );
+						
+						// Show native WP notice
+						$( '.notice' ).remove(); // Remove existing
+						var $notice = $( '<div id="message" class="notice notice-success is-dismissible"><p>' + betterlyticsAdmin.strings.saved + '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>' );
+						$( '.betterlytics-settings h1' ).after( $notice );
+						
+						// Initialize dismissal behavior
+						if ( window.wp && window.wp.a11y && window.wp.a11y.speak ) {
+							window.wp.a11y.speak( betterlyticsAdmin.strings.saved );
+						}
+						$notice.on( 'click', '.notice-dismiss', function() {
+							$notice.fadeTo( 100, 0, function() {
+								$notice.slideUp( 100, function() {
+									$notice.remove();
+								} );
+							} );
+						} );
+
+						// Scroll to top
+						$( 'html, body' ).animate( { scrollTop: 0 }, 'slow' );
+						
 					} else {
-						$status.text( response.data.message || betterlyticsAdmin.strings.error ).addClass( 'error' );
+						alert( response.data.message || betterlyticsAdmin.strings.error );
 					}
 				}.bind( this ),
 				error: function() {
-					$status.text( betterlyticsAdmin.strings.error ).addClass( 'error' );
+					alert( betterlyticsAdmin.strings.error );
 				},
 				complete: function() {
 					$button.prop( 'disabled', false );
-					setTimeout( function() {
-						$status.text( '' ).removeClass( 'success error' );
-					}, 3000 );
 				}
 			} );
 		},

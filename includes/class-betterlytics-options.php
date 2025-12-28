@@ -37,17 +37,17 @@ class Betterlytics_Options {
 		'hooks'            => [],
 
 		// Event tracking options.
-		'track_404'        => false,
-		'track_search'     => false,
-		'track_outbound'   => false,
-		'track_downloads'  => false,
-		'track_css_events' => false,
+		'track_404'        => [ 'enabled' => false, 'metadata' => [] ],
+		'track_search'     => [ 'enabled' => false, 'metadata' => [] ],
+		'track_outbound'   => [ 'enabled' => false, 'metadata' => [] ],
+		'track_downloads'  => [ 'enabled' => false, 'metadata' => [] ],
+		'track_css_events' => [ 'enabled' => false, 'metadata' => [] ],
 
 		// WooCommerce options.
-		'woo_add_to_cart'      => false,
-		'woo_remove_from_cart' => false,
-		'woo_checkout'         => false,
-		'woo_purchase'     => false,
+		'woo_add_to_cart'      => [ 'enabled' => false, 'metadata' => [] ],
+		'woo_remove_from_cart' => [ 'enabled' => false, 'metadata' => [] ],
+		'woo_checkout'         => [ 'enabled' => false, 'metadata' => [] ],
+		'woo_purchase'         => [ 'enabled' => false, 'metadata' => [] ],
 	];
 
 	/**
@@ -58,7 +58,24 @@ class Betterlytics_Options {
 	 */
 	public static function get_options() {
 		$options = get_option( self::OPTION_NAME, [] );
-		return wp_parse_args( $options, self::DEFAULTS );
+		$options = wp_parse_args( $options, self::DEFAULTS );
+
+		// Normalize legacy boolean values to object format.
+		$event_keys = [
+			'track_404', 'track_search', 'track_outbound', 'track_downloads', 'track_css_events',
+			'woo_add_to_cart', 'woo_remove_from_cart', 'woo_checkout', 'woo_purchase'
+		];
+
+		foreach ( $event_keys as $key ) {
+			if ( isset( $options[ $key ] ) && ! is_array( $options[ $key ] ) ) {
+				$options[ $key ] = [
+					'enabled'  => (bool) $options[ $key ],
+					'metadata' => [],
+				];
+			}
+		}
+
+		return $options;
 	}
 
 	/**

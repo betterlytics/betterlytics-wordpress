@@ -11,6 +11,19 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
   "script_url": "https://betterlytics.io/analytics.js",
   "enabled": true,
   "track_logged_in": false,
+
+  "// Browser Events": "----------------",
+  "track_404": { "enabled": false },
+  "track_search": { "enabled": false },
+  "track_outbound": { "enabled": false },
+  "track_downloads": { "enabled": false },
+  "track_css_events": { "enabled": false },
+
+  "// Server Hooks": "-----------------",
+  "woo_add_to_cart": { "enabled": true, "metadata": [] },
+  "woo_checkout": { "enabled": false },
+  "woo_purchase": { "enabled": false },
+  "woo_remove_from_cart": { "enabled": false },
   "hooks": [
     { "wp_hook": "wp_login", "event_name": "user-login", "enabled": true },
     {
@@ -23,16 +36,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
       ]
     },
     { "wp_hook": "woocommerce_thankyou", "event_name": "purchase", "enabled": true }
-  ],
-  "track_404": false,
-  "track_search": false,
-  "track_outbound": false,
-  "track_downloads": false,
-  "track_css_events": false,
-  "woo_add_to_cart": false,
-  "woo_checkout": false,
-  "woo_purchase": false,
-  "woo_remove_from_cart": false
+  ]
 }
 ```
 
