@@ -40,7 +40,6 @@ class Betterlytics_Hooks {
 
 		$options = Betterlytics_Options::get_options();
 
-
 		// Track registered hooks to prevent duplicates.
 		$registered_hooks = [];
 
@@ -92,15 +91,21 @@ class Betterlytics_Hooks {
 
 		if ( ! empty( $options['track_404'] ) && is_404() ) {
 			global $wp;
-			$this->queue_event( '404', [
-				'path' => home_url( $wp->request ),
-			] );
+			$this->queue_event(
+				'404',
+				[
+					'path' => home_url( $wp->request ),
+				]
+			);
 		}
 
 		if ( ! empty( $options['track_search'] ) && is_search() ) {
-			$this->queue_event( 'search', [
-				'query' => get_search_query(),
-			] );
+			$this->queue_event(
+				'search',
+				[
+					'query' => get_search_query(),
+				]
+			);
 		}
 	}
 
@@ -235,38 +240,42 @@ class Betterlytics_Hooks {
 	 * @return string Resolved value.
 	 */
 	private function resolve_value( $pattern, $args ) {
-		return preg_replace_callback( '/\{(\d+)(?:->([a-zA-Z0-9_]+)|\[([a-zA-Z0-9_]+)\])?\}/', function ( $matches ) use ( $args ) {
-			$index = (int) $matches[1];
-			$value = isset( $args[ $index ] ) ? $args[ $index ] : null;
+		return preg_replace_callback(
+			'/\{(\d+)(?:->([a-zA-Z0-9_]+)|\[([a-zA-Z0-9_]+)\])?\}/',
+			function ( $matches ) use ( $args ) {
+				$index = (int) $matches[1];
+				$value = isset( $args[ $index ] ) ? $args[ $index ] : null;
 
-			if ( ! $value ) {
+				if ( ! $value ) {
+					return '';
+				}
+
+				// Handle property access ->.
+				if ( ! empty( $matches[2] ) ) {
+					$prop = $matches[2];
+					return isset( $value->$prop ) ? $value->$prop : '';
+				}
+
+				// Handle array access [].
+				if ( ! empty( $matches[3] ) ) {
+					$key = $matches[3];
+					return isset( $value[ $key ] ) ? $value[ $key ] : '';
+				}
+
+				// Return the direct value (if scalar).
+				if ( is_scalar( $value ) ) {
+					return $value;
+				}
+
+				// If it's an object/array but no accessor specified, try to cast to string or nothing.
+				if ( is_object( $value ) && method_exists( $value, '__toString' ) ) {
+					return (string) $value;
+				}
+
 				return '';
-			}
-
-			// Handle property access ->.
-			if ( ! empty( $matches[2] ) ) {
-				$prop = $matches[2];
-				return isset( $value->$prop ) ? $value->$prop : '';
-			}
-
-			// Handle array access [].
-			if ( ! empty( $matches[3] ) ) {
-				$key = $matches[3];
-				return isset( $value[ $key ] ) ? $value[ $key ] : '';
-			}
-
-			// Return the direct value (if scalar).
-			if ( is_scalar( $value ) ) {
-				return $value;
-			}
-            
-            // If it's an object/array but no accessor specified, try to cast to string or nothing
-            if ( is_object( $value ) && method_exists( $value, '__toString' ) ) {
-                return (string) $value;
-            }
-
-			return '';
-		}, $pattern );
+			},
+			$pattern
+		);
 	}
 
 	/**

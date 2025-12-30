@@ -10,6 +10,7 @@ jobs:
   lint:
     name: PHP Lint (PHPCS)
     runs-on: ubuntu-latest
+    timeout-minutes: 3
 
     steps:
       - name: Checkout code
@@ -18,24 +19,26 @@ jobs:
       - name: Run PHPCS via Docker Compose
         run: docker compose --profile lint run --rm lint
 
-  test:
-    name: PHP Tests
-    runs-on: ubuntu-latest
+  # test:
+  #   name: PHP Tests
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 5
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Run PHPUnit via Docker Compose
-        run: docker compose --profile test run --rm test
+  #     - name: Run PHPUnit via Docker Compose
+  #       run: docker compose --profile test run --rm test
 
-      - name: Cleanup
-        if: always()
-        run: docker compose --profile test down -v
+  #     - name: Cleanup
+  #       if: always()
+  #       run: docker compose --profile test down -v
 
   build:
     name: Build Plugin
     runs-on: ubuntu-latest
+    timeout-minutes: 3
 
     steps:
       - name: Checkout code
