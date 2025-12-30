@@ -99,11 +99,10 @@ class Betterlytics_Admin {
 			$this->plugin_name,
 			'betterlyticsAdmin',
 			[
-				// 'ajaxUrl' => admin_url( 'admin-ajax.php' ), // Unused
-				// 'nonce'   => wp_create_nonce( 'betterlytics_admin' ), // Unused
-				'hooks'   => Betterlytics_Options::get( 'hooks', [] ),
+
+				'hooks'        => Betterlytics_Options::get( 'hooks', [] ),
 				'builtinHooks' => Betterlytics_Hooks::BUILTIN_HOOKS,
-				'strings' => [
+				'strings'      => [
 					'confirmDelete' => __( 'Are you sure you want to delete this hook?', 'betterlytics' ),
 					'saved'         => __( 'Settings saved.', 'betterlytics' ),
 					'error'         => __( 'An error occurred. Please try again.', 'betterlytics' ),
@@ -163,19 +162,28 @@ class Betterlytics_Admin {
 		if ( 'betterlytics_events' === $page ) {
 			// 1. Sanitize Custom Hooks List
 			// 'hooks' input comes from the table.
-			$hooks = isset( $input['hooks'] ) && is_array( $input['hooks'] ) ? $this->sanitize_hooks( $input['hooks'] ) : [];
-			$options['hooks'] = $hooks; // Start with custom hooks
+			$hooks            = isset( $input['hooks'] ) && is_array( $input['hooks'] ) ? $this->sanitize_hooks( $input['hooks'] ) : [];
+			$options['hooks'] = $hooks; // Start with custom hooks.
 
 			// 2. Process All Options (Browser + Server + User + Woo)
 			$all_keys = [
-				'track_404', 'track_search', 'track_outbound', 'track_downloads', 'track_css_events',
-				'woo_add_to_cart', 'woo_remove_from_cart', 'woo_checkout', 'woo_purchase',
-				'track_wp_login', 'track_wp_logout', 'track_user_register'
+				'track_404',
+				'track_search',
+				'track_outbound',
+				'track_downloads',
+				'track_css_events',
+				'woo_add_to_cart',
+				'woo_remove_from_cart',
+				'woo_checkout',
+				'woo_purchase',
+				'track_wp_login',
+				'track_wp_logout',
+				'track_user_register',
 			];
 
 			foreach ( $all_keys as $key ) {
-				$val = isset( $input[ $key ] ) ? $input[ $key ] : null;
-				$enabled = false;
+				$val      = isset( $input[ $key ] ) ? $input[ $key ] : null;
+				$enabled  = false;
 				$metadata = [];
 
 				if ( is_array( $val ) ) {
@@ -189,17 +197,17 @@ class Betterlytics_Admin {
 
 				$options[ $key ] = [
 					'enabled'  => $enabled,
-					'metadata' => $metadata, 
+					'metadata' => $metadata,
 				];
 
 				// 3. Sync Built-ins to Hooks List
 				if ( array_key_exists( $key, Betterlytics_Hooks::BUILTIN_HOOKS ) ) {
-					$hook_def = Betterlytics_Hooks::BUILTIN_HOOKS[ $key ];
+					$hook_def   = Betterlytics_Hooks::BUILTIN_HOOKS[ $key ];
 					$wp_hook    = $hook_def[0];
 					$event_name = $hook_def[1];
 
 					if ( $enabled ) {
-						// Add if not present
+						// Add if not present.
 						$found = false;
 						foreach ( $options['hooks'] as $h ) {
 							if ( $h['wp_hook'] === $wp_hook ) {
@@ -216,7 +224,7 @@ class Betterlytics_Admin {
 							];
 						}
 					} else {
-						// Remove if present
+						// Remove if present.
 						foreach ( $options['hooks'] as $idx => $h ) {
 							if ( $h['wp_hook'] === $wp_hook ) {
 								unset( $options['hooks'][ $idx ] );

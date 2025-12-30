@@ -67,42 +67,42 @@ function betterlytics_render_section( $section, $show_separator = false ) {
  * Add new sections by appending to this array. Each section will automatically
  * have a separator rendered before it (except the first one).
  */
-$betterlytics_browser_sections = array(
-	array(
+$betterlytics_browser_sections = [
+	[
 		'title'       => __( 'Page Events', 'betterlytics' ),
 		'description' => '',
-		'fields'      => array(
-			array(
+		'fields'      => [
+			[
 				'label'       => __( '404 Error Pages', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_404][enabled]',
 				'checked'     => ! empty( $betterlytics_options['track_404']['enabled'] ),
 				'description' => __( 'Track when visitors land on pages that don\'t exist', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'Site Search', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_search][enabled]',
 				'checked'     => ! empty( $betterlytics_options['track_search']['enabled'] ),
 				'description' => __( 'Track search queries on your site', 'betterlytics' ),
-			),
-		),
-	),
-	array(
+			],
+		],
+	],
+	[
 		'title'       => __( 'Click Events', 'betterlytics' ),
 		'description' => '',
-		'fields'      => array(
-			array(
+		'fields'      => [
+			[
 				'label'       => __( 'Outbound Links', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_outbound][enabled]',
 				'checked'     => ! empty( $betterlytics_options['track_outbound']['enabled'] ),
 				'description' => __( 'Track clicks on links to external websites', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'File Downloads', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_downloads][enabled]',
 				'checked'     => ! empty( $betterlytics_options['track_downloads']['enabled'] ),
 				'description' => __( 'Track downloads of files (.pdf, .zip, .doc, etc.)', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'CSS Class Events', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_css_events][enabled]',
 				'checked'     => ! empty( $betterlytics_options['track_css_events']['enabled'] ),
@@ -111,10 +111,10 @@ $betterlytics_browser_sections = array(
 					__( 'Track clicks on elements with %s class', 'betterlytics' ),
 					'<code>betterlytics-event-name=YourEvent</code>'
 				),
-			),
-		),
-	),
-);
+			],
+		],
+	],
+];
 
 /*
  * =============================================================================
@@ -149,71 +149,71 @@ ob_start();
 <?php
 $betterlytics_hooks_mapper_content = ob_get_clean();
 
-$betterlytics_server_sections = array(
-	array(
+$betterlytics_server_sections = [
+	[
 		'title'          => __( 'Custom Hooks Mapper', 'betterlytics' ),
 		'description'    => __( 'Map any WordPress action hook to a Betterlytics event.', 'betterlytics' ),
 		'custom_content' => $betterlytics_hooks_mapper_content,
-		'fields'         => array(),
-	),
-	array(
+		'fields'         => [],
+	],
+	[
 		'title'       => __( 'WordPress User Management', 'betterlytics' ),
 		'description' => __( 'Automatically track user login, logout, and registration events.', 'betterlytics' ),
-		'fields'      => array(
-			array(
+		'fields'      => [
+			[
 				'label'       => __( 'User Login', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_wp_login]',
 				'checked'     => ! empty( $betterlytics_options['track_wp_login'] ),
 				'description' => __( 'Track when a user logs in (Event: user_login)', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'User Logout', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_wp_logout]',
 				'checked'     => ! empty( $betterlytics_options['track_wp_logout'] ),
 				'description' => __( 'Track when a user logs out (Event: user_logout)', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'User Registration', 'betterlytics' ),
 				'name'        => 'betterlytics_options[track_user_register]',
 				'checked'     => ! empty( $betterlytics_options['track_user_register'] ),
 				'description' => __( 'Track when a new user registers (Event: user_register)', 'betterlytics' ),
-			),
-		),
-	),
-);
+			],
+		],
+	],
+];
 
 // Add WooCommerce section if available.
 if ( $betterlytics_has_woocommerce ) {
-	$betterlytics_server_sections[] = array(
+	$betterlytics_server_sections[] = [
 		'title'       => __( 'WooCommerce Events', 'betterlytics' ),
 		'description' => __( 'Automatically map WooCommerce actions to Betterlytics events.', 'betterlytics' ),
-		'fields'      => array(
-			array(
+		'fields'      => [
+			[
 				'label'       => __( 'Add to Cart', 'betterlytics' ),
 				'name'        => 'betterlytics_options[woo_add_to_cart][enabled]',
 				'checked'     => ! empty( $betterlytics_options['woo_add_to_cart']['enabled'] ),
 				'description' => __( 'Track when products are added to the cart', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'Remove from Cart', 'betterlytics' ),
 				'name'        => 'betterlytics_options[woo_remove_from_cart][enabled]',
 				'checked'     => ! empty( $betterlytics_options['woo_remove_from_cart']['enabled'] ),
 				'description' => __( 'Track when products are removed from the cart', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'Begin Checkout', 'betterlytics' ),
 				'name'        => 'betterlytics_options[woo_checkout][enabled]',
 				'checked'     => ! empty( $betterlytics_options['woo_checkout']['enabled'] ),
 				'description' => __( 'Track when customers start the checkout process', 'betterlytics' ),
-			),
-			array(
+			],
+			[
 				'label'       => __( 'Purchase Complete', 'betterlytics' ),
 				'name'        => 'betterlytics_options[woo_purchase][enabled]',
 				'checked'     => ! empty( $betterlytics_options['woo_purchase']['enabled'] ),
 				'description' => __( 'Track completed purchases', 'betterlytics' ),
-			),
-		),
-	);
+			],
+		],
+	];
 }
 ?>
 
@@ -281,8 +281,8 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 		<!-- Browser Events Tab -->
 		<div id="tab-browser" class="betterlytics-tab-content active">
 			<?php
-			foreach ( $betterlytics_browser_sections as $index => $section ) {
-				betterlytics_render_section( $section, $index > 0 );
+			foreach ( $betterlytics_browser_sections as $betterlytics_index => $betterlytics_section ) {
+				betterlytics_render_section( $betterlytics_section, $betterlytics_index > 0 );
 			}
 			?>
 		</div>
@@ -290,15 +290,15 @@ document.getElementById('betterlytics-dismiss-banner').addEventListener('click',
 		<!-- Server Hooks Tab -->
 		<div id="tab-server" class="betterlytics-tab-content">
 			<?php
-			foreach ( $betterlytics_server_sections as $index => $section ) {
-				betterlytics_render_section( $section, $index > 0 );
+			foreach ( $betterlytics_server_sections as $betterlytics_index => $betterlytics_section ) {
+				betterlytics_render_section( $betterlytics_section, $betterlytics_index > 0 );
 			}
 			?>
 		</div>
 
 		<div class="betterlytics-sticky-footer">
 			<div class="betterlytics-sticky-footer-content">
-				<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, array( 'id' => 'betterlytics-save-settings' ) ); ?>
+				<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings' ] ); ?>
 				<span id="betterlytics-hooks-status"></span>
 			</div>
 		</div>

@@ -29,25 +29,52 @@ class Betterlytics_Options {
 	 * @var array
 	 */
 	const DEFAULTS = [
-		'site_id'          => '',
-		'server_url'       => 'https://betterlytics.io/track',
-		'script_url'       => 'https://betterlytics.io/analytics.js',
-		'enabled'          => false,
-		'track_logged_in'  => true,
-		'hooks'            => [],
+		'site_id'              => '',
+		'server_url'           => 'https://betterlytics.io/track',
+		'script_url'           => 'https://betterlytics.io/analytics.js',
+		'enabled'              => false,
+		'track_logged_in'      => true,
+		'hooks'                => [],
 
 		// Event tracking options.
-		'track_404'        => [ 'enabled' => false, 'metadata' => [] ],
-		'track_search'     => [ 'enabled' => false, 'metadata' => [] ],
-		'track_outbound'   => [ 'enabled' => false, 'metadata' => [] ],
-		'track_downloads'  => [ 'enabled' => false, 'metadata' => [] ],
-		'track_css_events' => [ 'enabled' => false, 'metadata' => [] ],
+		'track_404'            => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'track_search'         => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'track_outbound'       => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'track_downloads'      => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'track_css_events'     => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
 
 		// WooCommerce options.
-		'woo_add_to_cart'      => [ 'enabled' => false, 'metadata' => [] ],
-		'woo_remove_from_cart' => [ 'enabled' => false, 'metadata' => [] ],
-		'woo_checkout'         => [ 'enabled' => false, 'metadata' => [] ],
-		'woo_purchase'         => [ 'enabled' => false, 'metadata' => [] ],
+		'woo_add_to_cart'      => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'woo_remove_from_cart' => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'woo_checkout'         => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
+		'woo_purchase'         => [
+			'enabled'  => false,
+			'metadata' => [],
+		],
 	];
 
 	/**
@@ -62,8 +89,15 @@ class Betterlytics_Options {
 
 		// Normalize legacy boolean values to object format.
 		$event_keys = [
-			'track_404', 'track_search', 'track_outbound', 'track_downloads', 'track_css_events',
-			'woo_add_to_cart', 'woo_remove_from_cart', 'woo_checkout', 'woo_purchase'
+			'track_404',
+			'track_search',
+			'track_outbound',
+			'track_downloads',
+			'track_css_events',
+			'woo_add_to_cart',
+			'woo_remove_from_cart',
+			'woo_checkout',
+			'woo_purchase',
 		];
 
 		foreach ( $event_keys as $key ) {
