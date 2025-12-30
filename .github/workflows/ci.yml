@@ -10,7 +10,7 @@ jobs:
   lint:
     name: PHP Lint (PHPCS)
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
 
     steps:
       - name: Checkout code
@@ -38,7 +38,7 @@ jobs:
   build:
     name: Build Plugin
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 3
 
     steps:
       - name: Checkout code
