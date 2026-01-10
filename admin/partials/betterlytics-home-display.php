@@ -28,7 +28,7 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 					printf(
 						/* translators: %s: link to Betterlytics dashboard */
 						esc_html__( 'Sign up or log in to your %s to get your unique Site ID.', 'betterlytics' ),
-						'<a href="https://www.betterlytics.io/dashboard" target="_blank">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
+						'<a href="https://www.betterlytics.io/dashboards" target="_blank">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
 					);
 					?>
 				</p>
@@ -93,7 +93,7 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 				</a>
 			</li>
 			<li>
-				<a href="https://www.betterlytics.io/dashboard" target="_blank">
+				<a href="https://www.betterlytics.io/dashboards" target="_blank">
 					<span class="dashicons dashicons-chart-bar"></span>
 					<?php esc_html_e( 'Betterlytics Dashboard', 'betterlytics' ); ?>
 				</a>

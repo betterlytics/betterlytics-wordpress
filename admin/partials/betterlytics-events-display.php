@@ -246,7 +246,7 @@ if ( $betterlytics_has_woocommerce ) {
 
 	<p class="betterlytics-page-description">
 		<?php
-		$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboard';
+		$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboards';
 		if ( ! empty( $betterlytics_options['site_id'] ) ) {
 			$betterlytics_dashboard_url .= '/' . esc_attr( $betterlytics_options['site_id'] );
 		}
