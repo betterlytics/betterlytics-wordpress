@@ -53,7 +53,7 @@ class Betterlytics_Admin {
 	 * @param string $hook The current admin page hook.
 	 */
 	public function enqueue_styles( $hook ) {
-		if ( strpos( $hook, Betterlytics_Admin_Controller::MENU_SLUG ) === false ) {
+		if ( 'settings_page_betterlytics' !== $hook ) {
 			return;
 		}
 
@@ -81,9 +81,15 @@ class Betterlytics_Admin {
 	 * @param string $hook The current admin page hook.
 	 */
 	public function enqueue_scripts( $hook ) {
-		// Only load JS on Events page (for tabs and hooks management).
-		$events_hook = Betterlytics_Admin_Controller::MENU_SLUG . '_page_' . Betterlytics_Admin_Controller::get_slug( 'events' );
-		if ( $events_hook !== $hook ) {
+		// Only load JS on Betterlytics Settings page.
+		if ( 'settings_page_betterlytics' !== $hook ) {
+			return;
+		}
+
+		// Only load JS on Events tab (for tabs and hooks management).
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'home';
+		if ( 'events' !== $tab ) {
 			return;
 		}
 
@@ -318,7 +324,7 @@ class Betterlytics_Admin {
 	 */
 	public function hide_admin_notices() {
 		$screen = get_current_screen();
-		if ( $screen && strpos( $screen->id, Betterlytics_Admin_Controller::MENU_SLUG ) !== false ) {
+		if ( $screen && 'settings_page_betterlytics' === $screen->id ) {
 			remove_all_actions( 'admin_notices' );
 			remove_all_actions( 'all_admin_notices' );
 		}

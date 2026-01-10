@@ -17,15 +17,7 @@ $betterlytics_is_enabled  = ! empty( $betterlytics_options['enabled'] );
 $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 ?>
 
-<div class="wrap betterlytics-settings betterlytics-home">
-	<h1><?php esc_html_e( 'Betterlytics', 'betterlytics' ); ?></h1>
-
-	<p class="betterlytics-page-description">
-		<?php esc_html_e( 'Privacy-first analytics for WordPress. Track your visitors without compromising their privacy.', 'betterlytics' ); ?>
-	</p>
-
 	<div class="betterlytics-setup-steps">
-		<h2><?php esc_html_e( 'Setup', 'betterlytics' ); ?></h2>
 
 		<div class="betterlytics-step <?php echo $betterlytics_has_site_id ? 'completed' : 'current'; ?>">
 			<div class="step-number">1</div>
@@ -114,4 +106,4 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 			</li>
 		</ul>
 	</div>
-</div>
+

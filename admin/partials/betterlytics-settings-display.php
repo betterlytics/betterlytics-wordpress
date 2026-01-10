@@ -12,45 +12,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$betterlytics_options           = Betterlytics_Options::get_options();
-$betterlytics_setup_incomplete  = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
-$betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
-$betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
+$betterlytics_options = Betterlytics_Options::get_options();
 ?>
 
-<?php if ( $betterlytics_show_setup_banner ) : ?>
-<div class="betterlytics-setup-banner" id="betterlytics-setup-banner">
-	<span class="dashicons dashicons-info"></span>
-	<p>
-		<?php
-		printf(
-			/* translators: %s: link to setup guide */
-			esc_html__( 'Setup is not complete. Follow the %s to start tracking.', 'betterlytics' ),
-			'<a href="' . esc_url( admin_url( 'admin.php?page=betterlytics' ) ) . '">' . esc_html__( 'setup guide', 'betterlytics' ) . '</a>'
-		);
-		?>
-	</p>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics' ) ); ?>" class="button">
-		<?php esc_html_e( 'View Setup', 'betterlytics' ); ?>
-	</a>
-	<button type="button" class="dismiss" id="betterlytics-dismiss-banner" title="<?php esc_attr_e( 'Dismiss', 'betterlytics' ); ?>">
-		<span class="dashicons dashicons-no-alt"></span>
-	</button>
-</div>
-<script>
-document.getElementById('betterlytics-dismiss-banner').addEventListener('click', function() {
-	var banner = document.getElementById('betterlytics-setup-banner');
-	banner.style.display = 'none';
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>');
-	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	xhr.send('action=betterlytics_dismiss_setup_banner&nonce=<?php echo esc_js( wp_create_nonce( 'betterlytics_admin' ) ); ?>');
-});
-</script>
-<?php endif; ?>
-
-<div class="wrap betterlytics-settings">
-	<h1><?php esc_html_e( 'Settings', 'betterlytics' ); ?></h1>
+<div>
 	<?php settings_errors(); ?>
 
 	<form action="options.php" method="post">
