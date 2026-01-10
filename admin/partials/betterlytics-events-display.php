@@ -243,7 +243,6 @@ if ( $betterlytics_has_woocommerce ) {
 ?>
 
 <div>
-	<?php settings_errors(); ?>
 
 	<p class="betterlytics-page-description">
 		<?php
@@ -292,7 +291,6 @@ if ( $betterlytics_has_woocommerce ) {
 		<div class="betterlytics-sticky-footer">
 			<div class="betterlytics-sticky-footer-content">
 				<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings' ] ); ?>
-				<span id="betterlytics-hooks-status"></span>
 			</div>
 		</div>
 	</form>

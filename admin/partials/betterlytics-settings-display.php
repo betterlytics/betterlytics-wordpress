@@ -15,9 +15,6 @@ if ( ! defined( 'WPINC' ) ) {
 $betterlytics_options = Betterlytics_Options::get_options();
 ?>
 
-<div>
-	<?php settings_errors(); ?>
-
 	<form action="options.php" method="post">
 		<?php settings_fields( 'betterlytics_settings' ); ?>
 

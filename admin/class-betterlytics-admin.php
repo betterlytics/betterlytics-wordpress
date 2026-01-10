@@ -110,8 +110,6 @@ class Betterlytics_Admin {
 				'builtinHooks' => Betterlytics_Hooks::BUILTIN_HOOKS,
 				'strings'      => [
 					'confirmDelete' => __( 'Are you sure you want to delete this hook?', 'betterlytics' ),
-					'saved'         => __( 'Settings saved.', 'betterlytics' ),
-					'error'         => __( 'An error occurred. Please try again.', 'betterlytics' ),
 				],
 			]
 		);
