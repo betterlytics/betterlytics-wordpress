@@ -264,6 +264,9 @@ class Betterlytics_Admin {
 					'metadata' => $metadata,
 				];
 			}
+
+			// 5. Process Simple Boolean Options
+			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
 		}
 
 		return $options;

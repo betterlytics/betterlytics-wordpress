@@ -11,6 +11,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"script_url": "https://betterlytics.io/analytics.js",
 	"enabled": true,
 	"track_logged_in": false,
+	"track_web_vitals": false,
 
 	"// Browser Events": "----------------",
 	"track_404": { "enabled": false },

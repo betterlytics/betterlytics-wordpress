@@ -4,6 +4,7 @@
   "script_url": "http://localhost:3006/analytics.js",
   "enabled": true,
   "track_logged_in": true,
+  "track_web_vitals": false,
   "hooks": [
     {
       "wp_hook": "wp_login",

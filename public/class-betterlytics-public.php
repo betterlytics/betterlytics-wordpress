@@ -72,12 +72,13 @@ class Betterlytics_Public {
 			}
 			return;
 		}
-		
-		$options    = Betterlytics_Options::get_options();
-		$site_id    = esc_attr( $options['site_id'] );
-		$server_url = esc_url( $options['server_url'] );
-		$script_url = esc_url( $options['script_url'] );
+
+		$options        = Betterlytics_Options::get_options();
+		$site_id        = esc_attr( $options['site_id'] );
+		$server_url     = esc_url( $options['server_url'] );
+		$script_url     = esc_url( $options['script_url'] );
 		$track_outbound = esc_attr( $options['track_outbound']['mode'] );
+		$web_vitals     = ! empty( $options['track_web_vitals'] ) ? 'true' : 'false';
 
 		// Debug: Output configuration as HTML comment.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -105,7 +106,7 @@ console.log('[Betterlytics] Script injected', {
 		<?php endif; ?>
 </script>
 <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- External analytics script with data attributes cannot use wp_enqueue_script(). ?>
-<script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>" data-outbound-links="<?php echo esc_attr( $track_outbound ); ?>"></script>
+<script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>" data-outbound-links="<?php echo esc_attr( $track_outbound ); ?>" data-web-vitals="<?php echo esc_attr( $web_vitals ); ?>"></script>
 		<?php
 	}
 
