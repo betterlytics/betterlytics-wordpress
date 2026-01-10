@@ -63,7 +63,7 @@ class Betterlytics_Admin_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-		public function render() {
+	public function render() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}

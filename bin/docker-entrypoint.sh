@@ -6,7 +6,7 @@ WP_CORE_DIR=${WP_CORE_DIR:-/tmp/wordpress}
 
 # Wait for MySQL to be ready
 echo "Waiting for MySQL..."
-while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" --silent; do
+while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" --silent; do
     sleep 1
 done
 echo "MySQL is ready!"

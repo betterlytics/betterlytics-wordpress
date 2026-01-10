@@ -73,7 +73,7 @@ register_deactivation_hook( __FILE__, 'betterlytics_deactivate' );
  * @return array Modified plugin action links.
  */
 function betterlytics_plugin_action_links( $links ) {
-	$settings_link = '<a href="' . admin_url( 'admin.php?page=betterlytics-settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';
+	$settings_link = '<a href="' . admin_url( 'options-general.php?page=betterlytics&tab=settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';
 	array_unshift( $links, $settings_link );
 
 	// Add dashboard link if site_id is configured.
