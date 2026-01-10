@@ -72,11 +72,12 @@ class Betterlytics_Public {
 			}
 			return;
 		}
-
+		
 		$options    = Betterlytics_Options::get_options();
 		$site_id    = esc_attr( $options['site_id'] );
 		$server_url = esc_url( $options['server_url'] );
 		$script_url = esc_url( $options['script_url'] );
+		$track_outbound = esc_attr( $options['track_outbound']['mode'] );
 
 		// Debug: Output configuration as HTML comment.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -98,12 +99,13 @@ window.betterlytics = window.betterlytics || {
 console.log('[Betterlytics] Script injected', {
 	siteId: '<?php echo esc_js( $site_id ); ?>',
 	serverUrl: '<?php echo esc_js( $server_url ); ?>',
-	scriptUrl: '<?php echo esc_js( $script_url ); ?>'
+	scriptUrl: '<?php echo esc_js( $script_url ); ?>',
+	trackOutbound: '<?php echo esc_js( $track_outbound ); ?>'
 });
 		<?php endif; ?>
 </script>
 <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- External analytics script with data attributes cannot use wp_enqueue_script(). ?>
-<script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>"></script>
+<script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>" data-outbound-links="<?php echo esc_attr( $track_outbound ); ?>"></script>
 		<?php
 	}
 
@@ -118,7 +120,7 @@ console.log('[Betterlytics] Script injected', {
 		}
 
 		$options  = Betterlytics_Options::get_options();
-		$needs_js = ! empty( $options['track_outbound'] ) || ! empty( $options['track_downloads'] ) || ! empty( $options['track_css_events'] );
+		$needs_js = ! empty( $options['track_downloads'] ) || ! empty( $options['track_css_events'] );
 
 		if ( ! $needs_js ) {
 			return;
@@ -136,7 +138,6 @@ console.log('[Betterlytics] Script injected', {
 			'betterlytics-events',
 			'betterlyticsEvents',
 			[
-				'trackOutbound'  => ! empty( $options['track_outbound'] ),
 				'trackDownloads' => ! empty( $options['track_downloads'] ),
 				'trackCssEvents' => ! empty( $options['track_css_events'] ),
 			]

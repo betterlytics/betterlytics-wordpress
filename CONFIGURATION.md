@@ -6,37 +6,41 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 
 ```json
 {
-  "site_id": "your-site-id",
-  "server_url": "https://betterlytics.io/track",
-  "script_url": "https://betterlytics.io/analytics.js",
-  "enabled": true,
-  "track_logged_in": false,
+	"site_id": "your-site-id",
+	"server_url": "https://betterlytics.io/track",
+	"script_url": "https://betterlytics.io/analytics.js",
+	"enabled": true,
+	"track_logged_in": false,
 
-  "// Browser Events": "----------------",
-  "track_404": { "enabled": false },
-  "track_search": { "enabled": false },
-  "track_outbound": { "enabled": false },
-  "track_downloads": { "enabled": false },
-  "track_css_events": { "enabled": false },
+	"// Browser Events": "----------------",
+	"track_404": { "enabled": false },
+	"track_search": { "enabled": false },
+	"track_outbound": { "mode": "domain" },
+	"track_downloads": { "enabled": false },
+	"track_css_events": { "enabled": false },
 
-  "// Server Hooks": "-----------------",
-  "woo_add_to_cart": { "enabled": true, "metadata": [] },
-  "woo_checkout": { "enabled": false },
-  "woo_purchase": { "enabled": false },
-  "woo_remove_from_cart": { "enabled": false },
-  "hooks": [
-    { "wp_hook": "wp_login", "event_name": "user-login", "enabled": true },
-    {
-      "wp_hook": "user_register",
-      "event_name": "sign-up",
-      "enabled": true,
-      "metadata": [
-        { "key": "user_id", "value": "{0}" },
-        { "key": "email", "value": "{1->user_email}" }
-      ]
-    },
-    { "wp_hook": "woocommerce_thankyou", "event_name": "purchase", "enabled": true }
-  ]
+	"// Server Hooks": "-----------------",
+	"woo_add_to_cart": { "enabled": true, "metadata": [] },
+	"woo_checkout": { "enabled": false },
+	"woo_purchase": { "enabled": false },
+	"woo_remove_from_cart": { "enabled": false },
+	"hooks": [
+		{ "wp_hook": "wp_login", "event_name": "user-login", "enabled": true },
+		{
+			"wp_hook": "user_register",
+			"event_name": "sign-up",
+			"enabled": true,
+			"metadata": [
+				{ "key": "user_id", "value": "{0}" },
+				{ "key": "email", "value": "{1->user_email}" }
+			]
+		},
+		{
+			"wp_hook": "woocommerce_thankyou",
+			"event_name": "purchase",
+			"enabled": true
+		}
+	]
 }
 ```
 
@@ -97,13 +101,13 @@ Then set environment variables in your Docker Compose, Kubernetes, or CI:
 ```yaml
 # docker-compose.yml
 services:
-  wordpress:
-    environment:
-      BETTERLYTICS_SITE_ID: "your-site-id"
-      BETTERLYTICS_SERVER_URL: "https://analytics.example.com/track"
-      BETTERLYTICS_SCRIPT_URL: "https://analytics.example.com/analytics.js"
-      BETTERLYTICS_ENABLED: "true"
-      BETTERLYTICS_TRACK_LOGGED_IN: "false"
+    wordpress:
+        environment:
+            BETTERLYTICS_SITE_ID: "your-site-id"
+            BETTERLYTICS_SERVER_URL: "https://analytics.example.com/track"
+            BETTERLYTICS_SCRIPT_URL: "https://analytics.example.com/analytics.js"
+            BETTERLYTICS_ENABLED: "true"
+            BETTERLYTICS_TRACK_LOGGED_IN: "false"
 ```
 
 ## Config File Approach
@@ -112,14 +116,14 @@ Keep a `betterlytics-config.json` in your deployment repo for reproducible confi
 
 ```json
 {
-  "site_id": "production-site-id",
-  "server_url": "https://analytics.example.com/track",
-  "script_url": "https://analytics.example.com/analytics.js",
-  "enabled": true,
-  "track_logged_in": false,
-  "hooks": [
-    { "wp_hook": "wp_login", "event_name": "user-login", "enabled": true }
-  ]
+	"site_id": "production-site-id",
+	"server_url": "https://analytics.example.com/track",
+	"script_url": "https://analytics.example.com/analytics.js",
+	"enabled": true,
+	"track_logged_in": false,
+	"hooks": [
+		{ "wp_hook": "wp_login", "event_name": "user-login", "enabled": true }
+	]
 }
 ```
 
@@ -134,19 +138,19 @@ wp option update betterlytics_options --format=json < betterlytics-config.json
 ```yaml
 - name: Configure Betterlytics plugin
   command: >
-    wp option update betterlytics_options
-    '{{ betterlytics_config | to_json }}'
-    --format=json
-    --path=/var/www/html
+      wp option update betterlytics_options
+      '{{ betterlytics_config | to_json }}'
+      --format=json
+      --path=/var/www/html
   become_user: www-data
   vars:
-    betterlytics_config:
-      site_id: "{{ betterlytics_site_id }}"
-      server_url: "{{ betterlytics_server_url }}"
-      script_url: "{{ betterlytics_script_url }}"
-      enabled: true
-      track_logged_in: false
-      hooks: []
+      betterlytics_config:
+          site_id: "{{ betterlytics_site_id }}"
+          server_url: "{{ betterlytics_server_url }}"
+          script_url: "{{ betterlytics_script_url }}"
+          enabled: true
+          track_logged_in: false
+          hooks: []
 ```
 
 ## Terraform (with WP-CLI provisioner)
@@ -174,8 +178,8 @@ For local Docker development, the demo profile automatically configures the plug
 
 ```json
 {
-  "server_url": "http://host.docker.internal:3001/event",
-  "script_url": "http://localhost:3006/analytics.js"
+	"server_url": "http://host.docker.internal:3001/event",
+	"script_url": "http://localhost:3006/analytics.js"
 }
 ```
 

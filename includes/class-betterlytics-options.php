@@ -46,7 +46,7 @@ class Betterlytics_Options {
 			'metadata' => [],
 		],
 		'track_outbound'       => [
-			'enabled'  => false,
+			'mode'     => 'domain',
 			'metadata' => [],
 		],
 		'track_downloads'      => [
@@ -91,7 +91,6 @@ class Betterlytics_Options {
 		$event_keys = [
 			'track_404',
 			'track_search',
-			'track_outbound',
 			'track_downloads',
 			'track_css_events',
 			'woo_add_to_cart',

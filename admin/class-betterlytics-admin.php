@@ -165,11 +165,10 @@ class Betterlytics_Admin {
 			$hooks            = isset( $input['hooks'] ) && is_array( $input['hooks'] ) ? $this->sanitize_hooks( $input['hooks'] ) : [];
 			$options['hooks'] = $hooks; // Start with custom hooks.
 
-			// 2. Process All Options (Browser + Server + User + Woo)
-			$all_keys = [
+			// 2. Process Boolean Options (enabled/disabled toggles)
+			$boolean_keys = [
 				'track_404',
 				'track_search',
-				'track_outbound',
 				'track_downloads',
 				'track_css_events',
 				'woo_add_to_cart',
@@ -181,7 +180,7 @@ class Betterlytics_Admin {
 				'track_user_register',
 			];
 
-			foreach ( $all_keys as $key ) {
+			foreach ( $boolean_keys as $key ) {
 				$val      = isset( $input[ $key ] ) ? $input[ $key ] : null;
 				$enabled  = false;
 				$metadata = [];
@@ -233,6 +232,37 @@ class Betterlytics_Admin {
 						$options['hooks'] = array_values( $options['hooks'] );
 					}
 				}
+			}
+
+			// 4. Process Mode Options (string-based selectors)
+			$mode_keys = [
+				'track_outbound' => 'domain', // default mode.
+			];
+
+			foreach ( $mode_keys as $key => $default_mode ) {
+				$val      = isset( $input[ $key ] ) ? $input[ $key ] : null;
+				$mode     = 'off';
+				$metadata = [];
+
+				if ( is_array( $val ) ) {
+					$mode = isset( $val['mode'] ) ? sanitize_text_field( $val['mode'] ) : $default_mode;
+					if ( isset( $val['metadata'] ) && is_array( $val['metadata'] ) ) {
+						$metadata = $val['metadata'];
+					}
+				} elseif ( is_string( $val ) ) {
+					$mode = sanitize_text_field( $val );
+				}
+
+				// Validate mode value.
+				$valid_modes = [ 'off', 'domain', 'full' ];
+				if ( ! in_array( $mode, $valid_modes, true ) ) {
+					$mode = $default_mode;
+				}
+
+				$options[ $key ] = [
+					'mode'     => $mode,
+					'metadata' => $metadata,
+				];
 			}
 		}
 

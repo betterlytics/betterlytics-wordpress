@@ -3,22 +3,6 @@
 
     var config = window.betterlyticsEvents || {};
 
-    // Outbound link tracking
-    if (config.trackOutbound) {
-        document.addEventListener('click', function(e) {
-            var link = e.target.closest('a[href]');
-            if (!link) return;
-
-            var href = link.href;
-            if (href && href.indexOf(location.hostname) === -1 && href.indexOf('http') === 0) {
-                window.betterlytics && betterlytics.event('outbound-link', {
-                    url: href,
-                    text: link.innerText.substring(0, 100)
-                });
-            }
-        });
-    }
-
     // File download tracking
     if (config.trackDownloads) {
         var downloadExtensions = /\.(pdf|zip|doc|docx|xls|xlsx|ppt|pptx|exe|dmg|tar|gz|rar)$/i;

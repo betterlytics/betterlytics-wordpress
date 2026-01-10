@@ -46,10 +46,23 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 						<tr>
 							<th scope="row"><?php echo esc_html( $field['label'] ); ?></th>
 							<td>
-								<label>
-									<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?>>
-									<?php echo wp_kses_post( $field['description'] ); ?>
-								</label>
+								<?php if ( ! empty( $field['type'] ) && 'select' === $field['type'] ) : ?>
+									<select name="<?php echo esc_attr( $field['name'] ); ?>">
+										<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
+											<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $field['value'], $option_value ); ?>>
+												<?php echo esc_html( $option_label ); ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+									<?php if ( ! empty( $field['description'] ) ) : ?>
+										<p class="description"><?php echo wp_kses_post( $field['description'] ); ?></p>
+									<?php endif; ?>
+								<?php else : ?>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?>>
+										<?php echo wp_kses_post( $field['description'] ); ?>
+									</label>
+								<?php endif; ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -92,8 +105,14 @@ $betterlytics_browser_sections = [
 		'fields'      => [
 			[
 				'label'       => __( 'Outbound Links', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_outbound][enabled]',
-				'checked'     => ! empty( $betterlytics_options['track_outbound']['enabled'] ),
+				'name'        => 'betterlytics_options[track_outbound][mode]',
+				'type'        => 'select',
+				'value'       => $betterlytics_options['track_outbound']['mode'] ?? 'domain',
+				'options'     => [
+					'off'    => __( 'Off', 'betterlytics' ),
+					'domain' => __( 'Domain only', 'betterlytics' ),
+					'full'   => __( 'Full URL', 'betterlytics' ),
+				],
 				'description' => __( 'Track clicks on links to external websites', 'betterlytics' ),
 			],
 			[

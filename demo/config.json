@@ -1,41 +1,39 @@
 {
-	"site_id": "",
-	"server_url": "http://localhost:3001/event",
-	"script_url": "http://localhost:3006/analytics.js",
-	"enabled": true,
-	"track_logged_in": true,
-	"hooks": [
-		{
-			"wp_hook": "wp_login",
-			"event_name": "login_debug",
-			"enabled": true,
-			"metadata": [
-				{ "key": "login_user", "value": "{0}" },
-				{ "key": "user_email", "value": "{1->user_email}" }
-			]
-		},
-		{
-			"wp_hook": "user_register",
-			"event_name": "user_signup",
-			"enabled": true,
-			"metadata": [
-				{ "key": "user_id", "value": "{0}" }
-			]
-		}
-	],
-	
-	"track_404": { "enabled": true },
-	"track_search": { "enabled": true },
-	"track_outbound": { "enabled": true },
-	"track_downloads": { "enabled": true },
-	"track_css_events": { "enabled": true },
-	
-	"track_wp_login": false,
-	"track_wp_logout": false,
-	"track_user_register": false,
-	
-	"woo_add_to_cart": { "enabled": true },
-	"woo_remove_from_cart": { "enabled": true },
-	"woo_checkout": { "enabled": true },
-	"woo_purchase": { "enabled": true }
+  "site_id": "",
+  "server_url": "http://localhost:3001/event",
+  "script_url": "http://localhost:3006/analytics.js",
+  "enabled": true,
+  "track_logged_in": true,
+  "hooks": [
+    {
+      "wp_hook": "wp_login",
+      "event_name": "login_debug",
+      "enabled": true,
+      "metadata": [
+        { "key": "login_user", "value": "{0}" },
+        { "key": "user_email", "value": "{1->user_email}" }
+      ]
+    },
+    {
+      "wp_hook": "user_register",
+      "event_name": "user_signup",
+      "enabled": true,
+      "metadata": [{ "key": "user_id", "value": "{0}" }]
+    }
+  ],
+
+  "track_404": { "enabled": true },
+  "track_search": { "enabled": true },
+  "track_outbound": { "mode": "domain" },
+  "track_downloads": { "enabled": true },
+  "track_css_events": { "enabled": true },
+
+  "track_wp_login": false,
+  "track_wp_logout": false,
+  "track_user_register": false,
+
+  "woo_add_to_cart": { "enabled": true },
+  "woo_remove_from_cart": { "enabled": true },
+  "woo_checkout": { "enabled": true },
+  "woo_purchase": { "enabled": true }
 }
