@@ -72,7 +72,7 @@ class Betterlytics_Hooks {
 	/**
 	 * Register page-level event hooks (404, search).
 	 *
-	 * @since 1.0.3
+	 * @since 1.0.0
 	 */
 	public function register_page_hooks() {
 		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
@@ -84,7 +84,7 @@ class Betterlytics_Hooks {
 	/**
 	 * Track page-level events (404, search).
 	 *
-	 * @since 1.0.3
+	 * @since 1.0.0
 	 */
 	public function track_page_events() {
 		$options = Betterlytics_Options::get_options();
@@ -234,7 +234,7 @@ class Betterlytics_Hooks {
 	 * - {0->prop} - Property of object at index 0
 	 * - {0[key]} - specific key of array at index 0
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.0
 	 * @param string $pattern The pattern string.
 	 * @param array  $args    The hook arguments.
 	 * @return string Resolved value.

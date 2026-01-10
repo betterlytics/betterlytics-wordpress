@@ -112,7 +112,7 @@ console.log('[Betterlytics] Script injected', {
 	/**
 	 * Enqueue JavaScript for client-side event tracking.
 	 *
-	 * @since 1.0.3
+	 * @since 1.0.0
 	 */
 	public function enqueue_event_scripts() {
 		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
