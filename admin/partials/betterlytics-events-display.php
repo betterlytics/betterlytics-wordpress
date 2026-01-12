@@ -29,17 +29,17 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 		echo '<hr class="border-t border-border my-8">';
 	}
 	?>
-	<div class="betterlytics-section">
-		<h2 class="text-lg font-bold mb-2 pb-2 border-b border-border flex items-center gap-1">
+	<div class="betterlytics-section mb-12 last:mb-0">
+		<h3 class="text-lg font-bold mb-3 flex items-center gap-1.5 text-foreground tracking-tight">
 			<?php echo esc_html( $section['title'] ); ?>
 			<?php
 			if ( ! empty( $section['help_path'] ) ) {
 				echo Betterlytics_Admin_Controller::get_help_link( $section['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			?>
-		</h2>
+		</h3>
 		<?php if ( ! empty( $section['description'] ) ) : ?>
-			<p class="description mt-1 mb-4 text-xs text-muted-foreground"><?php echo esc_html( $section['description'] ); ?></p>
+			<p class="description mt-0 mb-6 text-sm text-foreground/80 leading-relaxed max-w-[800px]"><?php echo esc_html( $section['description'] ); ?></p>
 		<?php endif; ?>
 		
 		<?php if ( ! empty( $section['custom_content'] ) ) : ?>
@@ -47,13 +47,13 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 		<?php endif; ?>
 		
 		<?php if ( ! empty( $section['fields'] ) ) : ?>
-			<div class="bg-card border border-border rounded-md shadow-sm overflow-hidden">
-				<table class="form-table w-full m-0 border-collapse" role="presentation">
-					<tbody class="divide-y divide-border">
+			<div class="betterlytics-table-container">
+				<table class="form-table w-full m-0" role="presentation">
+					<tbody>
 						<?php foreach ( $section['fields'] as $field ) : ?>
 							<tr>
-								<th scope="row" class="text-left py-4 px-6 w-[200px] align-top bg-muted/30">
-									<span class="text-sm font-semibold flex items-center gap-1">
+								<th scope="row">
+									<span class="flex items-center gap-1.5">
 										<?php echo esc_html( $field['label'] ); ?>
 										<?php
 										if ( ! empty( $field['help_path'] ) ) {
@@ -62,9 +62,9 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 										?>
 									</span>
 								</th>
-								<td class="py-4 px-6 align-top">
+								<td>
 									<?php if ( ! empty( $field['type'] ) && 'select' === $field['type'] ) : ?>
-										<select name="<?php echo esc_attr( $field['name'] ); ?>" class="border-input focus:ring-primary focus:border-primary rounded-md text-sm">
+										<select name="<?php echo esc_attr( $field['name'] ); ?>">
 											<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
 												<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $field['value'], $option_value ); ?>>
 													<?php echo esc_html( $option_label ); ?>
@@ -72,10 +72,10 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 											<?php endforeach; ?>
 										</select>
 										<?php if ( ! empty( $field['description'] ) ) : ?>
-											<p class="description mt-1 text-xs text-muted-foreground"><?php echo wp_kses_post( $field['description'] ); ?></p>
+											<p class="description mt-2 text-xs text-muted-foreground"><?php echo wp_kses_post( $field['description'] ); ?></p>
 										<?php endif; ?>
 									<?php else : ?>
-										<label class="flex items-center gap-2 cursor-pointer text-sm">
+										<label>
 											<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?>>
 											<?php echo wp_kses_post( $field['description'] ); ?>
 										</label>
@@ -271,10 +271,10 @@ if ( $betterlytics_has_woocommerce ) {
 
 <div>
 
-	<h1 class="text-xl font-bold mb-4 flex items-center gap-2">
+	<h2 class="text-[22px] font-bold mb-6 flex items-center gap-2 text-foreground tracking-tight">
 		<?php esc_html_e( 'Event Tracking', 'betterlytics' ); ?>
 		<?php echo Betterlytics_Admin_Controller::get_help_link( 'integration/custom-events', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-	</h1>
+	</h2>
 
 	<p class="betterlytics-page-description mb-6 text-muted-foreground">
 		<?php
@@ -293,11 +293,11 @@ if ( $betterlytics_has_woocommerce ) {
 	<form action="options.php" method="post" id="betterlytics-settings-form">
 		<?php settings_fields( 'betterlytics_events' ); ?>
 
-		<nav class="betterlytics-tabs flex gap-4 border-b border-border mb-6">
-			<a href="?page=betterlytics&tab=events&subtab=browser" class="nav-tab-active pb-3 text-sm font-semibold border-b-2 border-primary text-foreground no-underline transition-all" data-tab="browser">
+		<nav class="betterlytics-subtabs no-scrollbar">
+			<a href="?page=betterlytics&tab=events&subtab=browser" class="betterlytics-subtab active" data-tab="browser">
 				<?php esc_html_e( 'Browser Events', 'betterlytics' ); ?>
 			</a>
-			<a href="?page=betterlytics&tab=events&subtab=server" class="pb-3 text-sm font-medium border-b-2 border-transparent text-muted-foreground hover:text-foreground no-underline transition-all" data-tab="server">
+			<a href="?page=betterlytics&tab=events&subtab=server" class="betterlytics-subtab" data-tab="server">
 				<?php esc_html_e( 'Server Hooks', 'betterlytics' ); ?>
 			</a>
 		</nav>
@@ -320,10 +320,8 @@ if ( $betterlytics_has_woocommerce ) {
 			?>
 		</div>
 
-		<div class="betterlytics-sticky-footer fixed bottom-0 left-[160px] folded:left-[36px] right-0 bg-card border-t border-border p-4 z-[999] shadow-[0_-2px_5px_rgba(0,0,0,0.05)] flex justify-center">
-			<div class="betterlytics-sticky-footer-content">
-				<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings', 'class' => 'button button-primary !px-6' ] ); ?>
-			</div>
+		<div class="betterlytics-sticky-footer">
+			<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings', 'class' => 'button-primary !py-2.5 !px-10 !h-auto !text-base !font-bold transition-all hover:scale-[1.02] active:scale-[0.98]' ] ); ?>
 		</div>
 	</form>
 </div>

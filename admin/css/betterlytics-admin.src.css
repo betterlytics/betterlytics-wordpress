@@ -1,7 +1,7 @@
 /**
  * Betterlytics Admin Styles
  *
- * Plausible-style immersive admin interface.
+ * Premium Plausible-style immersive admin interface.
  *
  * @package Betterlytics
  * @since   1.0.0
@@ -29,6 +29,9 @@
 
   --color-destructive: oklch(0.65 0.25 30);
   --color-destructive-foreground: white;
+
+  --color-success: oklch(62.89% 0.15 145.23);
+  --color-success-foreground: white;
 
   --color-border: oklch(87% 0 0);
   --color-input: oklch(90% 0 0);
@@ -62,665 +65,273 @@
 }
 
 /* ==========================================================================
-   Help Icon Button
+   Global Root & Layout Resets
    ========================================================================== */
 
+/* Scope everything under our root to override WP defaults safely */
+.betterlytics-admin-root {
+	--wp-admin-bar-height: 32px;
+	--wp-sidebar-width: 160px;
+}
+
+.folded .betterlytics-admin-root {
+	--wp-sidebar-width: 36px;
+}
+
+@media screen and (max-width: 960px) {
+	.betterlytics-admin-root {
+		--wp-admin-bar-height: 46px;
+		--wp-sidebar-width: 0px;
+	}
+}
+
+/* Nuke standard WP wrap margins if they interfere with our full-width goals */
+.betterlytics-admin-root .wrap.betterlytics-admin-wrap {
+	margin: 0 !important;
+	padding: 80px 48px 48px 48px !important;
+	max-width: none !important;
+}
+
+/* ==========================================================================
+   Full-Width Sticky Banner
+   ========================================================================== */
+
+.betterlytics-setup-banner {
+	position: fixed !important;
+	top: var(--wp-admin-bar-height) !important;
+	left: var(--wp-sidebar-width) !important;
+	right: 0 !important;
+	z-index: 99999 !important; /* Above WP sidebar */
+	margin: 0 !important;
+	border-radius: 0 !important;
+	height: 54px !important;
+	display: flex !important;
+	align-items: center !important;
+	transition: left 0.15s;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.betterlytics-setup-banner a.text-white {
+	color: #ffffff !important;
+	text-decoration: underline !important;
+	font-weight: 700 !important;
+}
+
+.betterlytics-setup-banner .button {
+	background: white !important;
+	color: var(--primary) !important;
+	border: none !important;
+	font-weight: 700 !important;
+	padding: 0 16px !important;
+	height: 32px !important;
+	line-height: 32px !important;
+}
+
+/* ==========================================================================
+   Table & Form Aesthetics
+   ========================================================================== */
+
+/* Premium Table Reset */
+.betterlytics-admin-root .form-table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0;
+}
+
+.betterlytics-admin-root .form-table th,
+.betterlytics-admin-root .form-table td {
+	padding: 1.5rem 1rem !important; /* py-6 */
+	vertical-align: middle !important;
+	border-bottom: 1px solid var(--border);
+}
+
+.betterlytics-admin-root .form-table tr:last-child th,
+.betterlytics-admin-root .form-table tr:last-child td {
+	border-bottom: none;
+}
+
+.betterlytics-admin-root .form-table th {
+	width: 280px;
+	padding-left: 0 !important;
+	font-weight: 600;
+	color: var(--foreground);
+}
+
+.betterlytics-admin-root .form-table td {
+	padding-right: 0 !important;
+}
+
+/* Professional Inputs */
+.betterlytics-admin-root input[type="text"],
+.betterlytics-admin-root input[type="url"],
+.betterlytics-admin-root input[type="password"],
+.betterlytics-admin-root input[type="number"],
+.betterlytics-admin-root select,
+.betterlytics-admin-root textarea {
+	border-radius: 6px !important;
+	border: 1px solid var(--border) !important;
+	padding: 8px 12px !important;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+	transition: all 0.2s !important;
+	min-height: 40px;
+}
+
+.betterlytics-admin-root input[type="text"]:focus,
+.betterlytics-admin-root select:focus {
+	border-color: var(--primary) !important;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent) !important;
+	outline: none !important;
+}
+
+/* Checkbox Alignment */
+.betterlytics-admin-root .form-table td label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.betterlytics-admin-root input[type="checkbox"] {
+	margin: 0 !important;
+	width: 18px !important;
+	height: 18px !important;
+	border-radius: 4px !important;
+}
+
+/* ==========================================================================
+   Components Polish
+   ========================================================================== */
+
+/* Help Icons */
 .betterlytics-help-icon {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 18px;
-	height: 18px;
-	margin-left: 3px;
-	color: #8c8f94;
-	text-decoration: none;
-	vertical-align: text-top;
+	width: 20px;
+	height: 20px;
+	margin-left: 6px;
+	color: var(--primary);
+	background: color-mix(in srgb, var(--primary) 10%, transparent);
 	border-radius: 50%;
-	transition: color 0.15s, background-color 0.15s;
+	text-decoration: none;
+	vertical-align: middle;
+	transition: all 0.2s;
 }
 
 .betterlytics-help-icon:hover {
-	color: #2271b1;
-	background-color: rgba(34, 113, 177, 0.1);
-}
-
-.betterlytics-help-icon:focus {
-	outline: 2px solid #2271b1;
-	outline-offset: 1px;
-	color: #2271b1;
+	background: color-mix(in srgb, var(--primary) 20%, transparent);
+	transform: scale(1.1);
 }
 
 .betterlytics-help-icon .dashicons {
-	font-size: 16px;
-	width: 16px;
-	height: 16px;
-	line-height: 1;
+	font-size: 14px !important;
+	width: 14px !important;
+	height: 14px !important;
+	line-height: 1 !important;
 }
 
-/* Help icon in table headers */
-.form-table th .betterlytics-help-icon {
-	margin-left: 2px;
+/* Sub-Tab Navigation (Events Page) - Modern Pills */
+.betterlytics-subtabs {
+	display: flex;
+	gap: 0.5rem;
+	background: var(--muted);
+	padding: 0.25rem;
+	border-radius: 10px;
+	margin-bottom: 2.5rem;
+	width: fit-content;
+	border: 1px solid var(--border);
 }
 
-/* Help icon next to section headings */
-.betterlytics-section h2 .betterlytics-help-icon,
-h1 .betterlytics-help-icon {
-	font-size: 14px;
-}
-
-.betterlytics-section h2 .betterlytics-help-icon .dashicons,
-h1 .betterlytics-help-icon .dashicons {
-	font-size: 18px;
-	width: 18px;
-	height: 18px;
-}
-
-/* Color Variants */
-.betterlytics-help-icon.is-blue {
-	color: oklch(50% 0.222 268.78);
-}
-
-.betterlytics-help-icon.is-blue:hover {
-	color: #6b8ef5;
-	background-color: rgba(107, 142, 245, 0.1);
-}
-
-/* ==========================================================================
-   Immersive Container
-   ========================================================================== */
-
-.betterlytics-admin-wrap {
-	max-width: 1200px;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 24px;
-	padding-left: 20px;
-	padding-right: 20px;
-}
-
-.betterlytics-immersive-container {
-	background: #fff;
+.betterlytics-subtab {
+	padding: 0.5rem 1.25rem;
+	text-decoration: none;
+	color: var(--muted-foreground);
+	font-weight: 600;
+	font-size: 0.875rem;
 	border-radius: 8px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+	transition: all 0.2s;
 }
 
-/* ==========================================================================
-   Immersive Header (Logo + Navigation)
-   ========================================================================== */
-
-.betterlytics-immersive-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 16px 24px;
-	border-bottom: 1px solid #e5e7eb;
+.betterlytics-subtab:hover {
+	color: var(--foreground);
+	background: rgba(0,0,0,0.03);
 }
 
-.betterlytics-brand {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	text-decoration: none;
-	color: #1d2327;
+.betterlytics-subtab.active {
+	color: var(--primary);
+	background: white;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.betterlytics-brand:hover {
-	color: #1d2327;
-}
-
-.betterlytics-brand:focus {
-	outline: 2px solid #2271b1;
-	outline-offset: 2px;
-	border-radius: 4px;
-}
-
-.betterlytics-brand-logo {
-	width: 28px;
-	height: 28px;
-	display: block;
-}
-
-.betterlytics-brand-name {
-	font-size: 18px;
-	font-weight: 600;
-	line-height: 1;
-}
-
-/* ==========================================================================
-   Header Navigation (Tabs + External Links)
-   ========================================================================== */
-
-.betterlytics-header-nav {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-/* Tab-style navigation links */
-.betterlytics-nav-tabs {
-	display: flex;
-	gap: 4px;
-	margin-right: 16px;
-	padding-right: 16px;
-	border-right: 1px solid #e5e7eb;
-}
-
-.betterlytics-nav-tab {
-	display: inline-block;
-	padding: 8px 12px;
-	color: #6b7280;
-	text-decoration: none;
-	font-size: 14px;
-	font-weight: 500;
-	border-radius: 6px;
-	transition: color 0.15s, background-color 0.15s;
-}
-
-.betterlytics-nav-tab:hover {
-	color: #1d2327;
-	background-color: #f3f4f6;
-}
-
-.betterlytics-nav-tab:focus {
-	outline: 2px solid #2271b1;
-	outline-offset: 2px;
-}
-
-.betterlytics-nav-tab.active {
-	color: #1d2327;
-	background-color: #f3f4f6;
-}
-
-/* External links (Documentation, Support) */
-.betterlytics-nav-links {
-	display: flex;
-	gap: 16px;
-}
-
-.betterlytics-nav-link {
-	color: #6b7280;
-	text-decoration: none;
-	font-size: 14px;
-	transition: color 0.15s;
-}
-
-.betterlytics-nav-link:hover {
-	color: #2271b1;
-	text-decoration: underline;
-}
-
-.betterlytics-nav-link:focus {
-	outline: 2px solid #2271b1;
-	outline-offset: 2px;
-	border-radius: 2px;
-}
-
-/* ==========================================================================
-   Content Area
-   ========================================================================== */
-
-.betterlytics-admin-content {
-	padding: 24px;
-}
-
-/* Home Page */
-.betterlytics-home h2 {
-	margin-top: 30px;
-	margin-bottom: 15px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #e5e7eb;
-}
-
-.betterlytics-home h2:first-of-type {
-	margin-top: 0;
-}
-
-/* Setup Steps */
-.betterlytics-setup-steps {
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	padding: 20px;
-}
-
-.betterlytics-step {
-	display: flex;
-	gap: 15px;
-	padding: 15px 0;
-	border-bottom: 1px solid #f0f0f1;
-	opacity: 0.5;
-}
-
-.betterlytics-step:last-child {
-	border-bottom: none;
-	padding-bottom: 0;
-}
-
-.betterlytics-step:first-child {
-	padding-top: 0;
-}
-
-.betterlytics-step.current,
-.betterlytics-step.completed {
-	opacity: 1;
-}
-
-.betterlytics-step .step-number {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	background: #dcdcde;
-	color: #50575e;
-	font-weight: 600;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-}
-
-.betterlytics-step.current .step-number {
-	background: #2271b1;
-	color: #fff;
-}
-
-.betterlytics-step.completed .step-number {
-	background: #00a32a;
-	color: #fff;
-}
-
-.betterlytics-step .step-content h3 {
-	margin: 0 0 5px;
-	font-size: 14px;
-}
-
-.betterlytics-step .step-content p {
-	margin: 0 0 10px;
-	color: #646970;
-}
-
-.betterlytics-step .step-content p:last-child {
-	margin-bottom: 0;
-}
-
-.betterlytics-step .step-status {
-	color: #00a32a;
-	font-weight: 500;
-}
-
-.betterlytics-step .step-status .dashicons {
-	font-size: 16px;
-	width: 16px;
-	height: 16px;
-	vertical-align: text-bottom;
-}
-
-/* Resources */
-.betterlytics-resources {
-	margin-top: 30px;
-}
-
-.betterlytics-resources ul {
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.betterlytics-resources li {
-	border-bottom: 1px solid #f0f0f1;
-}
-
-.betterlytics-resources li:last-child {
-	border-bottom: none;
-}
-
-.betterlytics-resources a {
-	display: block;
-	padding: 12px 15px;
-	text-decoration: none;
-}
-
-.betterlytics-resources a:hover {
-	background: #f6f7f7;
-}
-
-.betterlytics-resources .dashicons {
-	margin-right: 8px;
-	color: #646970;
-}
-
-/* Tabs */
-.betterlytics-tabs {
-	margin-bottom: 0;
-}
-
-.betterlytics-tab-content {
+.betterlytics-subtab.active::after {
 	display: none;
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	border-top: none;
-	padding: 20px;
 }
 
-.betterlytics-tab-content.active {
-	display: block;
-}
-
-.betterlytics-tab-content > p.description:first-child {
-	margin-top: 0;
-	margin-bottom: 20px;
-}
-
-/* Standard Events Tab */
-#tab-standard h2 {
-	margin-top: 30px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #c3c4c7;
-}
-
-#tab-standard h2:first-of-type {
-	margin-top: 0;
-}
-
-/* Section Separators */
-.betterlytics-section-separator {
-	border: none;
-	border-top: 1px solid #c3c4c7;
-	margin: 30px 0;
-}
-
-.betterlytics-section h2 {
-	margin-top: 0;
-	margin-bottom: 10px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #c3c4c7;
-}
-
-.betterlytics-section h2:first-child {
-	margin-top: 0;
-}
-
-.betterlytics-section > .description {
-	margin-top: 0;
-	margin-bottom: 15px;
-}
-
-.betterlytics-section .form-table {
-	margin-top: 0;
-}
-
-.betterlytics-section .form-table th {
-	width: 180px;
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-.betterlytics-section .form-table td {
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-#tab-standard .form-table th {
-	width: 180px;
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-#tab-standard .form-table td {
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-/* Custom Hooks Table */
-#betterlytics-hooks-table {
-	margin-bottom: 15px;
-}
-
-#betterlytics-hooks-table .column-enabled {
-	width: 60px;
-	text-align: center;
-}
-
-#betterlytics-hooks-table .column-wp-hook {
-	width: 35%;
-}
-
-#betterlytics-hooks-table .column-event-name {
-	width: 35%;
-}
-
-#betterlytics-hooks-table .column-actions {
-	width: 80px;
-	text-align: center;
-}
-
-#betterlytics-hooks-table td.column-enabled {
-	text-align: center;
-}
-
-#betterlytics-hooks-table td.column-actions {
-	text-align: center;
-}
-
-#betterlytics-hooks-table input[type="text"] {
-	width: 100%;
-}
-
-#betterlytics-hooks-table input[type="checkbox"] {
-	margin: 0;
-}
-
-#betterlytics-hooks-list tr.empty-row td {
-	text-align: center;
-	padding: 20px;
-	color: #666;
-}
-
-/* Hooks Actions */
-.betterlytics-hooks-actions {
-	margin-top: 15px;
-}
-
-#betterlytics-add-hook {
-	margin-right: 10px;
-}
-
-#betterlytics-hooks-status {
-	margin-left: 10px;
-	font-style: italic;
-}
-
-#betterlytics-hooks-status.success {
-	color: #00a32a;
-}
-
-#betterlytics-hooks-status.error {
-	color: #d63638;
-}
-
-/* Help Section */
-.betterlytics-hooks-help {
-	background: #f6f7f7;
-	border: 1px solid #c3c4c7;
-	padding: 15px 20px;
-	margin-top: 20px;
-}
-
-.betterlytics-hooks-help h3 {
-	margin-top: 0;
-	margin-bottom: 10px;
-}
-
-.betterlytics-hooks-help ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.betterlytics-hooks-help li {
-	margin-bottom: 8px;
-}
-
-.betterlytics-hooks-help code {
-	background: #fff;
-	padding: 2px 6px;
-	border-radius: 3px;
-}
-
-/* Delete button */
-.betterlytics-delete-hook {
-	color: #b32d2e;
-	cursor: pointer;
-}
-
-.betterlytics-delete-hook:hover {
-	color: #a00;
-}
-
-.betterlytics-delete-hook .dashicons {
-	font-size: 18px;
-	width: 18px;
-	height: 18px;
-}
-
-/* Metadata Row */
-.betterlytics-metadata-row {
-	display: none;
-	background-color: #f6f7f7;
-}
-
-.betterlytics-metadata-row.active {
-	display: table-row;
-}
-
-.betterlytics-metadata-wrapper {
-	padding: 15px 20px;
-}
-
-.betterlytics-metadata-table {
-	width: 100%;
-	border-collapse: collapse;
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	margin-top: 10px;
-}
-
-.betterlytics-metadata-table th,
-.betterlytics-metadata-table td {
-	padding: 8px 12px;
-	text-align: left;
-	border-bottom: 1px solid #f0f0f1;
-}
-
-.betterlytics-metadata-table th {
-	background: #f0f0f1;
-	font-weight: 600;
-}
-
-.betterlytics-metadata-table tr:last-child td {
-	border-bottom: none;
-}
-
-.betterlytics-metadata-wrapper h4 {
-	margin: 0 0 10px;
-}
-
-.betterlytics-add-metadata {
-	margin-top: 10px !important;
-}
-
-.betterlytics-metadata-key,
-.betterlytics-metadata-value {
-	width: 100%;
-}
-
-.betterlytics-delete-metadata {
-	color: #b32d2e;
-	cursor: pointer;
-	border: none;
-	background: transparent;
-}
-
-.betterlytics-delete-metadata:hover {
-	color: #a00;
-}
-
-/* Sticky Footer for Save Actions */
+/* Sticky Footer Polish */
 .betterlytics-sticky-footer {
-	position: fixed;
-	bottom: 0;
-	left: 160px; /* Default WP admin menu width */
+	position: sticky;
+	bottom: 0px;
+	left: 0;
 	right: 0;
-	background: #fff;
-	border-top: 1px solid #ddd;
-	padding: 10px 20px;
-	z-index: 999;
-	box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(12px);
+	padding: 2rem 3rem;
+	border-top: 1px solid var(--border);
 	display: flex;
-	justify-content: center;
+	justify-content: center; /* Center the save button */
+	align-items: center;
+	z-index: 100;
+	margin: 2rem -3rem -3rem -3rem;
+	box-shadow: 0 -4px 20px rgba(0,0,0,0.02);
 }
 
-/* Adjust for collapsed menu */
-body.folded .betterlytics-sticky-footer {
-	left: 36px;
+/* Step Tweaks - High Contrast & Clean Layout */
+.betterlytics-step {
+	background: #ffffff;
 }
 
-/* Responsive adjustment for mobile */
+.betterlytics-step h3 {
+	color: var(--foreground) !important;
+}
+
+.betterlytics-step p {
+	color: var(--muted-foreground) !important;
+}
+
+.betterlytics-step .step-content a:not(.button) {
+	color: var(--primary);
+	text-decoration: underline;
+	font-weight: 700;
+}
+
+.betterlytics-setup-steps .betterlytics-step {
+	border-bottom: 1px solid var(--border);
+	margin-left: -3rem; /* Outset to touch edges */
+	margin-right: -3rem;
+	padding-left: 3.5rem;
+	padding-right: 3.5rem;
+}
+
+.betterlytics-setup-steps .betterlytics-step:last-child {
+	border-bottom: none;
+}
+
+/* Responsive tweaks */
 @media screen and (max-width: 782px) {
-	.betterlytics-sticky-footer {
-		left: 0;
-	}
-
-	.betterlytics-admin-wrap {
-		margin: 10px 0 0 0;
-	}
-
-	.betterlytics-immersive-container {
-		border-radius: 0;
-		box-shadow: none;
-	}
-
-	.betterlytics-immersive-header {
-		flex-wrap: wrap;
-		gap: 12px;
-		padding: 12px 16px;
-	}
-
-	.betterlytics-header-nav {
-		flex-wrap: wrap;
-		gap: 8px;
+	.betterlytics-admin-root .form-table th {
 		width: 100%;
-		justify-content: flex-start;
+		display: block;
+		padding-bottom: 0.5rem !important;
 	}
-
-	.betterlytics-nav-tabs {
-		margin-right: 0;
-		padding-right: 0;
-		border-right: none;
-		flex-wrap: wrap;
+	
+	.betterlytics-admin-root .form-table td {
+		display: block;
+		padding-top: 0 !important;
 	}
-
-	.betterlytics-nav-links {
-		flex-wrap: wrap;
-		gap: 12px;
-	}
-
-	.betterlytics-admin-content {
-		padding: 16px;
+	
+	.betterlytics-setup-banner {
+		position: static !important;
+		width: 100% !important;
 	}
 }
-
-/* Ensure content doesn't get hidden behind footer */
-.betterlytics-tab-content {
-	padding-bottom: 60px;
-}
-
-.betterlytics-sticky-footer .button {
-	margin-right: 10px;
-}
-
-.betterlytics-sticky-footer #betterlytics-hooks-status {
-	margin-left: 10px;
-	font-weight: bold;
-}
-
