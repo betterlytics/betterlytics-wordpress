@@ -58,17 +58,9 @@ class Betterlytics_Admin {
 		}
 
 		wp_enqueue_style(
-			$this->plugin_name . '-banner',
-			BETTERLYTICS_PLUGIN_URL . 'admin/css/components/setup-banner.css',
-			[],
-			$this->version,
-			'all'
-		);
-
-		wp_enqueue_style(
 			$this->plugin_name,
-			BETTERLYTICS_PLUGIN_URL . 'admin/css/betterlytics-admin.css',
-			[ $this->plugin_name . '-banner' ],
+			BETTERLYTICS_PLUGIN_URL . 'admin/css/betterlytics-admin.tailwind.css',
+			[],
 			$this->version,
 			'all'
 		);

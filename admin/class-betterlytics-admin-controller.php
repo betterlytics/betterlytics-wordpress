@@ -75,22 +75,22 @@ class Betterlytics_Admin_Controller {
 		$betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
 
 		if ( $betterlytics_show_setup_banner ) : ?>
-			<div class="betterlytics-setup-banner" id="betterlytics-setup-banner">
-				<span class="dashicons dashicons-info"></span>
-				<p>
+			<div class="betterlytics-setup-banner bg-primary text-white p-3.5 px-5 -ml-5 mb-5 w-[calc(100%+20px)] flex items-center gap-3 box-border" id="betterlytics-setup-banner">
+				<span class="dashicons dashicons-info !text-xl !w-5 !h-5"></span>
+				<p class="m-0 flex-1 text-sm font-medium">
 					<?php
 					printf(
 						/* translators: %s: link to setup guide */
 						esc_html__( 'Setup is not complete. Follow the %s to start tracking.', 'betterlytics' ),
-						'<a href="' . esc_url( admin_url( 'options-general.php?page=betterlytics&tab=home' ) ) . '">' . esc_html__( 'setup guide', 'betterlytics' ) . '</a>'
+						'<a href="' . esc_url( admin_url( 'options-general.php?page=betterlytics&tab=home' ) ) . '" class="text-white underline font-semibold hover:no-underline">' . esc_html__( 'setup guide', 'betterlytics' ) . '</a>'
 					);
 					?>
 				</p>
-				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=home' ) ); ?>" class="button">
+				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=home' ) ); ?>" class="button bg-white text-primary border-none font-semibold hover:bg-white/90">
 					<?php esc_html_e( 'View Setup', 'betterlytics' ); ?>
 				</a>
-				<button type="button" class="dismiss" id="betterlytics-dismiss-banner" title="<?php esc_attr_e( 'Dismiss', 'betterlytics' ); ?>">
-					<span class="dashicons dashicons-no-alt"></span>
+				<button type="button" class="dismiss bg-transparent border-none text-white cursor-pointer p-1 ml-2 opacity-80 leading-none hover:opacity-100" id="betterlytics-dismiss-banner" title="<?php esc_attr_e( 'Dismiss', 'betterlytics' ); ?>">
+					<span class="dashicons dashicons-no-alt !text-xl !w-5 !h-5"></span>
 				</button>
 			</div>
 			<script>
@@ -105,11 +105,11 @@ class Betterlytics_Admin_Controller {
 			</script>
 		<?php endif; ?>
 
-		<div class="wrap betterlytics-admin-wrap">
-			<div class="betterlytics-immersive-container">
+		<div class="wrap betterlytics-admin-wrap max-w-[1200px] mx-auto pt-6 px-5">
+			<div class="betterlytics-immersive-container bg-card rounded-lg shadow-sm border border-border overflow-hidden">
 				<?php $this->render_immersive_header( $tab ); ?>
 
-				<div class="betterlytics-admin-content">
+				<div class="betterlytics-admin-content p-6">
 					<?php
 					$file = BETTERLYTICS_PLUGIN_DIR . "admin/partials/betterlytics-{$tab}-display.php";
 					if ( file_exists( $file ) ) {
@@ -137,14 +137,14 @@ class Betterlytics_Admin_Controller {
 			admin_url( 'options-general.php' )
 		);
 		?>
-		<div class="betterlytics-immersive-header">
-			<a href="<?php echo esc_url( $home_url ); ?>" class="betterlytics-brand">
-				<img src="<?php echo esc_url( BETTERLYTICS_PLUGIN_URL . 'public/logo/betterlytics-logo-dark-simple.svg' ); ?>" class="betterlytics-brand-logo" alt="">
-				<span class="betterlytics-brand-name"><?php esc_html_e( 'Betterlytics', 'betterlytics' ); ?></span>
+		<div class="betterlytics-immersive-header flex justify-between items-center px-6 py-4 border-b border-border bg-card">
+			<a href="<?php echo esc_url( $home_url ); ?>" class="betterlytics-brand flex items-center gap-2.5 no-underline text-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md">
+				<img src="<?php echo esc_url( BETTERLYTICS_PLUGIN_URL . 'public/logo/betterlytics-logo-dark-simple.svg' ); ?>" class="betterlytics-brand-logo w-7 h-7 block" alt="">
+				<span class="betterlytics-brand-name text-lg font-semibold leading-none"><?php esc_html_e( 'Betterlytics', 'betterlytics' ); ?></span>
 			</a>
 
-			<nav class="betterlytics-header-nav">
-				<div class="betterlytics-nav-tabs">
+			<nav class="betterlytics-header-nav flex items-center gap-2">
+				<div class="betterlytics-nav-tabs flex gap-1 mr-4 pr-4 border-r border-border">
 					<?php
 					// Only show Settings and Events tabs (Home is accessible via logo).
 					$tabs = [
@@ -153,8 +153,8 @@ class Betterlytics_Admin_Controller {
 					];
 
 					foreach ( $tabs as $key => $label ) {
-						$active_class = ( $current_tab === $key ) ? 'active' : '';
-						$url          = add_query_arg(
+						$active_classes = ( $current_tab === $key ) ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-muted';
+						$url            = add_query_arg(
 							[
 								'page' => self::MENU_SLUG,
 								'tab'  => $key,
@@ -163,20 +163,20 @@ class Betterlytics_Admin_Controller {
 						);
 
 						printf(
-							'<a href="%s" class="betterlytics-nav-tab %s">%s</a>',
+							'<a href="%s" class="betterlytics-nav-tab inline-block px-3 py-2 text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 %s">%s</a>',
 							esc_url( $url ),
-							esc_attr( $active_class ),
+							esc_attr( $active_classes ),
 							esc_html( $label )
 						);
 					}
 					?>
 				</div>
 
-				<div class="betterlytics-nav-links">
-					<a href="https://www.betterlytics.io/docs" target="_blank" rel="noopener" class="betterlytics-nav-link">
+				<div class="betterlytics-nav-links flex gap-4">
+					<a href="https://www.betterlytics.io/docs" target="_blank" rel="noopener" class="betterlytics-nav-link text-sm text-muted-foreground hover:text-primary hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm">
 						<?php esc_html_e( 'Documentation', 'betterlytics' ); ?>
 					</a>
-					<a href="https://www.betterlytics.io/contact" target="_blank" rel="noopener" class="betterlytics-nav-link">
+					<a href="https://www.betterlytics.io/contact" target="_blank" rel="noopener" class="betterlytics-nav-link text-sm text-muted-foreground hover:text-primary hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm">
 						<?php esc_html_e( 'Contact Support', 'betterlytics' ); ?>
 					</a>
 				</div>
@@ -223,10 +223,10 @@ class Betterlytics_Admin_Controller {
 	 */
 	public static function get_help_link( $path = '', $variant = '' ) {
 		$url   = 'https://betterlytics.io/docs/' . ltrim( $path, '/' );
-		$class = 'betterlytics-help-icon' . ( $variant ? ' ' . $variant : '' );
+		$class = 'betterlytics-help-icon inline-flex items-center justify-center w-[18px] h-[18px] ml-[3px] text-[#8c8f94] no-underline align-text-top rounded-full transition-colors hover:text-primary hover:bg-primary/10 focus:outline focus:outline-2 focus:outline-primary focus:outline-offset-1' . ( $variant === 'is-blue' ? ' text-primary' : '' );
 
 		return sprintf(
-			'<a href="%s" target="_blank" rel="noopener" class="%s" title="%s"><span class="dashicons dashicons-editor-help"></span></a>',
+			'<a href="%s" target="_blank" rel="noopener" class="%s" title="%s"><span class="dashicons dashicons-editor-help !text-[16px] !w-[16px] !h-[16px] !leading-none"></span></a>',
 			esc_url( $url ),
 			esc_attr( $class ),
 			esc_attr__( 'View Documentation', 'betterlytics' )

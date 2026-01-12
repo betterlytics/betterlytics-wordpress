@@ -26,11 +26,11 @@ $betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlyt
  */
 function betterlytics_render_section( $section, $show_separator = false ) {
 	if ( $show_separator ) {
-		echo '<hr class="betterlytics-section-separator">';
+		echo '<hr class="border-t border-border my-8">';
 	}
 	?>
 	<div class="betterlytics-section">
-		<h2>
+		<h2 class="text-lg font-bold mb-2 pb-2 border-b border-border flex items-center gap-1">
 			<?php echo esc_html( $section['title'] ); ?>
 			<?php
 			if ( ! empty( $section['help_path'] ) ) {
@@ -39,7 +39,7 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 			?>
 		</h2>
 		<?php if ( ! empty( $section['description'] ) ) : ?>
-			<p class="description"><?php echo esc_html( $section['description'] ); ?></p>
+			<p class="description mt-1 mb-4 text-xs text-muted-foreground"><?php echo esc_html( $section['description'] ); ?></p>
 		<?php endif; ?>
 		
 		<?php if ( ! empty( $section['custom_content'] ) ) : ?>
@@ -47,41 +47,45 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 		<?php endif; ?>
 		
 		<?php if ( ! empty( $section['fields'] ) ) : ?>
-			<table class="form-table" role="presentation">
-				<tbody>
-					<?php foreach ( $section['fields'] as $field ) : ?>
-						<tr>
-							<th scope="row">
-								<?php echo esc_html( $field['label'] ); ?>
-								<?php
-								if ( ! empty( $field['help_path'] ) ) {
-									echo Betterlytics_Admin_Controller::get_help_link( $field['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								}
-								?>
-							</th>
-							<td>
-								<?php if ( ! empty( $field['type'] ) && 'select' === $field['type'] ) : ?>
-									<select name="<?php echo esc_attr( $field['name'] ); ?>">
-										<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
-											<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $field['value'], $option_value ); ?>>
-												<?php echo esc_html( $option_label ); ?>
-											</option>
-										<?php endforeach; ?>
-									</select>
-									<?php if ( ! empty( $field['description'] ) ) : ?>
-										<p class="description"><?php echo wp_kses_post( $field['description'] ); ?></p>
+			<div class="bg-card border border-border rounded-md shadow-sm overflow-hidden">
+				<table class="form-table w-full m-0 border-collapse" role="presentation">
+					<tbody class="divide-y divide-border">
+						<?php foreach ( $section['fields'] as $field ) : ?>
+							<tr>
+								<th scope="row" class="text-left py-4 px-6 w-[200px] align-top bg-muted/30">
+									<span class="text-sm font-semibold flex items-center gap-1">
+										<?php echo esc_html( $field['label'] ); ?>
+										<?php
+										if ( ! empty( $field['help_path'] ) ) {
+											echo Betterlytics_Admin_Controller::get_help_link( $field['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										}
+										?>
+									</span>
+								</th>
+								<td class="py-4 px-6 align-top">
+									<?php if ( ! empty( $field['type'] ) && 'select' === $field['type'] ) : ?>
+										<select name="<?php echo esc_attr( $field['name'] ); ?>" class="border-input focus:ring-primary focus:border-primary rounded-md text-sm">
+											<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
+												<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $field['value'], $option_value ); ?>>
+													<?php echo esc_html( $option_label ); ?>
+												</option>
+											<?php endforeach; ?>
+										</select>
+										<?php if ( ! empty( $field['description'] ) ) : ?>
+											<p class="description mt-1 text-xs text-muted-foreground"><?php echo wp_kses_post( $field['description'] ); ?></p>
+										<?php endif; ?>
+									<?php else : ?>
+										<label class="flex items-center gap-2 cursor-pointer text-sm">
+											<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?>>
+											<?php echo wp_kses_post( $field['description'] ); ?>
+										</label>
 									<?php endif; ?>
-								<?php else : ?>
-									<label>
-										<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?>>
-										<?php echo wp_kses_post( $field['description'] ); ?>
-									</label>
-								<?php endif; ?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
 		<?php endif; ?>
 	</div>
 	<?php
@@ -170,22 +174,25 @@ $betterlytics_browser_sections = [
 ob_start();
 ?>
 <div class="betterlytics-hooks-mapper-container">
-	<table class="wp-list-table widefat fixed striped" id="betterlytics-hooks-table">
-		<thead>
-			<tr>
-				<th scope="col" class="column-enabled"><?php esc_html_e( 'Enabled', 'betterlytics' ); ?></th>
-				<th scope="col" class="column-wp-hook"><?php esc_html_e( 'WordPress Hook', 'betterlytics' ); ?></th>
-				<th scope="col" class="column-event-name"><?php esc_html_e( 'Event Name', 'betterlytics' ); ?></th>
-				<th scope="col" class="column-actions"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
-			</tr>
-		</thead>
-		<tbody id="betterlytics-hooks-list">
-			<!-- Hooks will be rendered via JavaScript -->
-		</tbody>
-	</table>
+	<div class="bg-card border border-border rounded-md shadow-sm overflow-hidden mb-4">
+		<table class="wp-list-table widefat fixed striped w-full m-0 border-collapse" id="betterlytics-hooks-table">
+			<thead class="bg-muted/30">
+				<tr>
+					<th scope="col" class="column-enabled py-3 px-4 border-b border-border text-left w-[80px] text-xs font-bold"><?php esc_html_e( 'Enabled', 'betterlytics' ); ?></th>
+					<th scope="col" class="column-wp-hook py-3 px-4 border-b border-border text-left text-xs font-bold"><?php esc_html_e( 'WordPress Hook', 'betterlytics' ); ?></th>
+					<th scope="col" class="column-event-name py-3 px-4 border-b border-border text-left text-xs font-bold"><?php esc_html_e( 'Event Name', 'betterlytics' ); ?></th>
+					<th scope="col" class="column-actions py-3 px-4 border-b border-border text-center w-[100px] text-xs font-bold"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
+				</tr>
+			</thead>
+			<tbody id="betterlytics-hooks-list" class="divide-y divide-border">
+				<!-- Hooks will be rendered via JavaScript -->
+			</tbody>
+		</table>
+	</div>
 
-	<p class="betterlytics-hooks-actions">
-		<button type="button" class="button button-secondary" id="betterlytics-add-hook">
+	<p class="betterlytics-hooks-actions flex items-center mt-4">
+		<button type="button" class="button button-secondary !flex items-center gap-1" id="betterlytics-add-hook">
+			<span class="dashicons dashicons-plus !text-sm !w-4 !h-4 !leading-none"></span>
 			<?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
 		</button>
 	</p>
@@ -264,12 +271,12 @@ if ( $betterlytics_has_woocommerce ) {
 
 <div>
 
-	<h1>
+	<h1 class="text-xl font-bold mb-4 flex items-center gap-2">
 		<?php esc_html_e( 'Event Tracking', 'betterlytics' ); ?>
 		<?php echo Betterlytics_Admin_Controller::get_help_link( 'integration/custom-events', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</h1>
 
-	<p class="betterlytics-page-description">
+	<p class="betterlytics-page-description mb-6 text-muted-foreground">
 		<?php
 		$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboards';
 		if ( ! empty( $betterlytics_options['site_id'] ) ) {
@@ -278,7 +285,7 @@ if ( $betterlytics_has_woocommerce ) {
 		printf(
 			/* translators: %s: link to Betterlytics dashboard */
 			esc_html__( 'Configure which events to track on your site. View your tracked events on your %s.', 'betterlytics' ),
-			'<a href="' . esc_url( $betterlytics_dashboard_url ) . '" target="_blank">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
+			'<a href="' . esc_url( $betterlytics_dashboard_url ) . '" target="_blank" class="text-primary hover:underline">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
 		);
 		?>
 	</p>
@@ -286,11 +293,11 @@ if ( $betterlytics_has_woocommerce ) {
 	<form action="options.php" method="post" id="betterlytics-settings-form">
 		<?php settings_fields( 'betterlytics_events' ); ?>
 
-		<nav class="nav-tab-wrapper betterlytics-tabs">
-			<a href="?page=betterlytics&tab=events&subtab=browser" class="nav-tab nav-tab-active" data-tab="browser">
+		<nav class="betterlytics-tabs flex gap-4 border-b border-border mb-6">
+			<a href="?page=betterlytics&tab=events&subtab=browser" class="nav-tab-active pb-3 text-sm font-semibold border-b-2 border-primary text-foreground no-underline transition-all" data-tab="browser">
 				<?php esc_html_e( 'Browser Events', 'betterlytics' ); ?>
 			</a>
-			<a href="?page=betterlytics&tab=events&subtab=server" class="nav-tab" data-tab="server">
+			<a href="?page=betterlytics&tab=events&subtab=server" class="pb-3 text-sm font-medium border-b-2 border-transparent text-muted-foreground hover:text-foreground no-underline transition-all" data-tab="server">
 				<?php esc_html_e( 'Server Hooks', 'betterlytics' ); ?>
 			</a>
 		</nav>
@@ -313,9 +320,9 @@ if ( $betterlytics_has_woocommerce ) {
 			?>
 		</div>
 
-		<div class="betterlytics-sticky-footer">
+		<div class="betterlytics-sticky-footer fixed bottom-0 left-[160px] folded:left-[36px] right-0 bg-card border-t border-border p-4 z-[999] shadow-[0_-2px_5px_rgba(0,0,0,0.05)] flex justify-center">
 			<div class="betterlytics-sticky-footer-content">
-				<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings' ] ); ?>
+				<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings', 'class' => 'button button-primary !px-6' ] ); ?>
 			</div>
 		</div>
 	</form>

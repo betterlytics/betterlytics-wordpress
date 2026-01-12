@@ -5,6 +5,7 @@ Official WordPress plugin for [Betterlytics](https://betterlytics.io) - privacy-
 ## Features
 
 - **Automatic Script Injection** - Adds the lightweight (<1KB) Betterlytics tracking script to your site
+- **Modern Admin UI** - Immersive, fast admin interface built with **Tailwind CSS v4**
 - **Self-Hosting Support** - Works with both Betterlytics Cloud and self-hosted instances
 - **WordPress Hooks Integration** - Map WordPress actions to Betterlytics custom events
 - **Privacy Controls** - Option to exclude logged-in users from tracking
@@ -118,6 +119,7 @@ $site_id = Betterlytics_Options::get( 'site_id' );
 
 - WordPress 6.0+
 - PHP 7.4+
+- pnpm 9.0+ (for developers)
 
 ## License
 
