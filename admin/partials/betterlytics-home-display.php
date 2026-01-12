@@ -34,7 +34,7 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 				</p>
 				<?php if ( ! $betterlytics_has_site_id ) : ?>
 				<p>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics-settings' ) ); ?>" class="button button-primary">
+					<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=settings' ) ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Enter Site ID', 'betterlytics' ); ?>
 					</a>
 				</p>
@@ -54,7 +54,7 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 				<p><?php esc_html_e( 'Turn on tracking to start collecting analytics data.', 'betterlytics' ); ?></p>
 				<?php if ( $betterlytics_has_site_id && ! $betterlytics_is_enabled ) : ?>
 				<p>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics-settings' ) ); ?>" class="button button-primary">
+					<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=settings' ) ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
 					</a>
 				</p>
@@ -74,7 +74,7 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 				<p><?php esc_html_e( 'Set up event tracking for downloads, outbound links, WooCommerce, and more.', 'betterlytics' ); ?></p>
 				<?php if ( $betterlytics_has_site_id && $betterlytics_is_enabled ) : ?>
 				<p>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics-events' ) ); ?>" class="button">
+					<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=events' ) ); ?>" class="button">
 						<?php esc_html_e( 'Configure Events', 'betterlytics' ); ?>
 					</a>
 				</p>

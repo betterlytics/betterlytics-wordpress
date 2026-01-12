@@ -15,6 +15,8 @@ if ( ! defined( 'WPINC' ) ) {
 $betterlytics_options = Betterlytics_Options::get_options();
 ?>
 
+	<h1><?php esc_html_e( 'General Settings', 'betterlytics' ); ?></h1>
+
 	<form action="options.php" method="post">
 		<?php settings_fields( 'betterlytics_settings' ); ?>
 
@@ -70,4 +72,3 @@ $betterlytics_options = Betterlytics_Options::get_options();
 
 		<?php submit_button( __( 'Save Settings', 'betterlytics' ) ); ?>
 	</form>
-</div>

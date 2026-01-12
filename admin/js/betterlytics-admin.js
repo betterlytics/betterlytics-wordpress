@@ -30,10 +30,12 @@
 		},
 
 		initTabs: function() {
-			var hash = window.location.hash.replace( '#', '' );
+			var urlParams = new URLSearchParams( window.location.search );
+			var subtab = urlParams.get( 'subtab' );
 			var validTabs = ['browser', 'server'];
-			if ( hash && validTabs.indexOf( hash ) !== -1 ) {
-				this.activateTab( hash );
+
+			if ( subtab && validTabs.indexOf( subtab ) !== -1 ) {
+				this.activateTab( subtab );
 			} else {
 				this.activateTab( 'browser' );
 			}
@@ -126,7 +128,19 @@
 			e.preventDefault();
 			var tab = $( e.currentTarget ).data( 'tab' );
 			this.activateTab( tab );
-			window.history.replaceState( null, null, '#' + tab );
+
+			// Update URL with subtab query param
+			var url = new URL( window.location.href );
+			url.searchParams.set( 'subtab', tab );
+			window.history.replaceState( null, null, url.toString() );
+
+			// Update the referer field so WordPress redirects back with the correct subtab
+			var $referer = $( 'input[name="_wp_http_referer"]' );
+			if ( $referer.length ) {
+				var refererUrl = new URL( $referer.val(), window.location.origin );
+				refererUrl.searchParams.set( 'subtab', tab );
+				$referer.val( refererUrl.pathname + refererUrl.search );
+			}
 		},
 
 		activateTab: function( tab ) {

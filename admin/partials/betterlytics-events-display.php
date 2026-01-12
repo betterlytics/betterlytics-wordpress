@@ -244,6 +244,8 @@ if ( $betterlytics_has_woocommerce ) {
 
 <div>
 
+	<h1><?php esc_html_e( 'Event Tracking', 'betterlytics' ); ?></h1>
+
 	<p class="betterlytics-page-description">
 		<?php
 		$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboards';
@@ -262,10 +264,10 @@ if ( $betterlytics_has_woocommerce ) {
 		<?php settings_fields( 'betterlytics_events' ); ?>
 
 		<nav class="nav-tab-wrapper betterlytics-tabs">
-			<a href="#browser" class="nav-tab nav-tab-active" data-tab="browser">
+			<a href="?page=betterlytics&tab=events&subtab=browser" class="nav-tab nav-tab-active" data-tab="browser">
 				<?php esc_html_e( 'Browser Events', 'betterlytics' ); ?>
 			</a>
-			<a href="#server" class="nav-tab" data-tab="server">
+			<a href="?page=betterlytics&tab=events&subtab=server" class="nav-tab" data-tab="server">
 				<?php esc_html_e( 'Server Hooks', 'betterlytics' ); ?>
 			</a>
 		</nav>
