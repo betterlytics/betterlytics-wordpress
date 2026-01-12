@@ -8,6 +8,70 @@
  */
 
 /* ==========================================================================
+   Help Icon Button
+   ========================================================================== */
+
+.betterlytics-help-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	margin-left: 3px;
+	color: #8c8f94;
+	text-decoration: none;
+	vertical-align: text-top;
+	border-radius: 50%;
+	transition: color 0.15s, background-color 0.15s;
+}
+
+.betterlytics-help-icon:hover {
+	color: #2271b1;
+	background-color: rgba(34, 113, 177, 0.1);
+}
+
+.betterlytics-help-icon:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 1px;
+	color: #2271b1;
+}
+
+.betterlytics-help-icon .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 1;
+}
+
+/* Help icon in table headers */
+.form-table th .betterlytics-help-icon {
+	margin-left: 2px;
+}
+
+/* Help icon next to section headings */
+.betterlytics-section h2 .betterlytics-help-icon,
+h1 .betterlytics-help-icon {
+	font-size: 14px;
+}
+
+.betterlytics-section h2 .betterlytics-help-icon .dashicons,
+h1 .betterlytics-help-icon .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+/* Color Variants */
+.betterlytics-help-icon.is-blue {
+	color: oklch(50% 0.222 268.78);
+}
+
+.betterlytics-help-icon.is-blue:hover {
+	color: #6b8ef5;
+	background-color: rgba(107, 142, 245, 0.1);
+}
+
+/* ==========================================================================
    Immersive Container
    ========================================================================== */
 

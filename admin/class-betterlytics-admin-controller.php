@@ -212,4 +212,24 @@ class Betterlytics_Admin_Controller {
 	public static function get_slug( $page ) {
 		return self::TABS[ $page ]['slug'] ?? 'home';
 	}
+
+	/**
+	 * Render a help link icon.
+	 *
+	 * @since 1.0.0
+	 * @param string $path    Optional path or URL.
+	 * @param string $variant Optional style variant (e.g. 'is-blue').
+	 * @return string Help link HTML.
+	 */
+	public static function get_help_link( $path = '', $variant = '' ) {
+		$url   = 'https://betterlytics.io/docs/' . ltrim( $path, '/' );
+		$class = 'betterlytics-help-icon' . ( $variant ? ' ' . $variant : '' );
+
+		return sprintf(
+			'<a href="%s" target="_blank" rel="noopener" class="%s" title="%s"><span class="dashicons dashicons-editor-help"></span></a>',
+			esc_url( $url ),
+			esc_attr( $class ),
+			esc_attr__( 'View Documentation', 'betterlytics' )
+		);
+	}
 }

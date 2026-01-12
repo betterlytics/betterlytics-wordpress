@@ -30,7 +30,14 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 	}
 	?>
 	<div class="betterlytics-section">
-		<h2><?php echo esc_html( $section['title'] ); ?></h2>
+		<h2>
+			<?php echo esc_html( $section['title'] ); ?>
+			<?php
+			if ( ! empty( $section['help_path'] ) ) {
+				echo Betterlytics_Admin_Controller::get_help_link( $section['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+			?>
+		</h2>
 		<?php if ( ! empty( $section['description'] ) ) : ?>
 			<p class="description"><?php echo esc_html( $section['description'] ); ?></p>
 		<?php endif; ?>
@@ -44,7 +51,14 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 				<tbody>
 					<?php foreach ( $section['fields'] as $field ) : ?>
 						<tr>
-							<th scope="row"><?php echo esc_html( $field['label'] ); ?></th>
+							<th scope="row">
+								<?php echo esc_html( $field['label'] ); ?>
+								<?php
+								if ( ! empty( $field['help_path'] ) ) {
+									echo Betterlytics_Admin_Controller::get_help_link( $field['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								}
+								?>
+							</th>
 							<td>
 								<?php if ( ! empty( $field['type'] ) && 'select' === $field['type'] ) : ?>
 									<select name="<?php echo esc_attr( $field['name'] ); ?>">
@@ -102,6 +116,7 @@ $betterlytics_browser_sections = [
 				'name'        => 'betterlytics_options[track_web_vitals]',
 				'checked'     => ! empty( $betterlytics_options['track_web_vitals'] ),
 				'description' => __( 'Track Core Web Vitals performance metrics', 'betterlytics' ),
+				'help_path'   => 'integration/web-vitals',
 			],
 			[
 				'label'       => __( 'Outbound Links', 'betterlytics' ),
@@ -114,6 +129,7 @@ $betterlytics_browser_sections = [
 					'full'   => __( 'Full URL', 'betterlytics' ),
 				],
 				'description' => __( 'Track clicks on links to external websites', 'betterlytics' ),
+				'help_path'   => 'integration/outbound-links',
 			],
 		],
 	],
@@ -136,6 +152,7 @@ $betterlytics_browser_sections = [
 					__( 'Track clicks on elements with %s class', 'betterlytics' ),
 					'<code>betterlytics-event-name=YourEvent</code>'
 				),
+				'help_path'   => 'integration/custom-events',
 			],
 		],
 	],
@@ -180,6 +197,7 @@ $betterlytics_server_sections = [
 		'description'    => __( 'Map any WordPress action hook to a Betterlytics event.', 'betterlytics' ),
 		'custom_content' => $betterlytics_hooks_mapper_content,
 		'fields'         => [],
+		'help_path'      => 'integration/custom-events',
 	],
 	[
 		'title'       => __( 'WordPress User Management', 'betterlytics' ),
@@ -244,7 +262,10 @@ if ( $betterlytics_has_woocommerce ) {
 
 <div>
 
-	<h1><?php esc_html_e( 'Event Tracking', 'betterlytics' ); ?></h1>
+	<h1>
+		<?php esc_html_e( 'Event Tracking', 'betterlytics' ); ?>
+		<?php echo Betterlytics_Admin_Controller::get_help_link( 'integration/custom-events', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	</h1>
 
 	<p class="betterlytics-page-description">
 		<?php

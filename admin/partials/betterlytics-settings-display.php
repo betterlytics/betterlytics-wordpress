@@ -15,7 +15,10 @@ if ( ! defined( 'WPINC' ) ) {
 $betterlytics_options = Betterlytics_Options::get_options();
 ?>
 
-	<h1><?php esc_html_e( 'General Settings', 'betterlytics' ); ?></h1>
+	<h1>
+		<?php esc_html_e( 'General Settings', 'betterlytics' ); ?>
+		<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	</h1>
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'betterlytics_settings' ); ?>
@@ -23,7 +26,10 @@ $betterlytics_options = Betterlytics_Options::get_options();
 		<table class="form-table" role="presentation">
 			<tbody>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?></th>
+					<th scope="row">
+						<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
+						<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</th>
 					<td>
 						<label>
 							<input type="checkbox" name="betterlytics_options[enabled]" value="1" <?php checked( $betterlytics_options['enabled'] ); ?>>
@@ -32,7 +38,10 @@ $betterlytics_options = Betterlytics_Options::get_options();
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Site ID', 'betterlytics' ); ?></th>
+					<th scope="row">
+						<?php esc_html_e( 'Site ID', 'betterlytics' ); ?>
+						<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</th>
 					<td>
 						<input type="text" name="betterlytics_options[site_id]" value="<?php echo esc_attr( $betterlytics_options['site_id'] ); ?>" class="regular-text" placeholder="your-site-id">
 						<p class="description">
