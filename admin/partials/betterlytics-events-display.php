@@ -169,25 +169,27 @@ $betterlytics_browser_sections = [
 // Custom Hooks Mapper section content (special handling needed).
 ob_start();
 ?>
-<table class="wp-list-table widefat fixed striped" id="betterlytics-hooks-table">
-	<thead>
-		<tr>
-			<th scope="col" class="column-enabled"><?php esc_html_e( 'Enabled', 'betterlytics' ); ?></th>
-			<th scope="col" class="column-wp-hook"><?php esc_html_e( 'WordPress Hook', 'betterlytics' ); ?></th>
-			<th scope="col" class="column-event-name"><?php esc_html_e( 'Event Name', 'betterlytics' ); ?></th>
-			<th scope="col" class="column-actions"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
-		</tr>
-	</thead>
-	<tbody id="betterlytics-hooks-list">
-		<!-- Hooks will be rendered via JavaScript -->
-	</tbody>
-</table>
+<div class="betterlytics-hooks-mapper-container">
+	<table class="wp-list-table widefat fixed striped" id="betterlytics-hooks-table">
+		<thead>
+			<tr>
+				<th scope="col" class="column-enabled"><?php esc_html_e( 'Enabled', 'betterlytics' ); ?></th>
+				<th scope="col" class="column-wp-hook"><?php esc_html_e( 'WordPress Hook', 'betterlytics' ); ?></th>
+				<th scope="col" class="column-event-name"><?php esc_html_e( 'Event Name', 'betterlytics' ); ?></th>
+				<th scope="col" class="column-actions"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
+			</tr>
+		</thead>
+		<tbody id="betterlytics-hooks-list">
+			<!-- Hooks will be rendered via JavaScript -->
+		</tbody>
+	</table>
 
-<p class="betterlytics-hooks-actions">
-	<button type="button" class="button button-secondary" id="betterlytics-add-hook">
-		<?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
-	</button>
-</p>
+	<p class="betterlytics-hooks-actions">
+		<button type="button" class="button button-secondary" id="betterlytics-add-hook">
+			<?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
+		</button>
+	</p>
+</div>
 <?php
 $betterlytics_hooks_mapper_content = ob_get_clean();
 
