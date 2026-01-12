@@ -1,8 +1,6 @@
 /**
  * Betterlytics Admin Styles
  *
- * Premium Plausible-style immersive admin interface.
- *
  * @package Betterlytics
  * @since   1.0.0
  */
@@ -11,64 +9,41 @@
 
 @theme {
   --radius: 0.5rem;
-
   --color-background: #f9f9f9;
   --color-foreground: oklch(0.2 0.01 265);
-
   --color-primary: oklch(62% 0.17 268.71);
   --color-primary-foreground: white;
-
   --color-secondary: oklch(97% 0 0);
   --color-secondary-foreground: oklch(0.25 0 0);
-
   --color-muted: oklch(96% 0 0);
   --color-muted-foreground: oklch(0.5 0 0);
-
   --color-accent: oklch(97% 0 0);
   --color-accent-foreground: oklch(0.25 0 0);
-
   --color-destructive: oklch(0.65 0.25 30);
   --color-destructive-foreground: white;
-
   --color-success: oklch(62.89% 0.15 145.23);
   --color-success-foreground: white;
-
   --color-border: oklch(87% 0 0);
-  --color-input: oklch(90% 0 0);
-  --color-ring: oklch(74% 0.118 268.64);
-
   --color-card: #fdfdfd;
-  --color-card-foreground: oklch(0.2 0.01 265);
 }
 
 @layer base {
   :root {
-    --radius: 0.5rem;
     --background: #f9f9f9;
     --foreground: oklch(0.2 0.01 265);
     --primary: oklch(62% 0.17 268.71);
     --primary-foreground: white;
-    --secondary: oklch(97% 0 0);
-    --secondary-foreground: oklch(0.25 0 0);
     --muted: oklch(96% 0 0);
     --muted-foreground: oklch(0.5 0 0);
-    --accent: oklch(97% 0 0);
-    --accent-foreground: oklch(0.25 0 0);
-    --destructive: oklch(0.65 0.25 30);
-    --destructive-foreground: white;
     --border: oklch(87% 0 0);
-    --input: oklch(90% 0 0);
-    --ring: oklch(74% 0.118 268.64);
     --card: #fdfdfd;
-    --card-foreground: oklch(0.2 0.01 265);
   }
 }
 
 /* ==========================================================================
-   Global Root & Layout Resets
+   Global Layout & Resets
    ========================================================================== */
 
-/* Scope everything under our root to override WP defaults safely */
 .betterlytics-admin-root {
 	--wp-admin-bar-height: 32px;
 	--wp-sidebar-width: 160px;
@@ -85,153 +60,26 @@
 	}
 }
 
-/* Nuke standard WP wrap margins if they interfere with our full-width goals */
+/* Reset standard WP wrap for immersive feel */
 .betterlytics-admin-root .wrap.betterlytics-admin-wrap {
 	margin: 0 !important;
-	padding: 80px 48px 48px 48px !important;
+	padding: 72px 48px 48px 48px !important;
 	max-width: none !important;
 }
 
-/* ==========================================================================
-   Full-Width Sticky Banner
-   ========================================================================== */
-
+/* Fixed Banner Positioning (Tricky with WP sidebar) */
 .betterlytics-setup-banner {
 	position: fixed !important;
 	top: var(--wp-admin-bar-height) !important;
 	left: var(--wp-sidebar-width) !important;
 	right: 0 !important;
-	z-index: 99999 !important; /* Above WP sidebar */
+	z-index: 99999 !important;
 	margin: 0 !important;
-	border-radius: 0 !important;
 	height: 54px !important;
-	display: flex !important;
-	align-items: center !important;
 	transition: left 0.15s;
-	box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
 }
 
-.betterlytics-setup-banner a.text-white {
-	color: #ffffff !important;
-	text-decoration: underline !important;
-	font-weight: 700 !important;
-}
-
-.betterlytics-setup-banner .button {
-	background: white !important;
-	color: var(--primary) !important;
-	border: none !important;
-	font-weight: 700 !important;
-	padding: 0 16px !important;
-	height: 32px !important;
-	line-height: 32px !important;
-}
-
-/* ==========================================================================
-   Table & Form Aesthetics
-   ========================================================================== */
-
-/* Premium Table Reset */
-.betterlytics-admin-root .form-table {
-	border-collapse: collapse;
-	width: 100%;
-	margin: 0;
-}
-
-.betterlytics-admin-root .form-table th,
-.betterlytics-admin-root .form-table td {
-	padding: 1.5rem 1rem !important; /* py-6 */
-	vertical-align: middle !important;
-	border-bottom: 1px solid var(--border);
-}
-
-.betterlytics-admin-root .form-table tr:last-child th,
-.betterlytics-admin-root .form-table tr:last-child td {
-	border-bottom: none;
-}
-
-.betterlytics-admin-root .form-table th {
-	width: 280px;
-	padding-left: 0 !important;
-	font-weight: 600;
-	color: var(--foreground);
-}
-
-.betterlytics-admin-root .form-table td {
-	padding-right: 0 !important;
-}
-
-/* Professional Inputs */
-.betterlytics-admin-root input[type="text"],
-.betterlytics-admin-root input[type="url"],
-.betterlytics-admin-root input[type="password"],
-.betterlytics-admin-root input[type="number"],
-.betterlytics-admin-root select,
-.betterlytics-admin-root textarea {
-	border-radius: 6px !important;
-	border: 1px solid var(--border) !important;
-	padding: 8px 12px !important;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
-	transition: all 0.2s !important;
-	min-height: 40px;
-}
-
-.betterlytics-admin-root input[type="text"]:focus,
-.betterlytics-admin-root select:focus {
-	border-color: var(--primary) !important;
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent) !important;
-	outline: none !important;
-}
-
-/* Checkbox Alignment */
-.betterlytics-admin-root .form-table td label {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-weight: 500;
-	cursor: pointer;
-}
-
-.betterlytics-admin-root input[type="checkbox"] {
-	margin: 0 !important;
-	width: 18px !important;
-	height: 18px !important;
-	border-radius: 4px !important;
-}
-
-/* ==========================================================================
-   Components Polish
-   ========================================================================== */
-
-/* Help Icons */
-.betterlytics-help-icon {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 20px;
-	height: 20px;
-	margin-left: 6px;
-	color: var(--primary);
-	background: color-mix(in srgb, var(--primary) 10%, transparent);
-	border-radius: 50%;
-	text-decoration: none;
-	vertical-align: middle;
-	transition: all 0.2s;
-}
-
-.betterlytics-help-icon:hover {
-	background: color-mix(in srgb, var(--primary) 20%, transparent);
-	transform: scale(1.1);
-}
-
-.betterlytics-help-icon .dashicons {
-	font-size: 14px !important;
-	width: 14px !important;
-	height: 14px !important;
-	line-height: 1 !important;
-}
-
-/* Sub-Tab Navigation (Events Page) - Modern Pills */
+/* Sub-Tab Navigation (Events Page) */
 .betterlytics-subtabs {
 	display: flex;
 	gap: 0.5rem;
@@ -253,22 +101,22 @@
 	transition: all 0.2s;
 }
 
-.betterlytics-subtab:hover {
-	color: var(--foreground);
-	background: rgba(0,0,0,0.03);
-}
-
 .betterlytics-subtab.active {
 	color: var(--primary);
 	background: white;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.betterlytics-subtab.active::after {
-	display: none;
+/* Tab Content Visibility */
+.betterlytics-tab-content {
+	display: none !important;
 }
 
-/* Sticky Footer Polish */
+.betterlytics-tab-content.active {
+	display: block !important;
+}
+
+/* Sticky Footer */
 .betterlytics-sticky-footer {
 	position: sticky;
 	bottom: 0px;
@@ -278,60 +126,22 @@
 	backdrop-filter: blur(12px);
 	padding: 2rem 3rem;
 	border-top: 1px solid var(--border);
-	display: flex;
-	justify-content: center; /* Center the save button */
-	align-items: center;
 	z-index: 100;
 	margin: 2rem -3rem -3rem -3rem;
-	box-shadow: 0 -4px 20px rgba(0,0,0,0.02);
 }
 
-/* Step Tweaks - High Contrast & Clean Layout */
-.betterlytics-step {
-	background: #ffffff;
-}
-
-.betterlytics-step h3 {
-	color: var(--foreground) !important;
-}
-
-.betterlytics-step p {
-	color: var(--muted-foreground) !important;
-}
-
-.betterlytics-step .step-content a:not(.button) {
+/* Help Icons */
+.betterlytics-help-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	margin-left: 6px;
 	color: var(--primary);
-	text-decoration: underline;
-	font-weight: 700;
-}
-
-.betterlytics-setup-steps .betterlytics-step {
-	border-bottom: 1px solid var(--border);
-	margin-left: -3rem; /* Outset to touch edges */
-	margin-right: -3rem;
-	padding-left: 3.5rem;
-	padding-right: 3.5rem;
-}
-
-.betterlytics-setup-steps .betterlytics-step:last-child {
-	border-bottom: none;
-}
-
-/* Responsive tweaks */
-@media screen and (max-width: 782px) {
-	.betterlytics-admin-root .form-table th {
-		width: 100%;
-		display: block;
-		padding-bottom: 0.5rem !important;
-	}
-	
-	.betterlytics-admin-root .form-table td {
-		display: block;
-		padding-top: 0 !important;
-	}
-	
-	.betterlytics-setup-banner {
-		position: static !important;
-		width: 100% !important;
-	}
+	background: color-mix(in srgb, var(--primary) 10%, transparent);
+	border-radius: 50%;
+	text-decoration: none;
+	vertical-align: middle;
+	transition: all 0.2s;
 }
