@@ -19,76 +19,96 @@ $betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed(
 $betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
 
 /**
- * Helper function to render a settings section with optional separator.
+ * Renders a unified Event Card section.
  *
  * @param array $section Section configuration.
  * @param bool  $show_separator Whether to show separator before section.
  */
-function betterlytics_render_section( $section, $show_separator = false ) {
+function betterlytics_render_event_card( $section, $show_separator = false ) {
 	if ( $show_separator ) {
-		echo '<hr class="border-t border-border my-10">';
+		echo '<hr class="border-t border-border my-12">';
 	}
 	?>
-	<div class="betterlytics-section mb-12 last:mb-0">
-		<h3 class="text-xl font-bold mb-3 flex items-center gap-2 text-foreground tracking-tight">
-			<?php echo esc_html( $section['title'] ); ?>
-			<?php
-			if ( ! empty( $section['help_path'] ) ) {
-				echo Betterlytics_Admin_Controller::get_help_link( $section['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			}
-			?>
-		</h3>
-		<?php if ( ! empty( $section['description'] ) ) : ?>
-			<p class="mt-0 mb-8 text-sm text-foreground/70 leading-relaxed max-w-[850px] font-medium"><?php echo esc_html( $section['description'] ); ?></p>
-		<?php endif; ?>
-		
+	<div class="betterlytics-event-card mb-12 last:mb-0">
+		<div class="mb-8">
+			<h1 class="text-2xl font-bold text-foreground tracking-tight mb-2 flex items-center gap-2">
+				<?php echo esc_html( $section['title'] ); ?>
+				<?php
+				if ( ! empty( $section['help_path'] ) ) {
+					echo Betterlytics_Admin_Controller::get_help_link( $section['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+				?>
+			</h1>
+			<?php if ( ! empty( $section['description'] ) ) : ?>
+				<h4 class="text-sm text-muted-foreground font-medium max-w-[850px] leading-relaxed">
+					<?php echo esc_html( $section['description'] ); ?>
+				</h4>
+			<?php endif; ?>
+		</div>
+
 		<?php if ( ! empty( $section['custom_content'] ) ) : ?>
 			<div class="betterlytics-custom-content">
 				<?php echo $section['custom_content']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Custom HTML content ?>
 			</div>
 		<?php endif; ?>
-		
+
 		<?php if ( ! empty( $section['fields'] ) ) : ?>
-			<div class="bg-card border border-border rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
-				<table class="form-table w-full m-0" role="presentation">
-					<tbody class="divide-y divide-border">
-						<?php foreach ( $section['fields'] as $field ) : ?>
-							<tr class="hover:bg-muted/5 transition-colors">
-								<th scope="row" class="w-[300px] py-6 !pl-10 !pr-6 text-left align-middle border-none">
-									<span class="flex items-center gap-2 font-semibold text-foreground">
-										<?php echo esc_html( $field['label'] ); ?>
-										<?php
-										if ( ! empty( $field['help_path'] ) ) {
-											echo Betterlytics_Admin_Controller::get_help_link( $field['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-										}
-										?>
-									</span>
-								</th>
-								<td class="py-6 px-10 align-middle border-none">
-									<?php if ( ! empty( $field['type'] ) && 'select' === $field['type'] ) : ?>
-										<select name="<?php echo esc_attr( $field['name'] ); ?>" class="bg-card border-border rounded-lg shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all pr-10">
-											<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
-												<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $field['value'], $option_value ); ?>>
-													<?php echo esc_html( $option_label ); ?>
-												</option>
-											<?php endforeach; ?>
-										</select>
-										<?php if ( ! empty( $field['description'] ) ) : ?>
-											<p class="description mt-2.5 text-xs text-muted-foreground font-medium"><?php echo wp_kses_post( $field['description'] ); ?></p>
-										<?php endif; ?>
-									<?php else : ?>
-										<label class="flex items-center gap-3 cursor-pointer group">
-											<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?> class="w-5 h-5 rounded border-border text-primary focus:ring-primary/30 transition-all">
-											<span class="text-sm font-medium text-foreground/80 group-hover:text-foreground transition-colors"><?php echo wp_kses_post( $field['description'] ); ?></span>
-										</label>
-									<?php endif; ?>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
+			<div class="bg-card border border-border rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
+				<div class="divide-y divide-border">
+					<?php foreach ( $section['fields'] as $field ) : ?>
+						<?php betterlytics_render_checkmark_row( $field ); ?>
+					<?php endforeach; ?>
+				</div>
 			</div>
 		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Renders a unified Checkmark Card row.
+ *
+ * @param array $field Field configuration.
+ */
+function betterlytics_render_checkmark_row( $field ) {
+	$is_select = ! empty( $field['type'] ) && 'select' === $field['type'];
+	?>
+	<div class="betterlytics-checkmark-row group hover:bg-muted/5 transition-all duration-200">
+		<div class="flex items-center justify-between py-6 !pl-10 !pr-10">
+			<div class="flex flex-col gap-1 min-w-0 flex-1">
+				<div class="flex items-center gap-2">
+					<span class="text-base font-bold text-foreground truncate">
+						<?php echo esc_html( $field['label'] ); ?>
+					</span>
+					<?php
+					if ( ! empty( $field['help_path'] ) ) {
+						echo Betterlytics_Admin_Controller::get_help_link( $field['help_path'], 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					}
+					?>
+				</div>
+				<?php if ( ! empty( $field['description'] ) ) : ?>
+					<span class="text-sm text-muted-foreground/80 font-medium truncate">
+						<?php echo wp_kses_post( $field['description'] ); ?>
+					</span>
+				<?php endif; ?>
+			</div>
+
+			<div class="flex items-center gap-6 shrink-0 ml-8">
+				<?php if ( $is_select ) : ?>
+					<select name="<?php echo esc_attr( $field['name'] ); ?>" class="bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all pr-12 !py-2.5 !text-sm font-bold">
+						<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
+							<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $field['value'], $option_value ); ?>>
+								<?php echo esc_html( $option_label ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<label class="relative flex items-center cursor-pointer">
+						<input type="checkbox" name="<?php echo esc_attr( $field['name'] ); ?>" value="1" <?php checked( ! empty( $field['checked'] ) ); ?> class="w-6 h-6 rounded-lg border-2 border-border text-primary focus:ring-primary/30 transition-all cursor-pointer">
+					</label>
+				<?php endif; ?>
+			</div>
+		</div>
 	</div>
 	<?php
 }
@@ -331,7 +351,7 @@ if ( $betterlytics_has_woocommerce ) {
 				<div id="tab-browser" class="betterlytics-tab-content <?php echo 'browser' === $current_subtab ? 'active' : ''; ?>">
 					<?php
 					foreach ( $betterlytics_browser_sections as $betterlytics_index => $betterlytics_section ) {
-						betterlytics_render_section( $betterlytics_section, $betterlytics_index > 0 );
+						betterlytics_render_event_card( $betterlytics_section, $betterlytics_index > 0 );
 					}
 					?>
 				</div>
@@ -340,7 +360,7 @@ if ( $betterlytics_has_woocommerce ) {
 				<div id="tab-server" class="betterlytics-tab-content <?php echo 'server' === $current_subtab ? 'active' : ''; ?>">
 					<?php
 					foreach ( $betterlytics_server_sections as $betterlytics_index => $betterlytics_section ) {
-						betterlytics_render_section( $betterlytics_section, $betterlytics_index > 0 );
+						betterlytics_render_event_card( $betterlytics_section, $betterlytics_index > 0 );
 					}
 					?>
 				</div>

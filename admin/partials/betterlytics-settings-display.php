@@ -47,83 +47,119 @@ $betterlytics_options = Betterlytics_Options::get_options();
 
 			<!-- Card Body -->
 			<div class="flex-1 p-10 relative">
-				<table class="form-table w-full m-0" role="presentation">
-					<tbody class="divide-y divide-border">
-						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
-								<span class="flex items-center gap-2 font-semibold text-foreground">
-									<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
-									<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								</span>
-							</th>
-							<td class="py-8 px-10 align-top border-none">
-								<label class="flex items-center gap-3 cursor-pointer group">
-									<input type="checkbox" name="betterlytics_options[enabled]" value="1" <?php checked( $betterlytics_options['enabled'] ); ?> class="w-6 h-6 rounded border-border text-primary focus:ring-primary/30 transition-all">
-									<span class="text-base font-medium text-foreground/80 group-hover:text-foreground transition-colors"><?php esc_html_e( 'Enable Betterlytics tracking on this site', 'betterlytics' ); ?></span>
-								</label>
-							</td>
-						</tr>
-						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
-								<span class="flex items-center gap-2 font-semibold text-foreground">
-									<?php esc_html_e( 'Site ID', 'betterlytics' ); ?>
-									<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								</span>
-							</th>
-							<td class="py-8 px-10 align-top border-none">
-								<div class="relative max-w-[500px]">
-									<input type="text" name="betterlytics_options[site_id]" value="<?php echo esc_attr( $betterlytics_options['site_id'] ); ?>" class="!w-full !p-3 !text-base bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="your-site-id">
+				<div class="mb-8">
+					<h1 class="text-2xl font-bold text-foreground tracking-tight mb-2">
+						<?php esc_html_e( 'Plugin Configuration', 'betterlytics' ); ?>
+					</h1>
+					<h4 class="text-sm text-muted-foreground font-medium max-w-[850px] leading-relaxed">
+						<?php esc_html_e( 'Connect your site to Betterlytics and manage core tracking behavior.', 'betterlytics' ); ?>
+					</h4>
+				</div>
+
+				<div class="bg-card border border-border rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
+					<div class="divide-y divide-border">
+						<!-- Enable Tracking -->
+						<div class="group hover:bg-muted/5 transition-all duration-200">
+							<div class="flex items-center justify-between py-6 px-10">
+								<div class="flex flex-col gap-1 min-w-0 flex-1">
+									<div class="flex items-center gap-2">
+										<span class="text-base font-bold text-foreground truncate">
+											<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
+										</span>
+										<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									</div>
+									<span class="text-sm text-muted-foreground/80 font-medium truncate">
+										<?php esc_html_e( 'Enable Betterlytics tracking on this site', 'betterlytics' ); ?>
+									</span>
 								</div>
-								<p class="description mt-3 text-sm text-muted-foreground font-medium">
-									<?php esc_html_e( 'Your unique Site ID from the Betterlytics dashboard.', 'betterlytics' ); ?>
-								</p>
-							</td>
-						</tr>
-						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
-								<span class="flex items-center gap-2 font-semibold text-foreground">
-									<?php esc_html_e( 'Server URL', 'betterlytics' ); ?>
-								</span>
-							</th>
-							<td class="py-8 px-10 align-top border-none">
-								<div class="relative max-w-[500px]">
-									<input type="url" name="betterlytics_options[server_url]" value="<?php echo esc_attr( $betterlytics_options['server_url'] ); ?>" class="!w-full !p-3 !text-base bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="https://betterlytics.io/track">
+								<div class="flex items-center gap-6 shrink-0 ml-8">
+									<label class="relative flex items-center cursor-pointer">
+										<input type="checkbox" name="betterlytics_options[enabled]" value="1" <?php checked( $betterlytics_options['enabled'] ); ?> class="w-6 h-6 rounded-lg border-2 border-border text-primary focus:ring-primary/30 transition-all cursor-pointer">
+									</label>
 								</div>
-								<p class="description mt-3 text-sm text-muted-foreground font-medium">
-									<?php esc_html_e( 'The tracking server URL. Default is the Betterlytics cloud. Change this if you are self-hosting.', 'betterlytics' ); ?>
-								</p>
-							</td>
-						</tr>
-						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
-								<span class="flex items-center gap-2 font-semibold text-foreground">
-									<?php esc_html_e( 'Script URL', 'betterlytics' ); ?>
-								</span>
-							</th>
-							<td class="py-8 px-10 align-top border-none">
-								<div class="relative max-w-[500px]">
-									<input type="url" name="betterlytics_options[script_url]" value="<?php echo esc_attr( $betterlytics_options['script_url'] ); ?>" class="!w-full !p-3 !text-base bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="https://betterlytics.io/analytics.js">
+							</div>
+						</div>
+
+						<!-- Site ID -->
+						<div class="group hover:bg-muted/5 transition-all duration-200">
+							<div class="flex items-center justify-between py-8 px-10">
+								<div class="flex flex-col gap-1 min-w-0 flex-1">
+									<div class="flex items-center gap-2">
+										<span class="text-base font-bold text-foreground truncate">
+											<?php esc_html_e( 'Site ID', 'betterlytics' ); ?>
+										</span>
+										<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									</div>
+									<span class="text-sm text-muted-foreground/80 font-medium truncate">
+										<?php esc_html_e( 'Your unique Site ID from the Betterlytics dashboard.', 'betterlytics' ); ?>
+									</span>
 								</div>
-								<p class="description mt-3 text-sm text-muted-foreground font-medium">
-									<?php esc_html_e( 'The tracking script URL. Default is the Betterlytics cloud. Change this if you are self-hosting.', 'betterlytics' ); ?>
-								</p>
-							</td>
-						</tr>
-						<tr class="hover:bg-muted/5 transition-colors border-b-0">
-							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
-								<span class="flex items-center gap-2 font-semibold text-foreground">
-									<?php esc_html_e( 'Track Logged-in Users', 'betterlytics' ); ?>
-								</span>
-							</th>
-							<td class="py-8 px-10 align-top border-none">
-								<label class="flex items-center gap-3 cursor-pointer group">
-									<input type="checkbox" name="betterlytics_options[track_logged_in]" value="1" <?php checked( $betterlytics_options['track_logged_in'] ); ?> class="w-6 h-6 rounded border-border text-primary focus:ring-primary/30 transition-all">
-									<span class="text-base font-medium text-foreground/80 group-hover:text-foreground transition-colors"><?php esc_html_e( 'Track logged-in users (disable to exclude admins/editors from analytics)', 'betterlytics' ); ?></span>
-								</label>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+								<div class="flex items-center gap-6 shrink-0 ml-8 w-64">
+									<input type="text" name="betterlytics_options[site_id]" value="<?php echo esc_attr( $betterlytics_options['site_id'] ); ?>" class="!w-full !p-2.5 !text-sm font-bold bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="your-site-id">
+								</div>
+							</div>
+						</div>
+
+						<!-- Server URL -->
+						<div class="group hover:bg-muted/5 transition-all duration-200">
+							<div class="flex items-center justify-between py-8 px-10">
+								<div class="flex flex-col gap-1 min-w-0 flex-1">
+									<div class="flex items-center gap-2">
+										<span class="text-base font-bold text-foreground truncate">
+											<?php esc_html_e( 'Server URL', 'betterlytics' ); ?>
+										</span>
+									</div>
+									<span class="text-sm text-muted-foreground/80 font-medium truncate">
+										<?php esc_html_e( 'The tracking server URL (Default: Betterlytics cloud).', 'betterlytics' ); ?>
+									</span>
+								</div>
+								<div class="flex items-center gap-6 shrink-0 ml-8 w-64">
+									<input type="url" name="betterlytics_options[server_url]" value="<?php echo esc_attr( $betterlytics_options['server_url'] ); ?>" class="!w-full !p-2.5 !text-sm font-bold bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="https://betterlytics.io/track">
+								</div>
+							</div>
+						</div>
+
+						<!-- Script URL -->
+						<div class="group hover:bg-muted/5 transition-all duration-200">
+							<div class="flex items-center justify-between py-8 px-10">
+								<div class="flex flex-col gap-1 min-w-0 flex-1">
+									<div class="flex items-center gap-2">
+										<span class="text-base font-bold text-foreground truncate">
+											<?php esc_html_e( 'Script URL', 'betterlytics' ); ?>
+										</span>
+									</div>
+									<span class="text-sm text-muted-foreground/80 font-medium truncate">
+										<?php esc_html_e( 'The tracking script URL (Default: Betterlytics cloud).', 'betterlytics' ); ?>
+									</span>
+								</div>
+								<div class="flex items-center gap-6 shrink-0 ml-8 w-64">
+									<input type="url" name="betterlytics_options[script_url]" value="<?php echo esc_attr( $betterlytics_options['script_url'] ); ?>" class="!w-full !p-2.5 !text-sm font-bold bg-card border-border rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="https://betterlytics.io/analytics.js">
+								</div>
+							</div>
+						</div>
+
+						<!-- Track Logged-in Users -->
+						<div class="group hover:bg-muted/5 transition-all duration-200">
+							<div class="flex items-center justify-between py-6 px-10">
+								<div class="flex flex-col gap-1 min-w-0 flex-1">
+									<div class="flex items-center gap-2">
+										<span class="text-base font-bold text-foreground truncate">
+											<?php esc_html_e( 'Track Logged-in Users', 'betterlytics' ); ?>
+										</span>
+									</div>
+									<span class="text-sm text-muted-foreground/80 font-medium truncate">
+										<?php esc_html_e( 'Enable to include admins/editors in your analytics.', 'betterlytics' ); ?>
+									</span>
+								</div>
+								<div class="flex items-center gap-6 shrink-0 ml-8">
+									<label class="relative flex items-center cursor-pointer">
+										<input type="checkbox" name="betterlytics_options[track_logged_in]" value="1" <?php checked( $betterlytics_options['track_logged_in'] ); ?> class="w-6 h-6 rounded-lg border-2 border-border text-primary focus:ring-primary/30 transition-all cursor-pointer">
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
