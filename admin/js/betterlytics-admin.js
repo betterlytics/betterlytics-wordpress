@@ -182,7 +182,7 @@
 			var namePrefix = 'betterlytics_options[hooks][' + index + ']';
 
 			return '<tr data-index="' + index + '">' +
-				'<td class="column-enabled">' +
+				'<td class="column-enabled text-center flex justify-center">' +
 				'<input type="checkbox" name="' + namePrefix + '[enabled]" class="hook-enabled" value="true" ' + checked + '>' +
 				'</td>' +
 				'<td class="column-wp-hook">' +
@@ -315,9 +315,8 @@
 		deleteHook: function( e ) {
 			e.preventDefault();
 
-			if ( typeof betterlyticsAdmin !== 'undefined' && ! window.confirm( betterlyticsAdmin.strings.confirmDelete ) ) {
-				return;
-			}
+			// Confirmation removed as per user request (saving is explicit)
+
 
 			var $row = $( e.currentTarget ).closest( 'tr' );
 			var index = $row.data( 'index' );

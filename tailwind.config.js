@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "./admin/**/*.php",
+    "./admin/js/**/*.js",
     "./admin/css/**/*.css",
   ],
   theme: {
@@ -45,6 +46,10 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+        mono: ["Inter Tight", "monospace"],
       },
     },
   },

@@ -57,10 +57,19 @@ class Betterlytics_Admin {
 			return;
 		}
 
+		// Enqueue Google Fonts (Inter & Inter Tight).
+		wp_enqueue_style(
+			'betterlytics-fonts',
+			'https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Inter+Tight:wght@400..700&display=swap',
+			[],
+			$this->version,
+			'all'
+		);
+
 		wp_enqueue_style(
 			$this->plugin_name,
 			BETTERLYTICS_PLUGIN_URL . 'admin/css/betterlytics-admin.tailwind.css',
-			[],
+			[ 'betterlytics-fonts' ],
 			$this->version,
 			'all'
 		);

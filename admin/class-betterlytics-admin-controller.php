@@ -119,9 +119,22 @@ class Betterlytics_Admin_Controller {
 
 					<div class="betterlytics-admin-content p-12">
 					<?php
-					$file = BETTERLYTICS_PLUGIN_DIR . "admin/partials/betterlytics-{$tab}-display.php";
-					if ( file_exists( $file ) ) {
-						include $file;
+					// Try to load from new views structure first.
+					$view_file = BETTERLYTICS_PLUGIN_DIR . "admin/components/views/{$tab}/page.php";
+					
+					if ( file_exists( $view_file ) ) {
+						// Pass common data to the view.
+						$args = [
+							'options' => $betterlytics_options,
+							'tab'     => $tab,
+						];
+						self::render_component_file( $view_file, $args );
+					} else {
+						// Fallback to old partials (legacy support during migration).
+						$file = BETTERLYTICS_PLUGIN_DIR . "admin/partials/betterlytics-{$tab}-display.php";
+						if ( file_exists( $file ) ) {
+							include $file;
+						}
 					}
 					?>
 				</div>
@@ -239,5 +252,31 @@ class Betterlytics_Admin_Controller {
 			esc_attr( $class ),
 			esc_attr__( 'View Documentation', 'betterlytics' )
 		);
+	}
+
+	/**
+	 * Render a component with arguments.
+	 *
+	 * @since 1.0.0
+	 * @param string $name Component name (e.g. 'ui/card' or 'views/events/list').
+	 * @param array  $args Arguments to pass to the component.
+	 */
+	public static function render_component( $name, $args = [] ) {
+		$file = BETTERLYTICS_PLUGIN_DIR . "admin/components/{$name}.php";
+		if ( file_exists( $file ) ) {
+			self::render_component_file( $file, $args );
+		}
+	}
+
+	/**
+	 * Internal helper to require the file with args exposed.
+	 *
+	 * @since 1.0.0
+	 * @param string $file Absolute path to file.
+	 * @param array  $args Arguments to extract.
+	 */
+	private static function render_component_file( $file, $args ) {
+		// Include file, logic within file can access $args directly.
+		include $file;
 	}
 }
