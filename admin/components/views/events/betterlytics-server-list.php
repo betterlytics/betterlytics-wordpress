@@ -127,8 +127,8 @@ if ( $betterlytics_has_woocommerce ) {
 
 // Loop through sections and render cards.
 foreach ( $betterlytics_sections as $betterlytics_index => $betterlytics_section ) {
-	// Capture the fields content or custom content
-	$content = '';
+	// Capture the fields content or custom content.
+	$betterlytics_content = '';
 	if ( ! empty( $betterlytics_section['is_custom'] ) ) {
 		$betterlytics_content = '<div class="betterlytics-custom-content">' . $betterlytics_section['children'] . '</div>';
 	} else {
@@ -141,7 +141,7 @@ foreach ( $betterlytics_sections as $betterlytics_index => $betterlytics_section
 		$betterlytics_content = ob_get_clean();
 	}
 
-	// Render separator if not first item
+	// Render separator if not first item.
 	if ( $betterlytics_index > 0 ) {
 		echo '<hr class="border-t border-border my-12">';
 	}

@@ -13,32 +13,32 @@
  * }
  */
 
-$title       = $args['title'] ?? '';
-$description = $args['description'] ?? '';
-$help_path   = $args['help_path'] ?? '';
-$children    = $args['children'] ?? '';
+$betterlytics_card_title       = $args['title'] ?? '';
+$betterlytics_card_description = $args['description'] ?? '';
+$betterlytics_card_help_path   = $args['help_path'] ?? '';
+$betterlytics_card_children    = $args['children'] ?? '';
 ?>
 <div class="betterlytics-event-card mb-12 last:mb-0">
 	<div class="mb-8">
 		<h1 class="text-2xl font-bold text-foreground tracking-tight mb-2 flex items-center gap-2">
-			<?php echo esc_html( $title ); ?>
+			<?php echo esc_html( $betterlytics_card_title ); ?>
 			<?php
-			if ( ! empty( $help_path ) ) {
-				echo Betterlytics_Admin_Controller::get_help_link( $help_path, 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			if ( ! empty( $betterlytics_card_help_path ) ) {
+				echo Betterlytics_Admin_Controller::get_help_link( $betterlytics_card_help_path, 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			?>
 		</h1>
-		<?php if ( ! empty( $description ) ) : ?>
+		<?php if ( ! empty( $betterlytics_card_description ) ) : ?>
 			<h4 class="text-sm text-muted-foreground font-medium max-w-[850px] leading-relaxed">
-				<?php echo esc_html( $description ); ?>
+				<?php echo esc_html( $betterlytics_card_description ); ?>
 			</h4>
 		<?php endif; ?>
 	</div>
 
-	<?php if ( ! empty( $children ) ) : ?>
+	<?php if ( ! empty( $betterlytics_card_children ) ) : ?>
 		<div class="bg-card border border-border rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
 			<div class="divide-y divide-border">
-				<?php echo $children; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo $betterlytics_card_children; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 		</div>
 	<?php endif; ?>

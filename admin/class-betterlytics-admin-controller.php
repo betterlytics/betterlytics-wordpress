@@ -120,20 +120,20 @@ class Betterlytics_Admin_Controller {
 					<div class="betterlytics-admin-content p-12">
 					<?php
 					// Try to load from new views structure first.
-					$view_file = BETTERLYTICS_PLUGIN_DIR . "admin/components/views/{$tab}/page.php";
+					$betterlytics_view_file = BETTERLYTICS_PLUGIN_DIR . "admin/components/views/{$tab}/betterlytics-page.php";
 
-					if ( file_exists( $view_file ) ) {
+					if ( file_exists( $betterlytics_view_file ) ) {
 						// Pass common data to the view.
-						$args = [
+						$betterlytics_args = [
 							'options' => $betterlytics_options,
 							'tab'     => $tab,
 						];
-						self::render_component_file( $view_file, $args );
+						self::render_component_file( $betterlytics_view_file, $betterlytics_args );
 					} else {
 						// Fallback to old partials (legacy support during migration).
-						$file = BETTERLYTICS_PLUGIN_DIR . "admin/partials/betterlytics-{$tab}-display.php";
-						if ( file_exists( $file ) ) {
-							include $file;
+						$betterlytics_file = BETTERLYTICS_PLUGIN_DIR . "admin/partials/betterlytics-{$tab}-display.php";
+						if ( file_exists( $betterlytics_file ) ) {
+							include $betterlytics_file;
 						}
 					}
 					?>
@@ -262,9 +262,13 @@ class Betterlytics_Admin_Controller {
 	 * @param array  $args Arguments to pass to the component.
 	 */
 	public static function render_component( $name, $args = [] ) {
-		$file = BETTERLYTICS_PLUGIN_DIR . "admin/components/{$name}.php";
-		if ( file_exists( $file ) ) {
-			self::render_component_file( $file, $args );
+		$betterlytics_dir  = dirname( $name );
+		$betterlytics_file = basename( $name );
+		// Enforce prefix: ui/card -> ui/betterlytics-card.php.
+		$betterlytics_path = BETTERLYTICS_PLUGIN_DIR . "admin/components/{$betterlytics_dir}/betterlytics-{$betterlytics_file}.php";
+
+		if ( file_exists( $betterlytics_path ) ) {
+			self::render_component_file( $betterlytics_path, $args );
 		}
 	}
 

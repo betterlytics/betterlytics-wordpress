@@ -17,7 +17,7 @@ $betterlytics_options = $args['options'];
  * BROWSER EVENTS TAB - Section Definitions
  * =============================================================================
  */
-$sections = [
+$betterlytics_sections = [
 	[
 		'title'       => __( 'Page Events', 'betterlytics' ),
 		'description' => __( 'Configure tracking for standard page interactions and performance metrics.', 'betterlytics' ),
@@ -81,29 +81,29 @@ $sections = [
 	],
 ];
 
-// Loop through sections and render cards
-foreach ( $sections as $index => $section ) {
-	// Capture the fields content
+// Loop through sections and render cards.
+foreach ( $betterlytics_sections as $betterlytics_index => $betterlytics_section ) {
+	// Capture the fields content.
 	ob_start();
-	if ( ! empty( $section['fields'] ) ) {
-		foreach ( $section['fields'] as $field ) {
-			Betterlytics_Admin_Controller::render_component( 'ui/setting-row', $field );
+	if ( ! empty( $betterlytics_section['fields'] ) ) {
+		foreach ( $betterlytics_section['fields'] as $betterlytics_field ) {
+			Betterlytics_Admin_Controller::render_component( 'ui/setting-row', $betterlytics_field );
 		}
 	}
-	$fields_html = ob_get_clean();
+	$betterlytics_fields_html = ob_get_clean();
 
-	// Render separator if not first item
-	if ( $index > 0 ) {
+	// Render separator if not first item.
+	if ( $betterlytics_index > 0 ) {
 		echo '<hr class="border-t border-border my-12">';
 	}
 
 	Betterlytics_Admin_Controller::render_component(
 		'ui/card',
 		[
-			'title'       => $section['title'],
-			'description' => $section['description'],
-			'help_path'   => $section['help_path'] ?? '',
-			'children'    => $fields_html,
+			'title'       => $betterlytics_section['title'],
+			'description' => $betterlytics_section['description'],
+			'help_path'   => $betterlytics_section['help_path'] ?? '',
+			'children'    => $betterlytics_fields_html,
 		]
 	);
 }

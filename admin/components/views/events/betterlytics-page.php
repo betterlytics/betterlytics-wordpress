@@ -13,12 +13,12 @@
  * }
  */
 
-$betterlytics_options = $args['options'];
-$betterlytics_current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser';
+$betterlytics_options        = $args['options'];
+$betterlytics_current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 // Determine dashboard text and link.
 $betterlytics_dashboard_text = '';
-$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboards';
+$betterlytics_dashboard_url  = 'https://www.betterlytics.io/dashboards';
 if ( ! empty( $betterlytics_options['site_id'] ) ) {
 	$betterlytics_dashboard_url .= '/' . esc_attr( $betterlytics_options['site_id'] );
 }
