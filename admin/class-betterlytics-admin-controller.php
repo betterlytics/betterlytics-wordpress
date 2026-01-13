@@ -279,7 +279,7 @@ class Betterlytics_Admin_Controller {
 	 * @param string $file Absolute path to file.
 	 * @param array  $args Arguments to extract.
 	 */
-	private static function render_component_file( $file, $args ) {
+	private static function render_component_file( $file, $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- Args are used in the included file.
 		// Include file, logic within file can access $args directly.
 		include $file;
 	}
