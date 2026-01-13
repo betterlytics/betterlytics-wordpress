@@ -47,6 +47,8 @@
 .betterlytics-admin-root {
 	--wp-admin-bar-height: 32px;
 	--wp-sidebar-width: 160px;
+	position: relative;
+	min-height: 100vh;
 }
 
 .folded .betterlytics-admin-root {
@@ -65,9 +67,11 @@
 	margin: 0 !important;
 	padding: 72px 48px 48px 48px !important;
 	max-width: none !important;
+	position: relative;
+	z-index: 1;
 }
 
-/* Fixed Banner Positioning (Tricky with WP sidebar) */
+/* Fixed Banner Positioning */
 .betterlytics-setup-banner {
 	position: fixed !important;
 	top: var(--wp-admin-bar-height) !important;
@@ -76,35 +80,7 @@
 	z-index: 99999 !important;
 	margin: 0 !important;
 	height: 54px !important;
-	transition: left 0.15s;
-}
-
-/* Sub-Tab Navigation (Events Page) */
-.betterlytics-subtabs {
-	display: flex;
-	gap: 0.5rem;
-	background: var(--muted);
-	padding: 0.25rem;
-	border-radius: 10px;
-	margin-bottom: 2.5rem;
-	width: fit-content;
-	border: 1px solid var(--border);
-}
-
-.betterlytics-subtab {
-	padding: 0.5rem 1.25rem;
-	text-decoration: none;
-	color: var(--muted-foreground);
-	font-weight: 600;
-	font-size: 0.875rem;
-	border-radius: 8px;
-	transition: all 0.2s;
-}
-
-.betterlytics-subtab.active {
-	color: var(--primary);
-	background: white;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	transition: all 0.15s ease-in-out;
 }
 
 /* Tab Content Visibility */
@@ -114,20 +90,6 @@
 
 .betterlytics-tab-content.active {
 	display: block !important;
-}
-
-/* Sticky Footer */
-.betterlytics-sticky-footer {
-	position: sticky;
-	bottom: 0px;
-	left: 0;
-	right: 0;
-	background: rgba(255, 255, 255, 0.9);
-	backdrop-filter: blur(12px);
-	padding: 2rem 3rem;
-	border-top: 1px solid var(--border);
-	z-index: 100;
-	margin: 2rem -3rem -3rem -3rem;
 }
 
 /* Help Icons */
@@ -144,4 +106,36 @@
 	text-decoration: none;
 	vertical-align: middle;
 	transition: all 0.2s;
+}
+
+/* Global Sticky Footer */
+.betterlytics-admin-root .betterlytics-sticky-footer {
+	position: fixed !important;
+	bottom: 0 !important;
+	left: var(--wp-sidebar-width) !important;
+	right: 0 !important;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(16px);
+	padding: 20px 48px !important;
+	border-top: 1px solid var(--border);
+	z-index: 9998 !important; /* Just below banner's layer if needed, but above content */
+	display: flex;
+	justify-content: center;
+	box-shadow: 0 -10px 40px rgba(0,0,0,0.04);
+	transition: all 0.15s ease-in-out;
+}
+
+/* Ensure content doesn't get hidden behind the fixed footer */
+.betterlytics-admin-root .pb-24 {
+	padding-bottom: 140px !important;
+}
+
+/* Fix WP Table Collision with Tailwind - Aggressive Reset */
+.betterlytics-admin-root table.wp-list-table {
+	position: static !important;
+	table-layout: auto !important;
+}
+
+.betterlytics-admin-root table.wp-list-table.table-fixed {
+	table-layout: fixed !important;
 }
