@@ -4,7 +4,7 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/views/events
- * 
+ *
  * @var array $args {
  *     @type array $options Plugin options.
  * }
@@ -92,15 +92,18 @@ foreach ( $sections as $index => $section ) {
 	}
 	$fields_html = ob_get_clean();
 
-    // Render separator if not first item
-    if ( $index > 0 ) {
+	// Render separator if not first item
+	if ( $index > 0 ) {
 		echo '<hr class="border-t border-border my-12">';
 	}
 
-	Betterlytics_Admin_Controller::render_component( 'ui/card', [
-		'title'       => $section['title'],
-		'description' => $section['description'],
-		'help_path'   => $section['help_path'] ?? '',
-		'children'    => $fields_html,
-	] );
+	Betterlytics_Admin_Controller::render_component(
+		'ui/card',
+		[
+			'title'       => $section['title'],
+			'description' => $section['description'],
+			'help_path'   => $section['help_path'] ?? '',
+			'children'    => $fields_html,
+		]
+	);
 }

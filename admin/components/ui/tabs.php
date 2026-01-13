@@ -4,7 +4,7 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/ui
- * 
+ *
  * @var array $args {
  *     @type array  $tabs        Associative array of slug => label.
  *     @type string $current_tab Key of the currently active tab.

@@ -4,7 +4,7 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/ui
- * 
+ *
  * @var array $args {
  *     @type string $title       Card title.
  *     @type string $description Optional. Card description.
@@ -37,9 +37,9 @@ $children    = $args['children'] ?? '';
 
 	<?php if ( ! empty( $children ) ) : ?>
 		<div class="bg-card border border-border rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
-            <div class="divide-y divide-border">
-			    <?php echo $children; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            </div>
+			<div class="divide-y divide-border">
+				<?php echo $children; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</div>
 		</div>
 	<?php endif; ?>
 </div>

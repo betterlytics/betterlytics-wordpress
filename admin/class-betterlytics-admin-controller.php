@@ -121,7 +121,7 @@ class Betterlytics_Admin_Controller {
 					<?php
 					// Try to load from new views structure first.
 					$view_file = BETTERLYTICS_PLUGIN_DIR . "admin/components/views/{$tab}/page.php";
-					
+
 					if ( file_exists( $view_file ) ) {
 						// Pass common data to the view.
 						$args = [

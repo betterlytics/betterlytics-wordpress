@@ -1,12 +1,12 @@
 <?php
 /**
  * View: Events Page
- * 
+ *
  * Main entry point for the "Events" tab.
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/views/events
- * 
+ *
  * @var array $args {
  *     @type array  $options Plugin options.
  *     @type string $tab     Current tab name ('events').
@@ -14,23 +14,23 @@
  */
 
 $betterlytics_options = $args['options'];
-$current_subtab       = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser';
+$betterlytics_current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser';
 
 // Determine dashboard text and link.
-$dashboard_text = '';
+$betterlytics_dashboard_text = '';
 $betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboards';
 if ( ! empty( $betterlytics_options['site_id'] ) ) {
 	$betterlytics_dashboard_url .= '/' . esc_attr( $betterlytics_options['site_id'] );
 }
-$dashboard_link = sprintf(
+$betterlytics_dashboard_link = sprintf(
 	'<a href="%s" target="_blank" class="text-primary font-bold hover:underline underline-offset-4 decoration-2">%s</a>',
 	esc_url( $betterlytics_dashboard_url ),
 	esc_html__( 'Betterlytics dashboard', 'betterlytics' )
 );
-$dashboard_text = sprintf(
+$betterlytics_dashboard_text = sprintf(
 	/* translators: %s: link to Betterlytics dashboard */
 	esc_html__( 'Configure which events to track on your site. View your tracked events on your %s.', 'betterlytics' ),
-	$dashboard_link
+	$betterlytics_dashboard_link
 );
 
 ?>
@@ -46,7 +46,7 @@ $dashboard_text = sprintf(
 				<?php echo Betterlytics_Admin_Controller::get_help_link( 'integration/custom-events', 'is-blue scale-110 relative top-[1px]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 			<p class="text-muted-foreground font-medium">
-				<?php echo $dashboard_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo $betterlytics_dashboard_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</p>
 		</div>
 	</div>
@@ -58,26 +58,29 @@ $dashboard_text = sprintf(
 			
 			<!-- Tabs Component -->
 			<?php
-			Betterlytics_Admin_Controller::render_component( 'ui/tabs', [
-				'tabs'        => [
-					'browser' => __( 'Browser Events', 'betterlytics' ),
-					'server'  => __( 'Server Hooks', 'betterlytics' ),
-				],
-				'current_tab' => $current_subtab,
-				'base_url'    => admin_url( 'options-general.php?page=betterlytics&tab=events' ),
-				'param_name'  => 'subtab',
-			]);
+			Betterlytics_Admin_Controller::render_component(
+				'ui/tabs',
+				[
+					'tabs'        => [
+						'browser' => __( 'Browser Events', 'betterlytics' ),
+						'server'  => __( 'Server Hooks', 'betterlytics' ),
+					],
+					'current_tab' => $betterlytics_current_subtab,
+					'base_url'    => admin_url( 'options-general.php?page=betterlytics&tab=events' ),
+					'param_name'  => 'subtab',
+				]
+			);
 			?>
 
 			<!-- Tab Content -->
 			<div class="flex-1 p-10 relative">
 				<!-- Browser Events Tab -->
-				<div id="tab-browser" class="betterlytics-tab-content <?php echo 'browser' === $current_subtab ? 'active' : ''; ?>">
+				<div id="tab-browser" class="betterlytics-tab-content <?php echo 'browser' === $betterlytics_current_subtab ? 'active' : ''; ?>">
 					<?php Betterlytics_Admin_Controller::render_component( 'views/events/browser-list', [ 'options' => $betterlytics_options ] ); ?>
 				</div>
 
 				<!-- Server Hooks Tab -->
-				<div id="tab-server" class="betterlytics-tab-content <?php echo 'server' === $current_subtab ? 'active' : ''; ?>">
+				<div id="tab-server" class="betterlytics-tab-content <?php echo 'server' === $betterlytics_current_subtab ? 'active' : ''; ?>">
 					<?php Betterlytics_Admin_Controller::render_component( 'views/events/server-list', [ 'options' => $betterlytics_options ] ); ?>
 				</div>
 			</div>

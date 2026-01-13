@@ -4,7 +4,7 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/ui
- * 
+ *
  * @var array $args {
  *     @type string $label       Setting label.
  *     @type string $name        Input name attribute.

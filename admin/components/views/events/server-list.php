@@ -4,7 +4,7 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/views/events
- * 
+ *
  * @var array $args {
  *     @type array $options Plugin options.
  * }
@@ -37,33 +37,33 @@ ob_start();
 				<!-- Hooks will be rendered via JavaScript -->
 			</tbody>
 		</table>
-        
-        <!-- Add Hook Button Area -->
-        <div class="bg-card p-4 flex items-center justify-between border-t border-border">
-            <a href="https://betterlytics.io/docs/integration/custom-events" target="_blank" class="text-xs text-muted-foreground hover:text-primary font-bold flex items-center gap-1.5 transition-colors no-underline">
-                <span class="dashicons dashicons-book !w-auto !h-auto !text-sm leading-none"></span>
-                <?php esc_html_e( 'Learn how to map custom hooks', 'betterlytics' ); ?>
-                <span class="dashicons dashicons-external !w-auto !h-auto !text-[10px] leading-none opacity-70"></span>
-            </a>
+		
+		<!-- Add Hook Button Area -->
+		<div class="bg-card p-4 flex items-center justify-between border-t border-border">
+			<a href="https://betterlytics.io/docs/integration/custom-events" target="_blank" class="text-xs text-muted-foreground hover:text-primary font-bold flex items-center gap-1.5 transition-colors no-underline">
+				<span class="dashicons dashicons-book !w-auto !h-auto !text-sm leading-none"></span>
+				<?php esc_html_e( 'Learn how to map custom hooks', 'betterlytics' ); ?>
+				<span class="dashicons dashicons-external !w-auto !h-auto !text-[10px] leading-none opacity-70"></span>
+			</a>
 
-            <button type="button" class="button button-secondary !flex items-center gap-2 !px-5 !py-1.5 !h-auto !text-sm !font-bold rounded-lg border-border hover:bg-muted transition-all" id="betterlytics-add-hook">
-                <span class="dashicons dashicons-plus !text-xs !w-3.5 !h-3.5 !leading-none"></span>
-                <?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
-            </button>
-        </div>
+			<button type="button" class="button button-secondary !flex items-center gap-2 !px-5 !py-1.5 !h-auto !text-sm !font-bold rounded-lg border-border hover:bg-muted transition-all" id="betterlytics-add-hook">
+				<span class="dashicons dashicons-plus !text-xs !w-3.5 !h-3.5 !leading-none"></span>
+				<?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
+			</button>
+		</div>
 	</div>
 </div>
 <?php
 $betterlytics_hooks_mapper_content = ob_get_clean();
 
-$sections = [
+$betterlytics_sections = [
 	[
 		'title'       => __( 'Custom Hooks Mapper', 'betterlytics' ),
 		'description' => __( 'Map any WordPress action hook to a Betterlytics event.', 'betterlytics' ),
 		'children'    => $betterlytics_hooks_mapper_content,
 		'fields'      => [],
 		'help_path'   => 'integration/custom-events',
-		'is_custom'   => true, // Flag to indicate custom content rendering
+		'is_custom'   => true, // Flag to indicate custom content rendering.
 	],
 	[
 		'title'       => __( 'WordPress User Management', 'betterlytics' ),
@@ -93,7 +93,7 @@ $sections = [
 
 // Add WooCommerce section if available.
 if ( $betterlytics_has_woocommerce ) {
-	$sections[] = [
+	$betterlytics_sections[] = [
 		'title'       => __( 'WooCommerce Events', 'betterlytics' ),
 		'description' => __( 'Automatically bridge WooCommerce actions to analytics events.', 'betterlytics' ),
 		'fields'      => [
@@ -125,31 +125,34 @@ if ( $betterlytics_has_woocommerce ) {
 	];
 }
 
-// Loop through sections and render cards
-foreach ( $sections as $index => $section ) {
+// Loop through sections and render cards.
+foreach ( $betterlytics_sections as $betterlytics_index => $betterlytics_section ) {
 	// Capture the fields content or custom content
 	$content = '';
-	if ( ! empty( $section['is_custom'] ) ) {
-		$content = '<div class="betterlytics-custom-content">' . $section['children'] . '</div>';
+	if ( ! empty( $betterlytics_section['is_custom'] ) ) {
+		$betterlytics_content = '<div class="betterlytics-custom-content">' . $betterlytics_section['children'] . '</div>';
 	} else {
 		ob_start();
-		if ( ! empty( $section['fields'] ) ) {
-			foreach ( $section['fields'] as $field ) {
-				Betterlytics_Admin_Controller::render_component( 'ui/setting-row', $field );
+		if ( ! empty( $betterlytics_section['fields'] ) ) {
+			foreach ( $betterlytics_section['fields'] as $betterlytics_field ) {
+				Betterlytics_Admin_Controller::render_component( 'ui/setting-row', $betterlytics_field );
 			}
 		}
-		$content = ob_get_clean();
+		$betterlytics_content = ob_get_clean();
 	}
 
-    // Render separator if not first item
-    if ( $index > 0 ) {
+	// Render separator if not first item
+	if ( $betterlytics_index > 0 ) {
 		echo '<hr class="border-t border-border my-12">';
 	}
 
-	Betterlytics_Admin_Controller::render_component( 'ui/card', [
-		'title'       => $section['title'],
-		'description' => $section['description'],
-		'help_path'   => $section['help_path'] ?? '',
-		'children'    => $content,
-	] );
+	Betterlytics_Admin_Controller::render_component(
+		'ui/card',
+		[
+			'title'       => $betterlytics_section['title'],
+			'description' => $betterlytics_section['description'],
+			'help_path'   => $betterlytics_section['help_path'] ?? '',
+			'children'    => $betterlytics_content,
+		]
+	);
 }
