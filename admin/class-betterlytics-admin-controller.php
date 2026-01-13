@@ -68,10 +68,10 @@ class Betterlytics_Admin_Controller {
 			return;
 		}
 
-		$tab                            = $this->get_current_tab();
-		$betterlytics_options           = Betterlytics_Options::get_options();
-		$betterlytics_setup_incomplete  = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
-		
+		$tab                           = $this->get_current_tab();
+		$betterlytics_options          = Betterlytics_Options::get_options();
+		$betterlytics_setup_incomplete = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
+
 		$betterlytics_show_setup_banner = $betterlytics_setup_incomplete;
 		?>
 		<div id="betterlytics-admin-root" class="betterlytics-admin-root">

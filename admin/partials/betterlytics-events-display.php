@@ -19,7 +19,7 @@ $betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed(
 $betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
 
 /**
- * Renders a unified Event Card section.
+ * Renders an unified Event Card section.
  *
  * @param array $section Section configuration.
  * @param bool  $show_separator Whether to show separator before section.
@@ -229,7 +229,7 @@ $betterlytics_server_sections = [
 	],
 	[
 		'title'       => __( 'WordPress User Management', 'betterlytics' ),
-		'description'    => __( 'Track essential WordPress user lifecycle events.', 'betterlytics' ),
+		'description' => __( 'Track essential WordPress user lifecycle events.', 'betterlytics' ),
 		'fields'      => [
 			[
 				'label'       => __( 'User Login', 'betterlytics' ),
@@ -318,7 +318,8 @@ if ( $betterlytics_has_woocommerce ) {
 		<?php settings_fields( 'betterlytics_events' ); ?>
 
 		<?php
-		$current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not required for UI tab switching via GET.
+		$betterlytics_current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser';
 		?>
 		
 		<div class="bg-card border border-border rounded-2xl shadow-sm flex flex-col min-h-[600px] mb-8">
@@ -326,29 +327,29 @@ if ( $betterlytics_has_woocommerce ) {
 			<div class="bg-muted/30 border-b border-border p-6 flex items-center justify-between">
 				<nav class="betterlytics-subtabs flex gap-2 bg-muted/50 p-1 rounded-xl border border-border/50 no-scrollbar overflow-x-auto">
 					<?php
-					$subtabs = [
+					$betterlytics_subtabs = [
 						'browser' => __( 'Browser Events', 'betterlytics' ),
 						'server'  => __( 'Server Hooks', 'betterlytics' ),
 					];
-					foreach ( $subtabs as $subtab_key => $subtab_label ) :
-						$is_active = $current_subtab === $subtab_key;
+					foreach ( $betterlytics_subtabs as $betterlytics_subtab_key => $betterlytics_subtab_label ) :
+						$betterlytics_is_active = $betterlytics_current_subtab === $betterlytics_subtab_key;
 						?>
-						<a href="?page=betterlytics&tab=events&subtab=<?php echo esc_attr( $subtab_key ); ?>" 
-						   class="betterlytics-subtab px-6 py-2 text-sm font-bold rounded-lg transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-black/5 [.active]:text-primary [.active]:bg-card [.active]:shadow-sm [.active]:border [.active]:border-border/50 <?php echo $is_active ? 'active' : ''; ?>" 
-						   data-tab="<?php echo esc_attr( $subtab_key ); ?>">
-							<?php echo esc_html( $subtab_label ); ?>
+						<a href="?page=betterlytics&tab=events&subtab=<?php echo esc_attr( $betterlytics_subtab_key ); ?>" 
+							class="betterlytics-subtab px-6 py-2 text-sm font-bold rounded-lg transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-black/5 [.active]:text-primary [.active]:bg-card [.active]:shadow-sm [.active]:border [.active]:border-border/50 <?php echo $betterlytics_is_active ? 'active' : ''; ?>" 
+							data-tab="<?php echo esc_attr( $betterlytics_subtab_key ); ?>">
+							<?php echo esc_html( $betterlytics_subtab_label ); ?>
 						</a>
 					<?php endforeach; ?>
 				</nav>
 				<div class="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest hidden sm:block">
-					<?php echo 'browser' === $current_subtab ? esc_html__( 'Client-side', 'betterlytics' ) : esc_html__( 'Server-side', 'betterlytics' ); ?>
+					<?php echo 'browser' === $betterlytics_current_subtab ? esc_html__( 'Client-side', 'betterlytics' ) : esc_html__( 'Server-side', 'betterlytics' ); ?>
 				</div>
 			</div>
 
 			<!-- Multi-tab Card Body -->
 			<div class="flex-1 p-10 relative">
 				<!-- Browser Events Tab -->
-				<div id="tab-browser" class="betterlytics-tab-content <?php echo 'browser' === $current_subtab ? 'active' : ''; ?>">
+				<div id="tab-browser" class="betterlytics-tab-content <?php echo 'browser' === $betterlytics_current_subtab ? 'active' : ''; ?>">
 					<?php
 					foreach ( $betterlytics_browser_sections as $betterlytics_index => $betterlytics_section ) {
 						betterlytics_render_event_card( $betterlytics_section, $betterlytics_index > 0 );
@@ -357,7 +358,7 @@ if ( $betterlytics_has_woocommerce ) {
 				</div>
 
 				<!-- Server Hooks Tab -->
-				<div id="tab-server" class="betterlytics-tab-content <?php echo 'server' === $current_subtab ? 'active' : ''; ?>">
+				<div id="tab-server" class="betterlytics-tab-content <?php echo 'server' === $betterlytics_current_subtab ? 'active' : ''; ?>">
 					<?php
 					foreach ( $betterlytics_server_sections as $betterlytics_index => $betterlytics_section ) {
 						betterlytics_render_event_card( $betterlytics_section, $betterlytics_index > 0 );
@@ -369,7 +370,18 @@ if ( $betterlytics_has_woocommerce ) {
 
 		<!-- Global Sticky Footer -->
 		<div class="betterlytics-sticky-footer">
-			<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings', 'class' => 'button-primary !py-3.5 !px-16 !h-auto !text-base !font-bold rounded-xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]' ] ); ?>
+			<?php
+			submit_button(
+				__( 'Save Settings', 'betterlytics' ),
+				'primary',
+				'submit',
+				false,
+				[
+					'id'    => 'betterlytics-save-settings',
+					'class' => 'button-primary !py-3.5 !px-16 !h-auto !text-base !font-bold rounded-xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]',
+				]
+			);
+			?>
 		</div>
 	</form>
 </div>

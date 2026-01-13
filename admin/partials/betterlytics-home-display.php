@@ -16,7 +16,7 @@ $betterlytics_options     = Betterlytics_Options::get_options();
 $betterlytics_is_enabled  = ! empty( $betterlytics_options['enabled'] );
 $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 ?>
-	<?php include BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-setup-guide.php'; ?>
+	<?php require BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-setup-guide.php'; ?>
 
 	<div class="betterlytics-resources mt-8">
 		<h2 class="text-lg font-semibold mb-4 pb-2 border-b border-border"><?php esc_html_e( 'Resources', 'betterlytics' ); ?></h2>

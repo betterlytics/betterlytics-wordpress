@@ -165,7 +165,18 @@ $betterlytics_options = Betterlytics_Options::get_options();
 
 		<!-- Global Sticky Footer -->
 		<div class="betterlytics-sticky-footer">
-			<?php submit_button( __( 'Save Settings', 'betterlytics' ), 'primary', 'submit', false, [ 'id' => 'betterlytics-save-settings', 'class' => 'button-primary !py-3.5 !px-16 !h-auto !text-base !font-bold rounded-xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]' ] ); ?>
+			<?php
+			submit_button(
+				__( 'Save Settings', 'betterlytics' ),
+				'primary',
+				'submit',
+				false,
+				[
+					'id'    => 'betterlytics-save-settings',
+					'class' => 'button-primary !py-3.5 !px-16 !h-auto !text-base !font-bold rounded-xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]',
+				]
+			);
+			?>
 		</div>
 	</form>
 </div>
