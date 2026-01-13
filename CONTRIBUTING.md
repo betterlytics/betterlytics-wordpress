@@ -5,6 +5,7 @@ Thank you for your interest in contributing! This guide will help you get set up
 ## Requirements
 
 - [Docker](https://docs.docker.com/get-docker/) & Docker Compose
+- [pnpm](https://pnpm.io/) (for CSS development)
 
 ## Quick Start
 
@@ -14,6 +15,9 @@ cp .env.example .env
 
 # Start WordPress development environment
 docker compose up -d
+
+# Install CSS dependencies
+pnpm install
 ```
 
 WordPress will be available at **http://localhost:8888** (or the port you set in `.env`).
@@ -50,6 +54,17 @@ docker compose --profile build run --rm build
 
 # Clean up everything (including volumes)
 docker compose down -v
+
+# --- CSS Development ---
+
+# Install dependencies
+pnpm install
+
+# Build CSS once
+pnpm run build:css
+
+# Watch for CSS changes during development
+pnpm run watch:css
 ```
 
 ## Running Tests
@@ -131,6 +146,17 @@ docker compose --profile demo down
 docker compose --profile demo down -v
 ```
 
+## CSS Development
+
+The plugin uses **Tailwind CSS v4** for its admin interface. To make changes to the styling:
+
+1.  **Edit the Source**: Modify `admin/css/betterlytics-admin.src.css`. This file contains the Tailwind directives and any custom CSS components.
+2.  **Run the Build**: Use `pnpm run build:css` to compile the source file into `admin/css/betterlytics-admin.css`.
+3.  **Active Development**: Run `pnpm run watch:css` in a separate terminal to automatically recompile CSS whenever you save a PHP template or the source CSS file.
+
+> [!IMPORTANT]
+> Do not modify `admin/css/betterlytics-admin.css` directly, as it is overwritten during the build process.
+
 ## Coding Standards
 
 This plugin follows the [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/). The configuration is in `phpcs.xml.dist`.
@@ -150,7 +176,12 @@ betterlytics-wordpress/
 ├── admin/                    # Admin-specific functionality
 │   ├── css/                  # Admin stylesheets
 │   ├── js/                   # Admin JavaScript
-│   ├── partials/             # Admin view templates
+│   ├── components/           # Component-based UI Architecture
+│   │   ├── ui/               # Base reusable components (Card, Button, etc.)
+│   │   └── views/            # Feature-specific page views
+│   │       ├── events/       # Events tab views
+│   │       └── settings/     # Settings tab views
+│   ├── partials/             # Admin view templates (Legacy/Fallback)
 │   └── class-betterlytics-admin.php
 ├── includes/                 # Core plugin classes
 │   ├── class-betterlytics.php
@@ -172,7 +203,11 @@ betterlytics-wordpress/
 ├── docker-compose.yml        # Docker development environment
 ├── Dockerfile.test           # Test runner container
 ├── composer.json             # PHP dependencies
+├── package.json              # JS dependencies (Tailwind, PostCSS)
+├── pnpm-lock.yaml            # pnpm lockfile
 ├── phpcs.xml.dist            # PHPCS configuration
+├── postcss.config.js         # PostCSS configuration
+├── tailwind.config.js        # Tailwind configuration
 └── phpunit.xml.dist          # PHPUnit configuration
 ```
 

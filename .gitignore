@@ -1,5 +1,11 @@
 # Dependencies
 /vendor/
+/node_modules/
+.pnpm-debug.log*
+
+# CSS Backups
+admin/css/*.tailwind.css
+admin/css/*.bak
 
 # Build artifacts
 /build/

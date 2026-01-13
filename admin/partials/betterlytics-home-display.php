@@ -16,91 +16,26 @@ $betterlytics_options     = Betterlytics_Options::get_options();
 $betterlytics_is_enabled  = ! empty( $betterlytics_options['enabled'] );
 $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 ?>
+	<?php require BETTERLYTICS_PLUGIN_DIR . 'admin/partials/betterlytics-setup-guide.php'; ?>
 
-	<div class="betterlytics-setup-steps">
-
-		<div class="betterlytics-step <?php echo $betterlytics_has_site_id ? 'completed' : 'current'; ?>">
-			<div class="step-number">1</div>
-			<div class="step-content">
-				<h3><?php esc_html_e( 'Get your Site ID', 'betterlytics' ); ?></h3>
-				<p>
-					<?php
-					printf(
-						/* translators: %s: link to Betterlytics dashboard */
-						esc_html__( 'Sign up or log in to your %s to get your unique Site ID.', 'betterlytics' ),
-						'<a href="https://www.betterlytics.io/dashboards" target="_blank">' . esc_html__( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
-					);
-					?>
-				</p>
-				<?php if ( ! $betterlytics_has_site_id ) : ?>
-				<p>
-					<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=settings' ) ); ?>" class="button button-primary">
-						<?php esc_html_e( 'Enter Site ID', 'betterlytics' ); ?>
-					</a>
-				</p>
-				<?php else : ?>
-				<p class="step-status">
-					<span class="dashicons dashicons-yes-alt"></span>
-					<?php esc_html_e( 'Site ID configured', 'betterlytics' ); ?>
-				</p>
-				<?php endif; ?>
-			</div>
-		</div>
-
-		<div class="betterlytics-step <?php echo $betterlytics_has_site_id ? ( $betterlytics_is_enabled ? 'completed' : 'current' ) : ''; ?>">
-			<div class="step-number">2</div>
-			<div class="step-content">
-				<h3><?php esc_html_e( 'Enable tracking', 'betterlytics' ); ?></h3>
-				<p><?php esc_html_e( 'Turn on tracking to start collecting analytics data.', 'betterlytics' ); ?></p>
-				<?php if ( $betterlytics_has_site_id && ! $betterlytics_is_enabled ) : ?>
-				<p>
-					<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=settings' ) ); ?>" class="button button-primary">
-						<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
-					</a>
-				</p>
-				<?php elseif ( $betterlytics_is_enabled ) : ?>
-				<p class="step-status">
-					<span class="dashicons dashicons-yes-alt"></span>
-					<?php esc_html_e( 'Tracking enabled', 'betterlytics' ); ?>
-				</p>
-				<?php endif; ?>
-			</div>
-		</div>
-
-		<div class="betterlytics-step <?php echo ( $betterlytics_has_site_id && $betterlytics_is_enabled ) ? 'current' : ''; ?>">
-			<div class="step-number">3</div>
-			<div class="step-content">
-				<h3><?php esc_html_e( 'Configure events (optional)', 'betterlytics' ); ?></h3>
-				<p><?php esc_html_e( 'Set up event tracking for downloads, outbound links, WooCommerce, and more.', 'betterlytics' ); ?></p>
-				<?php if ( $betterlytics_has_site_id && $betterlytics_is_enabled ) : ?>
-				<p>
-					<a href="<?php echo esc_url( admin_url( 'options-general.php?page=betterlytics&tab=events' ) ); ?>" class="button">
-						<?php esc_html_e( 'Configure Events', 'betterlytics' ); ?>
-					</a>
-				</p>
-				<?php endif; ?>
-			</div>
-		</div>
-	</div>
-
-	<div class="betterlytics-resources">
-		<h2><?php esc_html_e( 'Resources', 'betterlytics' ); ?></h2>
-		<ul>
+	<div class="betterlytics-resources mt-8">
+		<h2 class="text-lg font-semibold mb-4 pb-2 border-b border-border"><?php esc_html_e( 'Resources', 'betterlytics' ); ?></h2>
+		<ul class="bg-card border border-border rounded-md divide-y divide-border list-none p-0 m-0">
 			<li>
-				<a href="https://www.betterlytics.io/docs" target="_blank">
-					<span class="dashicons dashicons-book"></span>
+				<a href="https://www.betterlytics.io/docs" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+					<span class="dashicons dashicons-book text-muted-foreground"></span>
 					<?php esc_html_e( 'Documentation', 'betterlytics' ); ?>
 				</a>
 			</li>
 			<li>
-				<a href="https://www.betterlytics.io/dashboards" target="_blank">
-					<span class="dashicons dashicons-chart-bar"></span>
+				<a href="https://www.betterlytics.io/dashboards" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+					<span class="dashicons dashicons-chart-bar text-muted-foreground"></span>
 					<?php esc_html_e( 'Betterlytics Dashboard', 'betterlytics' ); ?>
 				</a>
 			</li>
 			<li>
-				<a href="https://github.com/betterlytics/betterlytics-wordpress" target="_blank">
-					<span class="dashicons dashicons-editor-code"></span>
+				<a href="https://github.com/betterlytics/betterlytics-wordpress" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+					<span class="dashicons dashicons-editor-code text-muted-foreground"></span>
 					<?php esc_html_e( 'GitHub Repository', 'betterlytics' ); ?>
 				</a>
 			</li>
