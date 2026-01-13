@@ -92,6 +92,15 @@
 	display: block !important;
 }
 
+/* Metadata Row Visibility */
+.betterlytics-metadata-row {
+	display: none !important;
+}
+
+.betterlytics-metadata-row.active {
+	display: table-row !important;
+}
+
 /* Help Icons */
 .betterlytics-help-icon {
 	display: inline-flex;

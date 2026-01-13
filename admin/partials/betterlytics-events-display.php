@@ -54,7 +54,7 @@ function betterlytics_render_section( $section, $show_separator = false ) {
 					<tbody class="divide-y divide-border">
 						<?php foreach ( $section['fields'] as $field ) : ?>
 							<tr class="hover:bg-muted/5 transition-colors">
-								<th scope="row" class="w-[300px] py-6 px-10 text-left align-middle border-none">
+								<th scope="row" class="w-[300px] py-6 !pl-10 !pr-6 text-left align-middle border-none">
 									<span class="flex items-center gap-2 font-semibold text-foreground">
 										<?php echo esc_html( $field['label'] ); ?>
 										<?php

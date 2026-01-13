@@ -50,7 +50,7 @@ $betterlytics_options = Betterlytics_Options::get_options();
 				<table class="form-table w-full m-0" role="presentation">
 					<tbody class="divide-y divide-border">
 						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 px-10 text-left align-top border-none">
+							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
 								<span class="flex items-center gap-2 font-semibold text-foreground">
 									<?php esc_html_e( 'Enable Tracking', 'betterlytics' ); ?>
 									<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -64,7 +64,7 @@ $betterlytics_options = Betterlytics_Options::get_options();
 							</td>
 						</tr>
 						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 px-10 text-left align-top border-none">
+							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
 								<span class="flex items-center gap-2 font-semibold text-foreground">
 									<?php esc_html_e( 'Site ID', 'betterlytics' ); ?>
 									<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -80,7 +80,7 @@ $betterlytics_options = Betterlytics_Options::get_options();
 							</td>
 						</tr>
 						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 px-10 text-left align-top border-none">
+							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
 								<span class="flex items-center gap-2 font-semibold text-foreground">
 									<?php esc_html_e( 'Server URL', 'betterlytics' ); ?>
 								</span>
@@ -95,7 +95,7 @@ $betterlytics_options = Betterlytics_Options::get_options();
 							</td>
 						</tr>
 						<tr class="hover:bg-muted/5 transition-colors">
-							<th scope="row" class="w-[300px] py-8 px-10 text-left align-top border-none">
+							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
 								<span class="flex items-center gap-2 font-semibold text-foreground">
 									<?php esc_html_e( 'Script URL', 'betterlytics' ); ?>
 								</span>
@@ -110,7 +110,7 @@ $betterlytics_options = Betterlytics_Options::get_options();
 							</td>
 						</tr>
 						<tr class="hover:bg-muted/5 transition-colors border-b-0">
-							<th scope="row" class="w-[300px] py-8 px-10 text-left align-top border-none">
+							<th scope="row" class="w-[300px] py-8 !pl-10 !pr-6 text-left align-top border-none">
 								<span class="flex items-center gap-2 font-semibold text-foreground">
 									<?php esc_html_e( 'Track Logged-in Users', 'betterlytics' ); ?>
 								</span>
