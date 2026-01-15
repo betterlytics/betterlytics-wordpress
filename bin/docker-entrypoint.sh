@@ -6,13 +6,13 @@ WP_CORE_DIR=${WP_CORE_DIR:-/tmp/wordpress}
 
 # Wait for MySQL to be ready
 echo "Waiting for MySQL..."
-while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" --silent; do
+while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" --skip-ssl --silent; do
     sleep 1
 done
 echo "MySQL is ready!"
 
 # Install WordPress test suite if not already installed
-if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ]; then
+if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ] || [ ! -f "$WP_CORE_DIR/wp-settings.php" ]; then
     echo "=========================================="
     echo "Installing WordPress test suite..."
     echo "=========================================="
@@ -28,11 +28,11 @@ if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ]; then
 
     # Download test suite
     echo "[2/4] Downloading test suite includes (this may take a minute)..."
-    svn export --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/includes/ "$WP_TESTS_DIR/includes"
+    svn export --force --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/includes/ "$WP_TESTS_DIR/includes"
     echo "      Done!"
 
     echo "[3/4] Downloading test suite data..."
-    svn export --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/data/ "$WP_TESTS_DIR/data"
+    svn export --force --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/data/ "$WP_TESTS_DIR/data"
     echo "      Done!"
 
     # Download wp-tests-config.php
@@ -47,6 +47,8 @@ if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ]; then
     sed -i "s/yourpasswordhere/$WORDPRESS_DB_PASSWORD/" "$WP_TESTS_DIR/wp-tests-config.php"
     sed -i "s|localhost|$WORDPRESS_DB_HOST|" "$WP_TESTS_DIR/wp-tests-config.php"
     echo "      Done!"
+    
+
 
     echo "=========================================="
     echo "WordPress test suite installed!"
@@ -56,7 +58,7 @@ else
 fi
 
 # Create database if it doesn't exist
-mysql -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $WORDPRESS_DB_NAME;" 2>/dev/null || true
+mysql -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" --skip-ssl -e "CREATE DATABASE IF NOT EXISTS $WORDPRESS_DB_NAME;" 2>/dev/null || true
 
 echo ""
 echo "Running PHPUnit..."
