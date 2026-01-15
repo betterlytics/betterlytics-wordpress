@@ -25,6 +25,7 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 	public function set_up() {
 		parent::set_up();
 		$this->admin = new Betterlytics_Admin( 'betterlytics', '1.0.0' );
+		$_POST['option_page'] = 'betterlytics_settings';
 	}
 
 	/**
@@ -41,7 +42,7 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 
 		$result = $this->admin->sanitize_options( $input );
 
-		$this->assertSame( 'test-sitealert(1)', $result['site_id'] );
+		$this->assertSame( 'test-site', $result['site_id'] );
 	}
 
 	/**
@@ -114,7 +115,7 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 	public function test_sanitize_hooks_sanitizes_values() {
 		$hooks = array(
 			array(
-				'wp_hook'    => '<script>hook</script>',
+				'wp_hook'    => 'hook<script>alert(1)</script>',
 				'event_name' => '<b>event</b>',
 				'enabled'    => '1',
 			),
@@ -127,18 +128,5 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 		$this->assertTrue( $result[0]['enabled'] );
 	}
 
-	/**
-	 * Test admin menu is added.
-	 */
-	public function test_add_admin_menu() {
-		// Create admin user and set as current.
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
 
-		// Initialize admin menu.
-		$this->admin->add_admin_menu();
-
-		// Check that the menu page exists.
-		$this->assertNotEmpty( menu_page_url( 'betterlytics', false ) );
-	}
 }

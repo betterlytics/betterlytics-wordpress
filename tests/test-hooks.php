@@ -219,7 +219,14 @@ class Test_Betterlytics_Hooks extends Betterlytics_Test_Case {
 		$wp_query->is_404 = true;
 		$wp->request      = 'nonprofit-page';
 
+		// Remove default WP redirects which cause "headers already sent" errors in tests.
+		remove_action( 'template_redirect', 'redirect_canonical' );
+		remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
+
+		// Output buffering to prevent "headers already sent" if template loads.
+		ob_start();
 		do_action( 'template_redirect' );
+		ob_end_clean();
 
 		$this->assertNotEmpty( $betterlytics_queued_events );
 		$this->assertSame( '404', $betterlytics_queued_events[0]['name'] );
@@ -249,7 +256,14 @@ class Test_Betterlytics_Hooks extends Betterlytics_Test_Case {
 		$wp_query->is_search = true;
 		$wp_query->set( 's', 'my search query' );
 
+		// Remove default WP redirects which cause "headers already sent" errors in tests.
+		remove_action( 'template_redirect', 'redirect_canonical' );
+		remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
+
+		// Output buffering to prevent "headers already sent" if template loads.
+		ob_start();
 		do_action( 'template_redirect' );
+		ob_end_clean();
 
 		$this->assertNotEmpty( $betterlytics_queued_events );
 		$this->assertSame( 'search', $betterlytics_queued_events[0]['name'] );

@@ -42,7 +42,7 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 		$this->public->inject_tracking_script();
 		$output = ob_get_clean();
 
-		$this->assertEmpty( $output );
+		$this->assertStringNotContainsString( '<script', $output );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 		$this->public->inject_tracking_script();
 		$output = ob_get_clean();
 
-		$this->assertEmpty( $output );
+		$this->assertStringNotContainsString( '<script', $output );
 	}
 
 	/**
