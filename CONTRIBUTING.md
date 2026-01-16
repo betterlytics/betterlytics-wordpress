@@ -70,6 +70,7 @@ pnpm run watch:css
 ## Running Tests
 
 ```bash
+# TESTT
 # Run all tests
 docker compose --profile test run --rm test
 
