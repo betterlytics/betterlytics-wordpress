@@ -151,7 +151,7 @@ docker compose --profile demo down -v
 The plugin uses **Tailwind CSS v4** for its admin interface. To make changes to the styling:
 
 1.  **Edit the Source**: Modify `admin/css/betterlytics-admin.src.css`. This file contains the Tailwind directives and any custom CSS components.
-2.  **Run the Build**: Use `pnpm run build:css` to compile the source file into `admin/css/betterlytics-admin.css`.
+2.  **Run the Build**: Use `pnpm run build:css` (or just `pnpm build:css`) to compile the source file into `admin/css/betterlytics-admin.css`.
 3.  **Active Development**: Run `pnpm run watch:css` in a separate terminal to automatically recompile CSS whenever you save a PHP template or the source CSS file.
 
 > [!IMPORTANT]
