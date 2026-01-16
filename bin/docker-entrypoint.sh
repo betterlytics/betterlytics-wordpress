@@ -12,7 +12,8 @@ done
 echo "MySQL is ready!"
 
 # Install WordPress test suite if not already installed
-if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ] || [ ! -f "$WP_CORE_DIR/wp-settings.php" ]; then
+# Check if test suite exists
+if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ]; then
     echo "=========================================="
     echo "Installing WordPress test suite..."
     echo "=========================================="
@@ -27,7 +28,7 @@ if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ] || [ ! -f "$WP_CORE_DIR/wp-se
     echo "      Done!"
 
     # Download test suite
-    echo "[2/4] Downloading test suite includes (this may take a minute)..."
+    echo "[2/4] Downloading test suite includes..."
     svn export --force --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/includes/ "$WP_TESTS_DIR/includes"
     echo "      Done!"
 
@@ -53,8 +54,15 @@ if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ] || [ ! -f "$WP_CORE_DIR/wp-se
     echo "=========================================="
     echo "WordPress test suite installed!"
     echo "=========================================="
+elif [ ! -f "$WP_CORE_DIR/wp-settings.php" ]; then
+    echo "=========================================="
+    echo "Restoring WordPress Core..."
+    echo "=========================================="
+    mkdir -p "$WP_CORE_DIR"
+    curl --progress-bar https://wordpress.org/latest.tar.gz | tar xz -C "$WP_CORE_DIR" --strip-components=1
+    echo "WordPress Core restored!"
 else
-    echo "Test suite already cached, skipping download."
+    echo "Test suite and WordPress Core already installed."
 fi
 
 # Create database if it doesn't exist
