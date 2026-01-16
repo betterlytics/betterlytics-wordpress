@@ -129,6 +129,7 @@ services:
       dockerfile: Dockerfile.test
     volumes:
       - .:/var/www/html/wp-content/plugins/betterlytics
+      - /var/www/html/wp-content/plugins/betterlytics/vendor
       - phpunit_cache:/tmp/wordpress-tests-lib
     depends_on:
       db-test:
