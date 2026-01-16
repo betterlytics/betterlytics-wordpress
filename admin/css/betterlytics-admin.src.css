@@ -114,6 +114,10 @@
 		--wp-admin-bar-height: 46px;
 		--wp-sidebar-width: 0px;
 	}
+	.betterlytics-admin-root {
+		--wp-admin-bar-height: 46px;
+		--wp-sidebar-width: 0px;
+	}
 }
 
 /* Reset standard WP wrap for immersive feel */

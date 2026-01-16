@@ -14,19 +14,17 @@ $betterlytics_options = $args['options'];
 
 ?>
 <div class="animate-in fade-in duration-500 pb-24">
-	<div class="flex items-center justify-between mb-8">
-		<div>
-			<div class="flex items-center gap-3 mb-2">
-				<h2 class="text-3xl font-bold text-foreground tracking-tight">
+			<div class="betterlytics-header-wrapper mb-6 relative">
+				<h2 class="text-3xl font-bold text-foreground tracking-tight inline-flex items-center gap-3">
 					<?php esc_html_e( 'General Settings', 'betterlytics' ); ?>
+					<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue scale-110 relative top-[1px]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</h2>
-				<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue scale-110 relative top-[1px]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
+
 			<p class="text-muted-foreground font-medium">
 				<?php esc_html_e( 'Configure your Betterlytics integration and tracking preferences.', 'betterlytics' ); ?>
 			</p>
-		</div>
-	</div>
+
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'betterlytics_settings' ); ?>

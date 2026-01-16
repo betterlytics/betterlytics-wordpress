@@ -30,7 +30,7 @@ ob_start();
 					<th scope="col" class="column-enabled py-4 px-6 border-b border-border text-center w-auto text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Enabled', 'betterlytics' ); ?></th>
 					<th scope="col" class="column-wp-hook py-4 px-6 border-b border-border text-left text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'WordPress Hook', 'betterlytics' ); ?></th>
 					<th scope="col" class="column-event-name py-4 px-6 border-b border-border text-left text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Event Name', 'betterlytics' ); ?></th>
-					<th scope="col" class="column-actions py-4 px-6 border-b border-border text-right w-[120px] text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
+					<th scope="col" class="column-actions py-4 px-6 border-b border-border text-left w-[140px] text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
 				</tr>
 			</thead>
 			<tbody id="betterlytics-hooks-list" class="divide-y divide-border">
@@ -47,7 +47,7 @@ ob_start();
 			</a>
 
 			<button type="button" class="button button-secondary !flex items-center gap-2 !px-5 !py-1.5 !h-auto !text-sm !font-bold rounded-lg border-border hover:bg-muted transition-all" id="betterlytics-add-hook">
-				<span class="dashicons dashicons-plus !text-xs !w-3.5 !h-3.5 !leading-none"></span>
+				<span class="dashicons dashicons-plus !text-lg !leading-none !flex !items-center !justify-center !w-5 !h-5 !m-0"></span>
 				<?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
 			</button>
 		</div>

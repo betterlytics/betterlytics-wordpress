@@ -192,8 +192,10 @@
 				'<input type="text" name="' + namePrefix + '[event_name]" class="regular-text event-name-input" value="' + this.escapeHtml( hook.event_name || '' ) + '" placeholder="Event Name">' +
 				'</td>' +
 				'<td class="column-actions">' +
-				'<button type="button" class="button button-small betterlytics-toggle-metadata" title="Configure Metadata"><span class="dashicons dashicons-admin-generic"></span></button> ' +
-				'<button type="button" class="button button-small betterlytics-delete-hook" title="Delete"><span class="dashicons dashicons-trash"></span></button>' +
+				'<div class="flex items-center justify-start gap-2 whitespace-nowrap">' +
+				'<button type="button" class="button button-small betterlytics-toggle-metadata !flex !items-center !justify-center !w-8 !h-8 !p-0" title="Configure Metadata"><span class="dashicons dashicons-admin-generic !leading-none !m-0"></span></button> ' +
+				'<button type="button" class="button button-small betterlytics-delete-hook !flex !items-center !justify-center !w-8 !h-8 !p-0" title="Delete"><span class="dashicons dashicons-trash !leading-none !m-0"></span></button>' +
+				'</div>' +
 				'</td>' +
 				'</tr>' +
 				'<tr class="betterlytics-metadata-row" data-index="' + index + '">' +
