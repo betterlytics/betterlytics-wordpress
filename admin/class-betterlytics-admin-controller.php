@@ -33,10 +33,6 @@ class Betterlytics_Admin_Controller {
 			'title' => 'Home',
 			'slug'  => 'home',
 		],
-		'events'   => [
-			'title' => 'Events',
-			'slug'  => 'events',
-		],
 		'settings' => [
 			'title' => 'Settings',
 			'slug'  => 'settings',
@@ -167,10 +163,10 @@ class Betterlytics_Admin_Controller {
 			<nav class="betterlytics-header-nav flex items-center gap-2">
 				<div class="betterlytics-nav-tabs flex gap-1 mr-4 pr-4 border-r border-border">
 					<?php
-					// Only show Settings and Events tabs (Home is accessible via logo).
+					// Show Home and Settings tabs in navigation.
 					$tabs = [
+						'home'     => __( 'Home', 'betterlytics' ),
 						'settings' => __( 'Settings', 'betterlytics' ),
-						'events'   => __( 'Events', 'betterlytics' ),
 					];
 
 					foreach ( $tabs as $key => $label ) {
