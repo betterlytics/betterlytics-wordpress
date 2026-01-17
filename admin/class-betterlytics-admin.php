@@ -162,16 +162,8 @@ class Betterlytics_Admin {
 			}
 		}
 
-		// Events page fields.
-		if ( 'betterlytics_events' === $page ) {
-			// 4. Process Simple Boolean Options
-			// track_web_vitals moved to General Settings
-		}
-
 		return $options;
 	}
-
-
 
 	/**
 	 * Hide WordPress admin notices on Betterlytics pages for cleaner UI.
