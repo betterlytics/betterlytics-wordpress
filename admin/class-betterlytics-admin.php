@@ -111,7 +111,7 @@ class Betterlytics_Admin {
 			// Core settings.
 			$options['enabled']    = ! empty( $input['enabled'] );
 			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
-			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/track' );
+			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/event' );
 
 			// Allow script_url to be updated programmatically (e.g. config.json) even if hidden in UI.
 			if ( ! empty( $input['script_url'] ) ) {

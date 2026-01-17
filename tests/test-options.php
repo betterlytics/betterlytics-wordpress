@@ -27,7 +27,7 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 
 
 		$this->assertSame( '', $options['site_id'] );
-		$this->assertSame( 'https://betterlytics.io/track', $options['server_url'] );
+		$this->assertSame( 'https://betterlytics.io/event', $options['server_url'] );
 		$this->assertSame( 'https://betterlytics.io/analytics.js', $options['script_url'] );
 		$this->assertFalse( $options['enabled'] );
 		$this->assertSame( array(), $options['hooks'] );

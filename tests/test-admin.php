@@ -35,7 +35,7 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 		$input = array(
 			'site_id'    => '  test-site<script>alert(1)</script>  ',
 			'enabled'    => true,
-			'server_url' => 'https://betterlytics.io/track',
+			'server_url' => 'https://betterlytics.io/event',
 			'script_url' => 'https://betterlytics.io/analytics.js',
 		);
 

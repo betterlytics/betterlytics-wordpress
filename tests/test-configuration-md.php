@@ -19,7 +19,7 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 		// This array mirrors the JSON example in CONFIGURATION.md
 		$config = array(
 			'site_id'          => 'your-site-id',
-			'server_url'       => 'https://betterlytics.io/track',
+			'server_url'       => 'https://betterlytics.io/event',
 			'script_url'       => 'https://betterlytics.io/analytics.js',
 			'enabled'          => true,
 			'track_logged_in'  => false,

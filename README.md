@@ -24,7 +24,7 @@ Official WordPress plugin for [Betterlytics](https://betterlytics.io) - privacy-
 |---------|-------------|
 | **Enable Tracking** | Toggle tracking on/off |
 | **Site ID** | Your unique Site ID from the Betterlytics dashboard |
-| **Server URL** | Tracking endpoint (default: `https://betterlytics.io/track`) |
+| **Server URL** | Tracking endpoint (default: `https://betterlytics.io/event`) |
 | **Script URL** | Analytics script URL (default: `https://betterlytics.io/analytics.js`) |
 | **Track Logged-in Users** | Include/exclude logged-in users from analytics |
 

@@ -7,7 +7,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 ```json
 {
 	"site_id": "your-site-id",
-	"server_url": "https://betterlytics.io/track",
+	"server_url": "https://betterlytics.io/event",
 	"script_url": "https://betterlytics.io/analytics.js",
 	"enabled": true,
 	"track_logged_in": false,
@@ -68,7 +68,7 @@ add_action( 'init', function() {
 
     update_option( 'betterlytics_options', [
         'site_id'         => $site_id,
-        'server_url'      => getenv( 'BETTERLYTICS_SERVER_URL' ) ?: 'https://betterlytics.io/track',
+        'server_url'      => getenv( 'BETTERLYTICS_SERVER_URL' ) ?: 'https://betterlytics.io/event',
         'script_url'      => getenv( 'BETTERLYTICS_SCRIPT_URL' ) ?: 'https://betterlytics.io/analytics.js',
         'enabled'         => filter_var( getenv( 'BETTERLYTICS_ENABLED' ) ?: 'true', FILTER_VALIDATE_BOOLEAN ),
         'track_logged_in' => filter_var( getenv( 'BETTERLYTICS_TRACK_LOGGED_IN' ) ?: 'false', FILTER_VALIDATE_BOOLEAN ),

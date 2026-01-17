@@ -26,7 +26,7 @@ class Betterlytics_Activator {
 	public static function activate() {
 		$default_options = [
 			'site_id'         => '',
-			'server_url'      => 'https://betterlytics.io/track',
+			'server_url'      => 'https://betterlytics.io/event',
 			'script_url'      => 'https://betterlytics.io/analytics.js',
 			'enabled'         => false,
 			'track_logged_in' => true,

@@ -38,7 +38,7 @@ class Betterlytics_Test_Case extends WP_UnitTestCase {
 	protected function set_options( $options ) {
 		$defaults = array(
 			'site_id'         => '',
-			'server_url'      => 'https://betterlytics.io/track',
+			'server_url'      => 'https://betterlytics.io/event',
 			'script_url'      => 'https://betterlytics.io/analytics.js',
 			'enabled'         => false,
 			'track_logged_in' => true,

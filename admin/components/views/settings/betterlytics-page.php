@@ -60,18 +60,6 @@ $betterlytics_options = $args['options'];
 					]
 				);
 
-				// 3. Server URL.
-				Betterlytics_Admin_Controller::render_component(
-					'ui/setting-row',
-					[
-						'label'       => __( 'Server URL', 'betterlytics' ),
-						'name'        => 'betterlytics_options[server_url]',
-						'type'        => 'url',
-						'value'       => $betterlytics_options['server_url'],
-						'placeholder' => 'https://betterlytics.io/track',
-						'description' => __( 'The tracking server URL (Default: Betterlytics cloud).', 'betterlytics' ),
-					]
-				);
 				?>
 			</div>
 		</div>

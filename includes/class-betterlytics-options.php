@@ -30,7 +30,7 @@ class Betterlytics_Options {
 	 */
 	const DEFAULTS = [
 		'site_id'          => '',
-		'server_url'       => 'https://betterlytics.io/track',
+		'server_url'       => 'https://betterlytics.io/event',
 		'script_url'       => 'https://betterlytics.io/analytics.js',
 		'enabled'          => false,
 		'track_web_vitals' => false,
