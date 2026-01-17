@@ -33,7 +33,7 @@ Configure the plugin directly from your deployment scripts:
 
 ```bash
 # Set all options at once (JSON)
-wp option update betterlytics_options '{"site_id":"abc123","server_url":"https://analytics.example.com/track","script_url":"https://analytics.example.com/analytics.js","enabled":true,"track_logged_in":false,"hooks":[]}' --format=json
+wp option update betterlytics_options '{"site_id":"abc123","server_url":"https://analytics.example.com/track","script_url":"https://analytics.example.com/analytics.js","enabled":true,"track_logged_in":false}' --format=json
 
 # Or pipe from a config file
 wp option update betterlytics_options --format=json < betterlytics-config.json
@@ -72,7 +72,6 @@ add_action( 'init', function() {
         'script_url'      => getenv( 'BETTERLYTICS_SCRIPT_URL' ) ?: 'https://betterlytics.io/analytics.js',
         'enabled'         => filter_var( getenv( 'BETTERLYTICS_ENABLED' ) ?: 'true', FILTER_VALIDATE_BOOLEAN ),
         'track_logged_in' => filter_var( getenv( 'BETTERLYTICS_TRACK_LOGGED_IN' ) ?: 'false', FILTER_VALIDATE_BOOLEAN ),
-        'hooks'           => [],
     ]);
 
     update_option( 'betterlytics_configured_by_env', true );
@@ -103,8 +102,7 @@ Keep a `betterlytics-config.json` in your deployment repo for reproducible confi
 	"server_url": "https://analytics.example.com/track",
 	"script_url": "https://analytics.example.com/analytics.js",
 	"enabled": true,
-	"track_logged_in": false,
-	"hooks": []
+	"track_logged_in": false
 }
 ```
 
@@ -131,7 +129,6 @@ wp option update betterlytics_options --format=json < betterlytics-config.json
           script_url: "{{ betterlytics_script_url }}"
           enabled: true
           track_logged_in: false
-          hooks: []
 ```
 
 ## Terraform (with WP-CLI provisioner)
@@ -146,7 +143,6 @@ resource "null_resource" "configure_betterlytics" {
         script_url      = var.betterlytics_script_url
         enabled         = true
         track_logged_in = false
-        hooks           = []
       })}' --format=json --path=/var/www/html"
     ]
   }

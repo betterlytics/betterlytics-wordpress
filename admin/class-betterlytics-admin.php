@@ -91,15 +91,6 @@ class Betterlytics_Admin {
 				'sanitize_callback' => [ $this, 'sanitize_options' ],
 			]
 		);
-
-		register_setting(
-			'betterlytics_events',
-			'betterlytics_options',
-			[
-				'type'              => 'array',
-				'sanitize_callback' => [ $this, 'sanitize_options' ],
-			]
-		);
 	}
 
 	/**
@@ -117,6 +108,7 @@ class Betterlytics_Admin {
 
 		// Settings page fields.
 		if ( 'betterlytics_settings' === $page ) {
+			// Core settings.
 			$options['enabled']    = ! empty( $input['enabled'] );
 			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
 			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/track' );
@@ -126,9 +118,24 @@ class Betterlytics_Admin {
 				$options['script_url'] = esc_url_raw( $input['script_url'] );
 			}
 
-			// track_logged_in is deprecated and removed.
-
+			// Browser event settings.
 			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
+
+			// Process checkbox-based event options.
+			$checkbox_keys = [
+				'track_404'        => 'enabled',
+				'track_search'     => 'enabled',
+				'track_downloads'  => 'enabled',
+				'track_css_events' => 'enabled',
+			];
+
+			foreach ( $checkbox_keys as $key => $subkey ) {
+				if ( isset( $input[ $key ][ $subkey ] ) ) {
+					$options[ $key ][ $subkey ] = ! empty( $input[ $key ][ $subkey ] );
+				} else {
+					$options[ $key ][ $subkey ] = false;
+				}
+			}
 
 			// Process Mode Options (string-based selectors).
 			$mode_keys = [
@@ -164,6 +171,7 @@ class Betterlytics_Admin {
 
 		return $options;
 	}
+
 
 	/**
 	 * Hide WordPress admin notices on Betterlytics pages for cleaner UI.

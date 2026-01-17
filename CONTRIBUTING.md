@@ -167,7 +167,6 @@ betterlytics-wordpress/
 │   ├── components/           # Component-based UI Architecture
 │   │   ├── ui/               # Base reusable components (Card, Button, etc.)
 │   │   └── views/            # Feature-specific page views
-│   │       ├── events/       # Events tab views
 │   │       └── settings/     # Settings tab views
 │   ├── partials/             # Admin view templates (Legacy/Fallback)
 │   └── class-betterlytics-admin.php
