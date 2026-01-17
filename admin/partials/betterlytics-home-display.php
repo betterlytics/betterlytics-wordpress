@@ -39,6 +39,12 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 					<?php esc_html_e( 'GitHub Repository', 'betterlytics' ); ?>
 				</a>
 			</li>
+			<li>
+				<a href="https://betterlytics.io" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+					<span class="dashicons dashicons-admin-home text-muted-foreground"></span>
+					<?php esc_html_e( 'Betterlytics Website', 'betterlytics' ); ?>
+				</a>
+			</li>
 		</ul>
 	</div>
 
