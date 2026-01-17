@@ -5,17 +5,16 @@
 	<!-- What to scan -->
 	<file>.</file>
 
+	<arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="1"/> <!-- Disable parallel processing to prevent hangs -->
+
 	<!-- Exclude paths -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
-
-	<!-- How to scan -->
-	<arg value="sp"/> <!-- Show sniff and progress -->
-	<arg name="basepath" value="."/> <!-- Strip the file paths down to the relevant bit -->
-	<arg name="colors"/>
-	<arg name="extensions" value="php"/>
-	<arg name="parallel" value="8"/> <!-- Enable parallel processing -->
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/.git/*</exclude-pattern>
 
 	<!-- Rules: WordPress Coding Standards -->
 	<rule ref="WordPress">

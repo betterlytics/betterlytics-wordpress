@@ -159,7 +159,12 @@ class Betterlytics_Admin {
 			$options['enabled']    = ! empty( $input['enabled'] );
 			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
 			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/track' );
-			// Note: script_url is removed from UI but preserved if set elsewhere.
+
+			// Allow script_url to be updated programmatically (e.g. config.json) even if hidden in UI.
+			if ( ! empty( $input['script_url'] ) ) {
+				$options['script_url'] = esc_url_raw( $input['script_url'] );
+			}
+
 			// track_logged_in is deprecated and removed.
 
 			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
