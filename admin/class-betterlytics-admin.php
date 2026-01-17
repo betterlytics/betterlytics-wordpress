@@ -169,9 +169,9 @@ class Betterlytics_Admin {
 
 			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
 
-			// Process Mode Options (string-based selectors)
+			// Process Mode Options (string-based selectors).
 			$mode_keys = [
-				'track_outbound' => 'domain', // default mode.
+				'track_outbound' => 'domain', // Default mode.
 			];
 
 			foreach ( $mode_keys as $key => $default_mode ) {
