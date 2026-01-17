@@ -82,7 +82,7 @@ docker compose --profile test run --rm test vendor/bin/phpunit --verbose
 
 ## Demo Environment (WooCommerce Integration Testing)
 
-The `demo` profile sets up a full testing environment with WooCommerce and test pages for verifying event tracking.
+The `demo` profile sets up a full testing environment with test pages for verifying event tracking.
 
 ### Starting the Demo Environment
 
@@ -96,12 +96,9 @@ docker compose logs -f demo-setup
 
 ### What the Demo Setup Creates
 
-- **WooCommerce** - Installed and configured with US store settings
-- **Demo Product** - A simple product ($19.99) for testing add-to-cart and checkout events
 - **Test Page** - Available at `/betterlytics-test/` with:
   - Connection status indicator
   - Manual event trigger buttons
-  - WooCommerce quick actions (add to cart, checkout)
   - WordPress hook triggers (login, comments)
   - Real-time event log
 
@@ -131,8 +128,6 @@ In the Betterlytics settings page, add hook mappings to capture WordPress events
 
 | WordPress Hook | Event Name |
 |----------------|------------|
-| `woocommerce_add_to_cart` | `add-to-cart` |
-| `woocommerce_thankyou` | `order-complete` |
 | `wp_login` | `user-login` |
 | `comment_post` | `comment-posted` |
 

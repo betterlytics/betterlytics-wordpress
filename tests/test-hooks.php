@@ -151,49 +151,7 @@ class Test_Betterlytics_Hooks extends Betterlytics_Test_Case {
 		$this->assertNotFalse( has_action( 'betterlytics_multi_test_2' ) );
 	}
 
-	/**
-	 * Test WooCommerce Remove from Cart hook registration.
-	 */
-	public function test_woo_remove_from_cart_hook_registered() {
-		$this->set_options(
-			array(
-				'enabled'              => true,
-				'site_id'              => 'test-site',
-				'woo_remove_from_cart' => true,
-			)
-		);
 
-		$hooks = new Betterlytics_Hooks();
-		$hooks->register_configured_hooks();
-
-		$this->assertNotFalse( has_action( 'woocommerce_cart_item_removed' ) );
-	}
-
-	/**
-	 * Test WooCommerce Remove from Cart event queuing.
-	 */
-	public function test_woo_remove_from_cart_event_queued() {
-		global $betterlytics_queued_events;
-		$betterlytics_queued_events = array();
-
-		$this->set_options(
-			array(
-				'enabled'              => true,
-				'site_id'              => 'test-site',
-				'woo_remove_from_cart' => true,
-			)
-		);
-
-		$hooks = new Betterlytics_Hooks();
-		$hooks->register_configured_hooks();
-
-		// Fire hook with cart item key.
-		do_action( 'woocommerce_cart_item_removed', 'key_123' );
-
-		$this->assertNotEmpty( $betterlytics_queued_events );
-		$this->assertSame( 'remove-from-cart', $betterlytics_queued_events[0]['name'] );
-		$this->assertSame( 'key_123', $betterlytics_queued_events[0]['properties']['cart_item_key'] );
-	}
 
 	/**
 	 * Test 404 page hook registration and event queuing.

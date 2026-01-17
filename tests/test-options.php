@@ -24,7 +24,7 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 		$this->assertArrayHasKey( 'script_url', $options );
 		$this->assertArrayHasKey( 'enabled', $options );
 		$this->assertArrayHasKey( 'hooks', $options );
-		$this->assertArrayHasKey( 'woo_remove_from_cart', $options );
+
 
 		$this->assertSame( '', $options['site_id'] );
 		$this->assertSame( 'https://betterlytics.io/track', $options['server_url'] );
