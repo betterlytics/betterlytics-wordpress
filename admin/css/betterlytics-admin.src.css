@@ -122,9 +122,9 @@
 
 /* Reset standard WP wrap for immersive feel */
 .betterlytics-admin-root .wrap.betterlytics-admin-wrap {
-	margin: 0 !important;
+	margin: 0 auto !important;
 	padding: 72px 48px 48px 48px !important;
-	max-width: none !important;
+	max-width: 1200px !important;
 	position: relative;
 	z-index: 1;
 }

@@ -22,14 +22,14 @@ $betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
 		<h2 class="text-lg font-semibold mb-4 pb-2 border-b border-border"><?php esc_html_e( 'Resources', 'betterlytics' ); ?></h2>
 		<ul class="bg-card border border-border rounded-md divide-y divide-border list-none p-0 m-0">
 			<li>
-				<a href="https://www.betterlytics.io/docs/installation/wordpress" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+				<a href="https://betterlytics.io/docs/installation/wordpress" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
 					<span class="dashicons dashicons-book text-muted-foreground"></span>
 					<?php esc_html_e( 'Documentation', 'betterlytics' ); ?>
 					<span class="dashicons dashicons-external text-muted-foreground/50 !w-4 !h-4 ml-auto"></span>
 				</a>
 			</li>
 			<li>
-				<a href="https://www.betterlytics.io/dashboards" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+				<a href="https://betterlytics.io/dashboards" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
 					<span class="dashicons dashicons-chart-bar text-muted-foreground"></span>
 					<?php esc_html_e( 'Betterlytics Dashboard', 'betterlytics' ); ?>
 					<span class="dashicons dashicons-external text-muted-foreground/50 !w-4 !h-4 ml-auto"></span>

@@ -18,7 +18,7 @@ $betterlytics_current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( w
 
 // Determine dashboard text and link.
 $betterlytics_dashboard_text = '';
-$betterlytics_dashboard_url  = 'https://www.betterlytics.io/dashboards';
+$betterlytics_dashboard_url  = 'https://betterlytics.io/dashboards';
 if ( ! empty( $betterlytics_options['site_id'] ) ) {
 	$betterlytics_dashboard_url .= '/' . esc_attr( $betterlytics_options['site_id'] );
 }

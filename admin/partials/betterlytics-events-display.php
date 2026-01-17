@@ -193,7 +193,7 @@ $betterlytics_browser_sections = [
 			</h2>
 			<p class="text-muted-foreground font-medium">
 				<?php
-				$betterlytics_dashboard_url = 'https://www.betterlytics.io/dashboards';
+				$betterlytics_dashboard_url = 'https://betterlytics.io/dashboards';
 				if ( ! empty( $betterlytics_options['site_id'] ) ) {
 					$betterlytics_dashboard_url .= '/' . esc_attr( $betterlytics_options['site_id'] );
 				}
