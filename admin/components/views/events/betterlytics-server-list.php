@@ -65,30 +65,6 @@ $betterlytics_sections = [
 		'help_path'   => 'integration/custom-events',
 		'is_custom'   => true, // Flag to indicate custom content rendering.
 	],
-	[
-		'title'       => __( 'WordPress User Management', 'betterlytics' ),
-		'description' => __( 'Track essential WordPress user lifecycle events.', 'betterlytics' ),
-		'fields'      => [
-			[
-				'label'       => __( 'User Login', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_wp_login]',
-				'checked'     => ! empty( $betterlytics_options['track_wp_login'] ),
-				'description' => __( 'Track when a user logs in (Event: user_login)', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'User Logout', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_wp_logout]',
-				'checked'     => ! empty( $betterlytics_options['track_wp_logout'] ),
-				'description' => __( 'Track when a user logs out (Event: user_logout)', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'User Registration', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_user_register]',
-				'checked'     => ! empty( $betterlytics_options['track_user_register'] ),
-				'description' => __( 'Track when a new user registers (Event: user_register)', 'betterlytics' ),
-			],
-		],
-	],
 ];
 
 // Add WooCommerce section if available.

@@ -33,7 +33,6 @@ class Betterlytics_Options {
 		'server_url'           => 'https://betterlytics.io/track',
 		'script_url'           => 'https://betterlytics.io/analytics.js',
 		'enabled'              => false,
-		'track_logged_in'      => true,
 		'track_web_vitals'     => false,
 		'hooks'                => [],
 
@@ -174,10 +173,8 @@ class Betterlytics_Options {
 		}
 
 		// Check if we should track logged-in users.
-		if ( ! $options['track_logged_in'] && is_user_logged_in() ) {
-			return false;
-		}
-
+		// Removed: track_logged_in option is no longer supported.
+		// Tracking is now enabled for all users if enabled globally.
 		return true;
 	}
 }

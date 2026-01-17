@@ -23,7 +23,6 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 		$this->assertArrayHasKey( 'server_url', $options );
 		$this->assertArrayHasKey( 'script_url', $options );
 		$this->assertArrayHasKey( 'enabled', $options );
-		$this->assertArrayHasKey( 'track_logged_in', $options );
 		$this->assertArrayHasKey( 'hooks', $options );
 		$this->assertArrayHasKey( 'woo_remove_from_cart', $options );
 
@@ -31,7 +30,6 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 		$this->assertSame( 'https://betterlytics.io/track', $options['server_url'] );
 		$this->assertSame( 'https://betterlytics.io/analytics.js', $options['script_url'] );
 		$this->assertFalse( $options['enabled'] );
-		$this->assertTrue( $options['track_logged_in'] );
 		$this->assertSame( array(), $options['hooks'] );
 	}
 
@@ -83,7 +81,6 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 			'server_url'      => 'https://custom.example.com/track',
 			'script_url'      => 'https://custom.example.com/analytics.js',
 			'enabled'         => true,
-			'track_logged_in' => false,
 			'hooks'           => array(),
 		);
 
@@ -146,14 +143,16 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 	}
 
 	/**
-	 * Test tracking is disabled for logged-in users when configured.
+	 * Test tracking is enabled for logged-in users when configured.
+	 * 
+	 * Since track_logged_in option was removed, tracking should be enabled
+	 * for all users including logged-in ones if global tracking is enabled.
 	 */
-	public function test_is_tracking_disabled_for_logged_in_users() {
+	public function test_is_tracking_enabled_for_logged_in_users() {
 		$this->set_options(
 			array(
 				'enabled'         => true,
 				'site_id'         => 'test-site',
-				'track_logged_in' => false,
 			)
 		);
 
@@ -161,7 +160,7 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
 
-		$this->assertFalse( Betterlytics_Options::is_tracking_enabled() );
+		$this->assertTrue( Betterlytics_Options::is_tracking_enabled() );
 
 		// Log out and verify tracking is enabled.
 		wp_set_current_user( 0 );

@@ -10,13 +10,12 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"server_url": "https://betterlytics.io/track",
 	"script_url": "https://betterlytics.io/analytics.js",
 	"enabled": true,
-	"track_logged_in": false,
 	"track_web_vitals": false,
+	"track_outbound": { "mode": "domain" },
 
 	"// Browser Events": "----------------",
 	"track_404": { "enabled": false },
 	"track_search": { "enabled": false },
-	"track_outbound": { "mode": "domain" },
 	"track_downloads": { "enabled": false },
 	"track_css_events": { "enabled": false },
 

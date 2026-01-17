@@ -14,39 +14,28 @@ $betterlytics_options = $args['options'];
 
 ?>
 <div class="animate-in fade-in duration-500 pb-24">
-			<div class="betterlytics-header-wrapper mb-6 relative">
-				<h2 class="text-3xl font-bold text-foreground tracking-tight inline-flex items-center gap-3">
+	<!-- Header -->
+	<div class="flex items-center justify-between mb-8">
+		<div>
+			<div class="flex items-center gap-3 mb-2">
+				<h2 class="text-3xl font-bold text-foreground tracking-tight">
 					<?php esc_html_e( 'General Settings', 'betterlytics' ); ?>
-					<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue scale-110 relative top-[1px]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</h2>
+				<?php echo Betterlytics_Admin_Controller::get_help_link( '', 'is-blue scale-110 relative top-[1px]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
-
 			<p class="text-muted-foreground font-medium">
 				<?php esc_html_e( 'Configure your Betterlytics integration and tracking preferences.', 'betterlytics' ); ?>
 			</p>
-
+		</div>
+	</div>
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'betterlytics_settings' ); ?>
 
-		<div class="bg-card border border-border rounded-2xl shadow-sm flex flex-col min-h-[600px] mb-8">
-			<!-- Card Header -->
-			<div class="bg-muted/30 border-b border-border p-6 flex items-center justify-between">
-				<div class="flex items-center gap-3">
-					<div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
-					<span class="text-sm font-bold text-foreground uppercase tracking-wider"><?php esc_html_e( 'Configuration', 'betterlytics' ); ?></span>
-				</div>
-				<div class="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest hidden sm:block">
-					<?php esc_html_e( 'Plugin Settings', 'betterlytics' ); ?>
-				</div>
-			</div>
-
+		<div class="bg-card border border-border rounded-2xl shadow-sm flex flex-col mb-8">
 			<!-- Card Body -->
 			<div class="flex-1 p-10 relative">
 				<?php
-				// Configuration Section.
-				ob_start();
-
 				// 1. Enable Tracking
 				Betterlytics_Admin_Controller::render_component(
 					'ui/setting-row',
@@ -84,38 +73,33 @@ $betterlytics_options = $args['options'];
 					]
 				);
 
-				// 4. Script URL
+				// 4. Core Web Vitals
 				Betterlytics_Admin_Controller::render_component(
 					'ui/setting-row',
 					[
-						'label'       => __( 'Script URL', 'betterlytics' ),
-						'name'        => 'betterlytics_options[script_url]',
-						'type'        => 'url',
-						'value'       => $betterlytics_options['script_url'],
-						'placeholder' => 'https://betterlytics.io/analytics.js',
-						'description' => __( 'The tracking script URL (Default: Betterlytics cloud).', 'betterlytics' ),
+						'label'       => __( 'Core Web Vitals', 'betterlytics' ),
+						'name'        => 'betterlytics_options[track_web_vitals]',
+						'checked'     => ! empty( $betterlytics_options['track_web_vitals'] ),
+						'description' => __( 'Track Core Web Vitals performance metrics', 'betterlytics' ),
+						'help_path'   => 'integration/web-vitals',
 					]
 				);
 
-				// 5. Track Logged-in Users
+				// 5. Outbound Links
 				Betterlytics_Admin_Controller::render_component(
 					'ui/setting-row',
 					[
-						'label'       => __( 'Track Logged-in Users', 'betterlytics' ),
-						'name'        => 'betterlytics_options[track_logged_in]',
-						'checked'     => ! empty( $betterlytics_options['track_logged_in'] ),
-						'description' => __( 'Enable to include admins/editors in your analytics.', 'betterlytics' ),
-					]
-				);
-
-				$betterlytics_fields_html = ob_get_clean();
-
-				Betterlytics_Admin_Controller::render_component(
-					'ui/card',
-					[
-						'title'       => __( 'Plugin Configuration', 'betterlytics' ),
-						'description' => __( 'Connect your site to Betterlytics and manage core tracking behavior.', 'betterlytics' ),
-						'children'    => $betterlytics_fields_html,
+						'label'       => __( 'Outbound Links', 'betterlytics' ),
+						'name'        => 'betterlytics_options[track_outbound][mode]',
+						'type'        => 'select',
+						'value'       => $betterlytics_options['track_outbound']['mode'] ?? 'domain',
+						'options'     => [
+							'off'    => __( 'Off', 'betterlytics' ),
+							'domain' => __( 'Domain only', 'betterlytics' ),
+							'full'   => __( 'Full URL', 'betterlytics' ),
+						],
+						'description' => __( 'Track clicks on links to external websites', 'betterlytics' ),
+						'help_path'   => 'integration/outbound-links',
 					]
 				);
 				?>

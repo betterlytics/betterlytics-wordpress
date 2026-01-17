@@ -169,13 +169,7 @@ class Betterlytics_Hooks {
 
 		// Add hook-specific properties (no PII).
 		switch ( $wp_hook ) {
-			case 'wp_login':
-				$properties['action'] = 'login';
-				break;
-
-			case 'user_register':
-				$properties['action'] = 'registration';
-				break;
+			// Removed wp_login and user_register cases.
 
 			case 'comment_post':
 				if ( isset( $args[0] ) ) {
