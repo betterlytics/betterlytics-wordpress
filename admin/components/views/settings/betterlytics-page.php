@@ -13,7 +13,10 @@
 $betterlytics_options = $args['options'];
 
 ?>
-<div class="animate-in fade-in duration-500 pb-24">
+<div>
+	<!-- Hidden h1 for WordPress notices to attach to -->
+	<h1 class="sr-only"><?php esc_html_e( 'Betterlytics Settings', 'betterlytics' ); ?></h1>
+
 	<!-- Header -->
 	<div class="flex items-center justify-between mb-8">
 		<div>

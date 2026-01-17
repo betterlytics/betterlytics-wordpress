@@ -181,15 +181,38 @@
 	bottom: 0 !important;
 	left: var(--wp-sidebar-width) !important;
 	right: 0 !important;
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(16px);
-	padding: 20px 48px !important;
-	border-top: 1px solid var(--border);
-	z-index: 9998 !important; /* Just below banner's layer if needed, but above content */
+	background: linear-gradient(
+		to top,
+		rgba(255, 255, 255, 1),
+		rgba(255, 255, 255, 0.98)
+	);
+	backdrop-filter: blur(20px);
+	padding: 16px 48px !important;
+	border-top: 2px solid var(--secondary);
+	z-index: 9998 !important;
 	display: flex;
 	justify-content: center;
-	box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.04);
+	box-shadow:
+		0 -8px 32px rgba(0, 0, 0, 0.12),
+		0 -2px 8px rgba(0, 0, 0, 0.06);
 	transition: all 0.15s ease-in-out;
+}
+
+/* Bigger, more visible save button */
+.betterlytics-admin-root .betterlytics-sticky-footer .button-primary {
+	padding: 8px 24px !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	height: auto !important;
+	line-height: 1.4 !important;
+	border-radius: 8px !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+	transition: all 0.15s ease-in-out !important;
+}
+
+.betterlytics-admin-root .betterlytics-sticky-footer .button-primary:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Ensure content doesn't get hidden behind the fixed footer */
