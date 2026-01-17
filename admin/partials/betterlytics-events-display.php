@@ -13,7 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 $betterlytics_options           = Betterlytics_Options::get_options();
-$betterlytics_has_woocommerce   = class_exists( 'WooCommerce' );
 $betterlytics_setup_incomplete  = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
 $betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
 $betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
@@ -251,41 +250,8 @@ $betterlytics_server_sections = [
 			],
 		],
 	],
-];
 
-// Add WooCommerce section if available.
-if ( $betterlytics_has_woocommerce ) {
-	$betterlytics_server_sections[] = [
-		'title'       => __( 'WooCommerce Events', 'betterlytics' ),
-		'description' => __( 'Automatically bridge WooCommerce actions to analytics events.', 'betterlytics' ),
-		'fields'      => [
-			[
-				'label'       => __( 'Add to Cart', 'betterlytics' ),
-				'name'        => 'betterlytics_options[woo_add_to_cart][enabled]',
-				'checked'     => ! empty( $betterlytics_options['woo_add_to_cart']['enabled'] ),
-				'description' => __( 'Track when products are added to the cart', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'Remove from Cart', 'betterlytics' ),
-				'name'        => 'betterlytics_options[woo_remove_from_cart][enabled]',
-				'checked'     => ! empty( $betterlytics_options['woo_remove_from_cart']['enabled'] ),
-				'description' => __( 'Track when products are removed from the cart', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'Begin Checkout', 'betterlytics' ),
-				'name'        => 'betterlytics_options[woo_checkout][enabled]',
-				'checked'     => ! empty( $betterlytics_options['woo_checkout']['enabled'] ),
-				'description' => __( 'Track when customers start the checkout process', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'Purchase Complete', 'betterlytics' ),
-				'name'        => 'betterlytics_options[woo_purchase][enabled]',
-				'checked'     => ! empty( $betterlytics_options['woo_purchase']['enabled'] ),
-				'description' => __( 'Track completed purchases', 'betterlytics' ),
-			],
-		],
-	];
-}
+];
 ?>
 
 <div class="animate-in fade-in duration-500 pb-24">

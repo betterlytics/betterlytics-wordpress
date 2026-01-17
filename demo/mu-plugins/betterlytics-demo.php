@@ -131,11 +131,7 @@ function betterlytics_demo_render_test_page( $content ) {
 		<h2>Quick Links</h2>
 		<div class="quick-links">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=betterlytics' ) ); ?>">Betterlytics Settings</a>
-			<?php if ( class_exists( 'WooCommerce' ) ) : ?>
-				<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Shop Page</a>
-				<a href="<?php echo esc_url( wc_get_cart_url() ); ?>">Cart</a>
-				<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>">Checkout</a>
-			<?php endif; ?>
+
 			<a href="<?php echo esc_url( wp_login_url() ); ?>">Login Page</a>
 			<a href="<?php echo esc_url( wp_registration_url() ); ?>">Registration</a>
 		</div>
@@ -182,42 +178,7 @@ function betterlytics_demo_render_test_page( $content ) {
 			<?php endif; ?>
 		</div>
 
-		<?php if ( class_exists( 'WooCommerce' ) ) : ?>
-		<h2>WooCommerce Event Testing</h2>
-		<div class="test-section">
-			<p>WooCommerce is installed. Use these to test e-commerce events:</p>
 
-			<?php
-			// Get a product to test with.
-			$products = wc_get_products( [ 'limit' => 1 ] );
-			if ( ! empty( $products ) ) :
-				$product = $products[0];
-				?>
-				<p><strong>Test Product:</strong> <?php echo esc_html( $product->get_name() ); ?> ($<?php echo esc_html( $product->get_price() ); ?>)</p>
-				<a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id(), wc_get_cart_url() ) ); ?>">
-					<button type="button">Add to Cart (triggers woocommerce_add_to_cart)</button>
-				</a>
-				<a href="<?php echo esc_url( $product->get_permalink() ); ?>">
-					<button type="button" class="secondary">View Product</button>
-				</a>
-			<?php else : ?>
-				<p>No products found. Run the demo setup to create a test product.</p>
-			<?php endif; ?>
-
-			<?php if ( WC()->cart && WC()->cart->get_cart_contents_count() > 0 ) : ?>
-				<p style="margin-top: 15px;"><strong>Cart:</strong> <?php echo esc_html( WC()->cart->get_cart_contents_count() ); ?> item(s)</p>
-				<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>">
-					<button type="button">Proceed to Checkout</button>
-				</a>
-			<?php endif; ?>
-		</div>
-		<?php else : ?>
-		<h2>WooCommerce Event Testing</h2>
-		<div class="test-section">
-			<p>WooCommerce is not installed. Run with the <code>demo</code> profile to install it:</p>
-			<pre>docker compose --profile demo up</pre>
-		</div>
-		<?php endif; ?>
 
 		<h2>Event Log</h2>
 		<div class="test-section">

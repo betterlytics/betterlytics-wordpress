@@ -21,12 +21,7 @@ class Betterlytics_Hooks {
 	 *
 	 * @var array
 	 */
-	const BUILTIN_HOOKS = [
-		'woo_add_to_cart'      => [ 'woocommerce_add_to_cart', 'add-to-cart' ],
-		'woo_remove_from_cart' => [ 'woocommerce_cart_item_removed', 'remove-from-cart' ],
-		'woo_checkout'         => [ 'woocommerce_checkout_process', 'begin-checkout' ],
-		'woo_purchase'         => [ 'woocommerce_thankyou', 'purchase' ],
-	];
+	const BUILTIN_HOOKS = [];
 
 	/**
 	 * Register all configured WordPress hooks.
@@ -174,27 +169,6 @@ class Betterlytics_Hooks {
 			case 'comment_post':
 				if ( isset( $args[0] ) ) {
 					$properties['comment_id'] = (int) $args[0];
-				}
-				break;
-
-			case 'woocommerce_thankyou':
-				if ( isset( $args[0] ) ) {
-					$properties['order_id'] = (int) $args[0];
-				}
-				break;
-
-			case 'woocommerce_add_to_cart':
-				if ( isset( $args[1] ) ) {
-					$properties['product_id'] = (int) $args[1];
-				}
-				if ( isset( $args[2] ) ) {
-					$properties['quantity'] = (int) $args[2];
-				}
-				break;
-
-			case 'woocommerce_cart_item_removed':
-				if ( isset( $args[0] ) ) {
-					$properties['cart_item_key'] = $args[0];
 				}
 				break;
 

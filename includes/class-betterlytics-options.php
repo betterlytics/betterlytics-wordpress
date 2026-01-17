@@ -29,49 +29,31 @@ class Betterlytics_Options {
 	 * @var array
 	 */
 	const DEFAULTS = [
-		'site_id'              => '',
-		'server_url'           => 'https://betterlytics.io/track',
-		'script_url'           => 'https://betterlytics.io/analytics.js',
-		'enabled'              => false,
-		'track_web_vitals'     => false,
-		'hooks'                => [],
+		'site_id'          => '',
+		'server_url'       => 'https://betterlytics.io/track',
+		'script_url'       => 'https://betterlytics.io/analytics.js',
+		'enabled'          => false,
+		'track_web_vitals' => false,
+		'hooks'            => [],
 
 		// Event tracking options.
-		'track_404'            => [
+		'track_404'        => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
-		'track_search'         => [
+		'track_search'     => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
-		'track_outbound'       => [
+		'track_outbound'   => [
 			'mode'     => 'domain',
 			'metadata' => [],
 		],
-		'track_downloads'      => [
+		'track_downloads'  => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
-		'track_css_events'     => [
-			'enabled'  => false,
-			'metadata' => [],
-		],
-
-		// WooCommerce options.
-		'woo_add_to_cart'      => [
-			'enabled'  => false,
-			'metadata' => [],
-		],
-		'woo_remove_from_cart' => [
-			'enabled'  => false,
-			'metadata' => [],
-		],
-		'woo_checkout'         => [
-			'enabled'  => false,
-			'metadata' => [],
-		],
-		'woo_purchase'         => [
+		'track_css_events' => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
@@ -93,10 +75,6 @@ class Betterlytics_Options {
 			'track_search',
 			'track_downloads',
 			'track_css_events',
-			'woo_add_to_cart',
-			'woo_remove_from_cart',
-			'woo_checkout',
-			'woo_purchase',
 		];
 
 		foreach ( $event_keys as $key ) {

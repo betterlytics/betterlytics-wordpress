@@ -20,11 +20,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"track_downloads": { "enabled": false },
 	"track_css_events": { "enabled": false },
 
-	"// Server Hooks (WooCommerce)": "-----",
-	"woo_add_to_cart": { "enabled": true, "metadata": [] },
-	"woo_checkout": { "enabled": false },
-	"woo_purchase": { "enabled": false },
-	"woo_remove_from_cart": { "enabled": false },
+
 
 	"// Server Hooks (WordPress)": "-------",
 	"track_wp_login": false,
@@ -42,11 +38,6 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 				{ "key": "user_id", "value": "{0}" },
 				{ "key": "email", "value": "{1->user_email}" }
 			]
-		},
-		{
-			"wp_hook": "woocommerce_thankyou",
-			"event_name": "purchase",
-			"enabled": true
 		}
 	]
 }
