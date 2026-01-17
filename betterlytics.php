@@ -79,7 +79,7 @@ function betterlytics_plugin_action_links( $links ) {
 	// Add dashboard link if site_id is configured.
 	$options = get_option( 'betterlytics_options', [] );
 	if ( ! empty( $options['site_id'] ) ) {
-		$dashboard_link = '<a href="https://www.betterlytics.io/dashboards/' . esc_attr( $options['site_id'] ) . '" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
+		$dashboard_link = '<a href="https://betterlytics.io/dashboards/' . esc_attr( $options['site_id'] ) . '" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
 		array_unshift( $links, $dashboard_link );
 	}
 

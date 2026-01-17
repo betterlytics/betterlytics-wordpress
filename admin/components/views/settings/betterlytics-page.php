@@ -60,7 +60,7 @@ $betterlytics_options = $args['options'];
 					]
 				);
 
-				// 3. Server URL
+				// 3. Server URL.
 				Betterlytics_Admin_Controller::render_component(
 					'ui/setting-row',
 					[
