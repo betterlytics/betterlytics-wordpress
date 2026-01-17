@@ -180,79 +180,9 @@ $betterlytics_browser_sections = [
 		],
 	],
 ];
-
-/*
- * =============================================================================
- * SERVER HOOKS TAB - Section Definitions
- * =============================================================================
- */
-
-// Custom Hooks Mapper section content.
-ob_start();
 ?>
-<div class="betterlytics-hooks-mapper-container">
-	<!-- We remove the .fixed class from the table to avoid Tailwind conflicts with position: fixed -->
-	<div class="bg-card border border-border rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden mb-6">
-		<table class="wp-list-table widefat striped w-full m-0 border-collapse !static !relative-none" id="betterlytics-hooks-table">
-			<thead class="bg-muted/30">
-				<tr>
-					<th scope="col" class="column-enabled py-4 px-6 border-b border-border text-left w-[100px] text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Enabled', 'betterlytics' ); ?></th>
-					<th scope="col" class="column-wp-hook py-4 px-6 border-b border-border text-left text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'WordPress Hook', 'betterlytics' ); ?></th>
-					<th scope="col" class="column-event-name py-4 px-6 border-b border-border text-left text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Event Name', 'betterlytics' ); ?></th>
-					<th scope="col" class="column-actions py-4 px-6 border-b border-border text-right w-[120px] text-xs font-bold uppercase tracking-wider text-muted-foreground"><?php esc_html_e( 'Actions', 'betterlytics' ); ?></th>
-				</tr>
-			</thead>
-			<tbody id="betterlytics-hooks-list" class="divide-y divide-border">
-				<!-- Hooks will be rendered via JavaScript -->
-			</tbody>
-		</table>
-	</div>
 
-	<p class="mt-6">
-		<button type="button" class="button button-secondary !flex items-center gap-2 !px-5 !py-1.5 !h-auto !text-sm !font-bold rounded-lg border-border hover:bg-muted transition-all" id="betterlytics-add-hook">
-			<span class="dashicons dashicons-plus !text-xs !w-3.5 !h-3.5 !leading-none"></span>
-			<?php esc_html_e( 'Add Hook', 'betterlytics' ); ?>
-		</button>
-	</p>
-</div>
-<?php
-$betterlytics_hooks_mapper_content = ob_get_clean();
 
-$betterlytics_server_sections = [
-	[
-		'title'          => __( 'Custom Hooks Mapper', 'betterlytics' ),
-		'description'    => __( 'Map any WordPress action hook to a Betterlytics event.', 'betterlytics' ),
-		'custom_content' => $betterlytics_hooks_mapper_content,
-		'fields'         => [],
-		'help_path'      => 'integration/custom-events',
-	],
-	[
-		'title'       => __( 'WordPress User Management', 'betterlytics' ),
-		'description' => __( 'Track essential WordPress user lifecycle events.', 'betterlytics' ),
-		'fields'      => [
-			[
-				'label'       => __( 'User Login', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_wp_login]',
-				'checked'     => ! empty( $betterlytics_options['track_wp_login'] ),
-				'description' => __( 'Track when a user logs in (Event: user_login)', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'User Logout', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_wp_logout]',
-				'checked'     => ! empty( $betterlytics_options['track_wp_logout'] ),
-				'description' => __( 'Track when a user logs out (Event: user_logout)', 'betterlytics' ),
-			],
-			[
-				'label'       => __( 'User Registration', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_user_register]',
-				'checked'     => ! empty( $betterlytics_options['track_user_register'] ),
-				'description' => __( 'Track when a new user registers (Event: user_register)', 'betterlytics' ),
-			],
-		],
-	],
-
-];
-?>
 
 <div class="animate-in fade-in duration-500 pb-24">
 
@@ -283,50 +213,27 @@ $betterlytics_server_sections = [
 	<form action="options.php" method="post" id="betterlytics-settings-form">
 		<?php settings_fields( 'betterlytics_events' ); ?>
 
-		<?php
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce not required for UI tab switching via GET.
-		$betterlytics_current_subtab = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'browser';
-		?>
+
 		
 		<div class="bg-card border border-border rounded-2xl shadow-sm flex flex-col min-h-[600px] mb-8">
 			<!-- Multi-tab Card Header -->
 			<div class="bg-muted/30 border-b border-border p-6 flex items-center justify-between">
-				<nav class="betterlytics-subtabs flex gap-2 bg-muted/50 p-1 rounded-xl border border-border/50 no-scrollbar overflow-x-auto">
-					<?php
-					$betterlytics_subtabs = [
-						'browser' => __( 'Browser Events', 'betterlytics' ),
-						'server'  => __( 'Server Hooks', 'betterlytics' ),
-					];
-					foreach ( $betterlytics_subtabs as $betterlytics_subtab_key => $betterlytics_subtab_label ) :
-						$betterlytics_is_active = $betterlytics_current_subtab === $betterlytics_subtab_key;
-						?>
-						<a href="?page=betterlytics&tab=events&subtab=<?php echo esc_attr( $betterlytics_subtab_key ); ?>" 
-							class="betterlytics-subtab px-6 py-2 text-sm font-bold rounded-lg transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-black/5 [.active]:text-primary [.active]:bg-card [.active]:shadow-sm [.active]:border [.active]:border-border/50 <?php echo $betterlytics_is_active ? 'active' : ''; ?>" 
-							data-tab="<?php echo esc_attr( $betterlytics_subtab_key ); ?>">
-							<?php echo esc_html( $betterlytics_subtab_label ); ?>
-						</a>
-					<?php endforeach; ?>
-				</nav>
-				<div class="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest hidden sm:block">
-					<?php echo 'browser' === $betterlytics_current_subtab ? esc_html__( 'Client-side', 'betterlytics' ) : esc_html__( 'Server-side', 'betterlytics' ); ?>
+				<div class="flex items-center gap-2">
+					<h3 class="text-lg font-bold text-foreground tracking-tight">
+						<?php esc_html_e( 'Browser Events', 'betterlytics' ); ?>
+					</h3>
+					<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20">
+						<?php esc_html_e( 'Client-side', 'betterlytics' ); ?>
+					</span>
 				</div>
 			</div>
 
-			<!-- Multi-tab Card Body -->
+			<!-- Card Body -->
 			<div class="flex-1 p-10 relative">
 				<!-- Browser Events Tab -->
-				<div id="tab-browser" class="betterlytics-tab-content <?php echo 'browser' === $betterlytics_current_subtab ? 'active' : ''; ?>">
+				<div id="tab-browser" class="betterlytics-tab-content active">
 					<?php
 					foreach ( $betterlytics_browser_sections as $betterlytics_index => $betterlytics_section ) {
-						betterlytics_render_event_card( $betterlytics_section, $betterlytics_index > 0 );
-					}
-					?>
-				</div>
-
-				<!-- Server Hooks Tab -->
-				<div id="tab-server" class="betterlytics-tab-content <?php echo 'server' === $betterlytics_current_subtab ? 'active' : ''; ?>">
-					<?php
-					foreach ( $betterlytics_server_sections as $betterlytics_index => $betterlytics_section ) {
 						betterlytics_render_event_card( $betterlytics_section, $betterlytics_index > 0 );
 					}
 					?>

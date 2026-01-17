@@ -79,52 +79,7 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 		$this->assertFalse( $result_disabled['enabled'] );
 	}
 
-	/**
-	 * Test sanitize_hooks removes empty hooks.
-	 */
-	public function test_sanitize_hooks_removes_empty() {
-		$hooks = array(
-			array(
-				'wp_hook'    => 'valid_hook',
-				'event_name' => 'valid-event',
-				'enabled'    => true,
-			),
-			array(
-				'wp_hook'    => '',
-				'event_name' => 'no-hook',
-				'enabled'    => true,
-			),
-			array(
-				'wp_hook'    => 'no_event',
-				'event_name' => '',
-				'enabled'    => true,
-			),
-		);
 
-		$result = $this->admin->sanitize_hooks( $hooks );
-
-		$this->assertCount( 1, $result );
-		$this->assertSame( 'valid_hook', $result[0]['wp_hook'] );
-	}
-
-	/**
-	 * Test sanitize_hooks sanitizes values.
-	 */
-	public function test_sanitize_hooks_sanitizes_values() {
-		$hooks = array(
-			array(
-				'wp_hook'    => 'hook<script>alert(1)</script>',
-				'event_name' => '<b>event</b>',
-				'enabled'    => '1',
-			),
-		);
-
-		$result = $this->admin->sanitize_hooks( $hooks );
-
-		$this->assertSame( 'hook', $result[0]['wp_hook'] );
-		$this->assertSame( 'event', $result[0]['event_name'] );
-		$this->assertTrue( $result[0]['enabled'] );
-	}
 
 
 }

@@ -153,7 +153,7 @@ class Betterlytics {
 
 		// Initialize custom hooks integration.
 		$plugin_hooks = new Betterlytics_Hooks();
-		$this->loader->add_action( 'init', $plugin_hooks, 'register_configured_hooks' );
+
 		$this->loader->add_action( 'init', $plugin_hooks, 'register_page_hooks' );
 	}
 
