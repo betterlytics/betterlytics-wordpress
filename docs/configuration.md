@@ -18,28 +18,12 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"track_search": { "enabled": false },
 	"track_outbound": { "mode": "domain" },
 	"track_downloads": { "enabled": false },
-	"track_css_events": { "enabled": false },
-
-
-
-	"// Server Hooks (WordPress)": "-------",
-	"track_wp_login": false,
-	"track_wp_logout": false,
-	"track_user_register": false,
-
-	"// Custom Hooks": "-------------------",
-	"hooks": [
-		{ "wp_hook": "wp_login", "event_name": "user-login", "enabled": true },
-		{
-			"wp_hook": "user_register",
-			"event_name": "sign-up",
-			"enabled": true,
-			"metadata": [
-				{ "key": "user_id", "value": "{0}" },
-				{ "key": "email", "value": "{1->user_email}" }
-			]
-		}
-	]
+	"// Browser Events": "----------------",
+	"track_404": { "enabled": false },
+	"track_search": { "enabled": false },
+	"track_outbound": { "mode": "domain" },
+	"track_downloads": { "enabled": false },
+	"track_css_events": { "enabled": false }
 }
 ```
 
@@ -120,9 +104,7 @@ Keep a `betterlytics-config.json` in your deployment repo for reproducible confi
 	"script_url": "https://analytics.example.com/analytics.js",
 	"enabled": true,
 	"track_logged_in": false,
-	"hooks": [
-		{ "wp_hook": "wp_login", "event_name": "user-login", "enabled": true }
-	]
+	"hooks": []
 }
 ```
 

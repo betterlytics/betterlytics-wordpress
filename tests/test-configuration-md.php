@@ -32,28 +32,8 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 			'track_downloads'  => array( 'enabled' => false ),
 			'track_css_events' => array( 'enabled' => false ),
 
-			// Server Hooks
-			'woo_add_to_cart'      => array( 'enabled' => true, 'metadata' => array() ),
-			'woo_checkout'         => array( 'enabled' => false ),
-			'woo_purchase'         => array( 'enabled' => false ),
-			'woo_remove_from_cart' => array( 'enabled' => false ),
-			'hooks'                => array(
-				array( 'wp_hook' => 'wp_login', 'event_name' => 'user-login', 'enabled' => true ),
-				array(
-					'wp_hook'    => 'user_register',
-					'event_name' => 'sign-up',
-					'enabled'    => true,
-					'metadata'   => array(
-						array( 'key' => 'user_id', 'value' => '{0}' ),
-						array( 'key' => 'email', 'value' => '{1->user_email}' ),
-					),
-				),
-				array(
-					'wp_hook'    => 'woocommerce_thankyou',
-					'event_name' => 'purchase',
-					'enabled'    => true,
-				),
-			),
+			'hooks'                => array(),
+
 		);
 
 		// Simulate applying this configuration via update_option
@@ -66,15 +46,7 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 		$this->assertTrue( $stored['enabled'] );
 		$this->assertFalse( $stored['track_logged_in'] );
 
-		// Verify hooks structure
-		$this->assertCount( 3, $stored['hooks'] );
-		$this->assertSame( 'wp_login', $stored['hooks'][0]['wp_hook'] );
-		$this->assertSame( 'user-login', $stored['hooks'][0]['event_name'] );
-
-		// Verify nested metadata
-		$this->assertSame( 'user_register', $stored['hooks'][1]['wp_hook'] );
-		$this->assertCount( 2, $stored['hooks'][1]['metadata'] );
-		$this->assertSame( '{0}', $stored['hooks'][1]['metadata'][0]['value'] );
+		$this->assertEmpty( $stored['hooks'] );
 	}
 
 	/**

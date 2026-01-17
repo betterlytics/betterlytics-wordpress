@@ -122,14 +122,7 @@ Configure the plugin at **Settings > Betterlytics**:
 
 Then visit http://localhost:8888/betterlytics-test/ to test events.
 
-### Configuring WordPress Hooks
 
-In the Betterlytics settings page, add hook mappings to capture WordPress events:
-
-| WordPress Hook | Event Name |
-|----------------|------------|
-| `wp_login` | `user-login` |
-| `comment_post` | `comment-posted` |
 
 ### Demo Cleanup
 
