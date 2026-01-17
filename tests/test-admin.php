@@ -33,11 +33,10 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 	 */
 	public function test_sanitize_options_site_id() {
 		$input = array(
-			'site_id'         => '  test-site<script>alert(1)</script>  ',
-			'enabled'         => true,
-			'server_url'      => 'https://betterlytics.io/track',
-			'script_url'      => 'https://betterlytics.io/analytics.js',
-			'track_logged_in' => true,
+			'site_id'    => '  test-site<script>alert(1)</script>  ',
+			'enabled'    => true,
+			'server_url' => 'https://betterlytics.io/track',
+			'script_url' => 'https://betterlytics.io/analytics.js',
 		);
 
 		$result = $this->admin->sanitize_options( $input );
@@ -50,11 +49,10 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 	 */
 	public function test_sanitize_options_urls() {
 		$input = array(
-			'site_id'         => 'test',
-			'enabled'         => true,
-			'server_url'      => 'javascript:alert(1)',
-			'script_url'      => 'https://valid.example.com/script.js',
-			'track_logged_in' => true,
+			'site_id'    => 'test',
+			'enabled'    => true,
+			'server_url' => 'javascript:alert(1)',
+			'script_url' => 'https://valid.example.com/script.js',
 		);
 
 		$result = $this->admin->sanitize_options( $input );

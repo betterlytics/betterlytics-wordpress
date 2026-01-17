@@ -156,11 +156,49 @@ class Betterlytics_Admin {
 
 		// Settings page fields.
 		if ( 'betterlytics_settings' === $page ) {
-			$options['enabled']         = ! empty( $input['enabled'] );
-			$options['site_id']         = sanitize_text_field( $input['site_id'] ?? '' );
-			$options['server_url']      = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/track' );
-			$options['script_url']      = esc_url_raw( $input['script_url'] ?? 'https://betterlytics.io/analytics.js' );
-			$options['track_logged_in'] = ! empty( $input['track_logged_in'] );
+			$options['enabled']    = ! empty( $input['enabled'] );
+			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
+			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/track' );
+
+			// Allow script_url to be updated programmatically (e.g. config.json) even if hidden in UI.
+			if ( ! empty( $input['script_url'] ) ) {
+				$options['script_url'] = esc_url_raw( $input['script_url'] );
+			}
+
+			// track_logged_in is deprecated and removed.
+
+			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
+
+			// Process Mode Options (string-based selectors).
+			$mode_keys = [
+				'track_outbound' => 'domain', // Default mode.
+			];
+
+			foreach ( $mode_keys as $key => $default_mode ) {
+				$val      = isset( $input[ $key ] ) ? $input[ $key ] : null;
+				$mode     = 'off';
+				$metadata = [];
+
+				if ( is_array( $val ) ) {
+					$mode = isset( $val['mode'] ) ? sanitize_text_field( $val['mode'] ) : $default_mode;
+					if ( isset( $val['metadata'] ) && is_array( $val['metadata'] ) ) {
+						$metadata = $val['metadata'];
+					}
+				} elseif ( is_string( $val ) ) {
+					$mode = sanitize_text_field( $val );
+				}
+
+				// Validate mode value.
+				$valid_modes = [ 'off', 'domain', 'full' ];
+				if ( ! in_array( $mode, $valid_modes, true ) ) {
+					$mode = $default_mode;
+				}
+
+				$options[ $key ] = [
+					'mode'     => $mode,
+					'metadata' => $metadata,
+				];
+			}
 		}
 
 		// Events page fields.
@@ -180,9 +218,7 @@ class Betterlytics_Admin {
 				'woo_remove_from_cart',
 				'woo_checkout',
 				'woo_purchase',
-				'track_wp_login',
-				'track_wp_logout',
-				'track_user_register',
+				'woo_purchase',
 			];
 
 			foreach ( $boolean_keys as $key ) {
@@ -240,38 +276,10 @@ class Betterlytics_Admin {
 			}
 
 			// 4. Process Mode Options (string-based selectors)
-			$mode_keys = [
-				'track_outbound' => 'domain', // default mode.
-			];
-
-			foreach ( $mode_keys as $key => $default_mode ) {
-				$val      = isset( $input[ $key ] ) ? $input[ $key ] : null;
-				$mode     = 'off';
-				$metadata = [];
-
-				if ( is_array( $val ) ) {
-					$mode = isset( $val['mode'] ) ? sanitize_text_field( $val['mode'] ) : $default_mode;
-					if ( isset( $val['metadata'] ) && is_array( $val['metadata'] ) ) {
-						$metadata = $val['metadata'];
-					}
-				} elseif ( is_string( $val ) ) {
-					$mode = sanitize_text_field( $val );
-				}
-
-				// Validate mode value.
-				$valid_modes = [ 'off', 'domain', 'full' ];
-				if ( ! in_array( $mode, $valid_modes, true ) ) {
-					$mode = $default_mode;
-				}
-
-				$options[ $key ] = [
-					'mode'     => $mode,
-					'metadata' => $metadata,
-				];
-			}
+			// track_outbound moved to General Settings
 
 			// 5. Process Simple Boolean Options
-			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
+			// track_web_vitals moved to General Settings
 		}
 
 		return $options;

@@ -34,26 +34,6 @@ $betterlytics_sections = [
 				'checked'     => ! empty( $betterlytics_options['track_search']['enabled'] ),
 				'description' => __( 'Track search queries on your site', 'betterlytics' ),
 			],
-			[
-				'label'       => __( 'Core Web Vitals', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_web_vitals]',
-				'checked'     => ! empty( $betterlytics_options['track_web_vitals'] ),
-				'description' => __( 'Track Core Web Vitals performance metrics', 'betterlytics' ),
-				'help_path'   => 'integration/web-vitals',
-			],
-			[
-				'label'       => __( 'Outbound Links', 'betterlytics' ),
-				'name'        => 'betterlytics_options[track_outbound][mode]',
-				'type'        => 'select',
-				'value'       => $betterlytics_options['track_outbound']['mode'] ?? 'domain',
-				'options'     => [
-					'off'    => __( 'Off', 'betterlytics' ),
-					'domain' => __( 'Domain only', 'betterlytics' ),
-					'full'   => __( 'Full URL', 'betterlytics' ),
-				],
-				'description' => __( 'Track clicks on links to external websites', 'betterlytics' ),
-				'help_path'   => 'integration/outbound-links',
-			],
 		],
 	],
 	[
