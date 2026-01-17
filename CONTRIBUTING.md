@@ -7,22 +7,23 @@ Thank you for your interest in contributing! This guide will help you get set up
 - [Docker](https://docs.docker.com/get-docker/) & Docker Compose
 - [pnpm](https://pnpm.io/) (for CSS development)
 
-## Quick Start
+## Local Development Setup
 
 ```bash
-# Copy environment file and adjust if needed
-cp .env.example .env
+# 1. Start the Docker demo environment
+docker compose --profile demo up -d
 
-# Start WordPress development environment
-docker compose up -d
+# 2. Build CSS
+pnpm build:css
 
-# Install CSS dependencies
-pnpm install
+# 3. (Optional) Watch for CSS changes with hot reloading
+pnpm watch:css
 ```
 
-WordPress will be available at **http://localhost:8888** (or the port you set in `.env`).
+WordPress will be available at **http://localhost:8888**.
 
 Default WordPress admin credentials:
+
 - **Username**: `admin`
 - **Password**: `admin`
 
@@ -97,10 +98,10 @@ docker compose logs -f demo-setup
 ### What the Demo Setup Creates
 
 - **Test Page** - Available at `/betterlytics-test/` with:
-  - Connection status indicator
-  - Manual event trigger buttons
-  - WordPress hook triggers (login, comments)
-  - Real-time event log
+    - Connection status indicator
+    - Manual event trigger buttons
+    - WordPress hook triggers (login, comments)
+    - Real-time event log
 
 ### Testing with Local Betterlytics
 
@@ -115,14 +116,13 @@ docker compose --profile demo up -d
 ```
 
 Configure the plugin at **Settings > Betterlytics**:
+
 - **Site ID**: Get from your Betterlytics dashboard (http://localhost:3000)
 - **Server URL**: `http://localhost:3001/event`
 - **Script URL**: `http://localhost:3006/analytics.js`
 - **Enabled**: Check this box
 
 Then visit http://localhost:8888/betterlytics-test/ to test events.
-
-
 
 ### Demo Cleanup
 
