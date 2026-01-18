@@ -81,14 +81,14 @@ docker compose --profile test run --rm test vendor/bin/phpunit tests/test-option
 docker compose --profile test run --rm test vendor/bin/phpunit --verbose
 ```
 
-## Demo Environment (WooCommerce Integration Testing)
+## Demo Environment
 
 The `demo` profile sets up a full testing environment with test pages for verifying event tracking.
 
 ### Starting the Demo Environment
 
 ```bash
-# Start WordPress with WooCommerce and demo pages
+# Start WordPress with demo pages
 docker compose --profile demo up -d
 
 # Watch the setup complete

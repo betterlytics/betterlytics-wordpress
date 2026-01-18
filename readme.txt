@@ -22,7 +22,6 @@ This plugin helps you quickly set up Betterlytics on your WordPress site without
 * **No Code Required** — Automatically injects the lightweight tracking script
 * **Privacy Controls** — Option to exclude logged-in users from tracking
 * **WordPress Hooks Integration** — Map WordPress actions to custom analytics events
-* **WooCommerce Support** — Track add to cart, checkout, and purchase events
 * **Self-Hosting Support** — Works with both Betterlytics Cloud and self-hosted instances
 
 = Why Betterlytics? =
@@ -98,7 +97,7 @@ By enabling tracking, you consent to data being sent to Betterlytics servers (or
 == Screenshots ==
 
 1. Settings page — Configure your Site ID and tracking options
-2. Events configuration — Set up WordPress hooks and WooCommerce tracking
+2. Events configuration — Set up WordPress hooks for custom event tracking
 
 == Changelog ==
 
@@ -106,7 +105,6 @@ By enabling tracking, you consent to data being sent to Betterlytics servers (or
 * Initial release
 * Automatic tracking script injection
 * WordPress hooks integration
-* WooCommerce event tracking support
 * Privacy controls for logged-in users
 
 == Upgrade Notice ==

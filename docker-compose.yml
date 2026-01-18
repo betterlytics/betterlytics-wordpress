@@ -114,7 +114,8 @@ services:
     volumes:
       - db_test_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -186,7 +187,7 @@ services:
       - build
 
   # ===================
-  # Demo (WooCommerce integration testing)
+  # Demo (Integration Testing)
   # ===================
   demo-setup:
     image: wordpress:cli
@@ -212,49 +213,6 @@ services:
     command: >
       sh -c '
         echo "Setting up demo environment..." &&
-
-        # Install and activate WooCommerce
-        if ! wp plugin is-installed woocommerce 2>/dev/null; then
-          echo "Installing WooCommerce..." &&
-          wp plugin install woocommerce --activate
-        else
-          echo "WooCommerce already installed, activating..." &&
-          wp plugin activate woocommerce 2>/dev/null || true
-        fi &&
-
-        # Run WooCommerce setup wizard pages (skip actual wizard)
-        wp option update woocommerce_store_address "123 Demo Street" &&
-        wp option update woocommerce_store_city "Demo City" &&
-        wp option update woocommerce_default_country "US:CA" &&
-        wp option update woocommerce_store_postcode "90210" &&
-        wp option update woocommerce_currency "USD" &&
-        wp option update woocommerce_product_type "both" &&
-        wp option update woocommerce_allow_tracking "no" &&
-        wp option update --format=json woocommerce_onboarding_profile "{\"skipped\":true}" &&
-
-        # Create WooCommerce pages if they do not exist
-        wp option update woocommerce_queue_flush_rewrite_rules "yes" &&
-
-        # Create a demo product using raw post creation (wp wc requires REST API)
-        PRODUCT_COUNT=$$(wp post list --post_type=product --format=count) &&
-        if [ "$$PRODUCT_COUNT" -eq "0" ]; then
-          echo "Creating demo product..." &&
-          PRODUCT_ID=$$(wp post create \
-            --post_type=product \
-            --post_title="Demo Product" \
-            --post_name="demo-product" \
-            --post_status=publish \
-            --post_content="A demo product for testing Betterlytics events." \
-            --post_excerpt="Demo product for testing." \
-            --porcelain) &&
-          wp post meta update $$PRODUCT_ID _price "19.99" &&
-          wp post meta update $$PRODUCT_ID _regular_price "19.99" &&
-          wp post meta update $$PRODUCT_ID _stock_status "instock" &&
-          wp post meta update $$PRODUCT_ID _visibility "visible" &&
-          echo "Created product ID: $$PRODUCT_ID"
-        else
-          echo "Demo product already exists."
-        fi &&
 
         # Create a demo page for testing custom events
         if ! wp post list --post_type=page --name=betterlytics-test --format=ids | grep -q .; then

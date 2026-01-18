@@ -20,13 +20,13 @@ Official WordPress plugin for [Betterlytics](https://betterlytics.io) - privacy-
 
 ### General Settings
 
-| Setting | Description |
-|---------|-------------|
-| **Enable Tracking** | Toggle tracking on/off |
-| **Site ID** | Your unique Site ID from the Betterlytics dashboard |
-| **Server URL** | Tracking endpoint (default: `https://betterlytics.io/event`) |
-| **Script URL** | Analytics script URL (default: `https://betterlytics.io/analytics.js`) |
-| **Track Logged-in Users** | Include/exclude logged-in users from analytics |
+| Setting                   | Description                                                            |
+| ------------------------- | ---------------------------------------------------------------------- |
+| **Enable Tracking**       | Toggle tracking on/off                                                 |
+| **Site ID**               | Your unique Site ID from the Betterlytics dashboard                    |
+| **Server URL**            | Tracking endpoint (default: `https://betterlytics.io/event`)           |
+| **Script URL**            | Analytics script URL (default: `https://betterlytics.io/analytics.js`) |
+| **Track Logged-in Users** | Include/exclude logged-in users from analytics                         |
 
 ### Self-Hosting
 
@@ -53,22 +53,17 @@ The plugin allows you to map WordPress actions to Betterlytics events. When a Wo
 
 ### Common Hooks
 
-| WordPress Hook | Description |
-|----------------|-------------|
-| `wp_login` | User logs in |
-| `user_register` | New user registration |
-| `comment_post` | New comment posted |
-| `woocommerce_thankyou` | WooCommerce order complete |
-| `woocommerce_add_to_cart` | Product added to cart |
-| `wpcf7_mail_sent` | Contact Form 7 submission |
-| `gform_after_submission` | Gravity Forms submission |
-| `wpforms_process_complete` | WPForms submission |
-
-### Event Properties
+| WordPress Hook             | Description               |
+| -------------------------- | ------------------------- |
+| `wp_login`                 | User logs in              |
+| `user_register`            | New user registration     |
+| `comment_post`             | New comment posted        |
+| `wpcf7_mail_sent`          | Contact Form 7 submission |
+| `gform_after_submission`   | Gravity Forms submission  |
+| `wpforms_process_complete` | WPForms submission        |
 
 The plugin automatically includes relevant properties based on the hook type:
 
-- **WooCommerce**: `order_id`, `product_id`, `quantity`
 - **Forms**: `form_id`
 - **Comments**: `comment_id`
 
