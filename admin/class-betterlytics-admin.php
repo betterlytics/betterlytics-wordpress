@@ -123,17 +123,19 @@ class Betterlytics_Admin {
 
 			// Process checkbox-based event options.
 			$checkbox_keys = [
-				'track_404'        => 'enabled',
-				'track_search'     => 'enabled',
-				'track_downloads'  => 'enabled',
-				'track_css_events' => 'enabled',
+				'track_404'        => [ 'enabled' ],
+				'track_search'     => [ 'enabled', 'include_url' ],
+				'track_downloads'  => [ 'enabled' ],
+				'track_css_events' => [ 'enabled' ],
 			];
 
-			foreach ( $checkbox_keys as $key => $subkey ) {
-				if ( isset( $input[ $key ][ $subkey ] ) ) {
-					$options[ $key ][ $subkey ] = ! empty( $input[ $key ][ $subkey ] );
-				} else {
-					$options[ $key ][ $subkey ] = false;
+			foreach ( $checkbox_keys as $key => $subkeys ) {
+				foreach ( $subkeys as $subkey ) {
+					if ( isset( $input[ $key ][ $subkey ] ) ) {
+						$options[ $key ][ $subkey ] = ! empty( $input[ $key ][ $subkey ] );
+					} else {
+						$options[ $key ][ $subkey ] = false;
+					}
 				}
 			}
 

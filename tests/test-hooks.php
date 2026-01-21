@@ -89,5 +89,50 @@ class Test_Betterlytics_Hooks extends Betterlytics_Test_Case {
 		$this->assertNotEmpty( $betterlytics_queued_events );
 		$this->assertSame( 'search', $betterlytics_queued_events[0]['name'] );
 		$this->assertSame( 'my search query', $betterlytics_queued_events[0]['properties']['query'] );
+		$this->assertArrayNotHasKey( 'url', $betterlytics_queued_events[0]['properties'] );
+	}
+
+	/**
+	 * Test Search page event includes URL when include_url is enabled.
+	 */
+	public function test_search_page_event_with_url() {
+		global $betterlytics_queued_events, $wp_query, $wp;
+		$betterlytics_queued_events = array();
+
+		$this->set_options(
+			array(
+				'enabled'      => true,
+				'site_id'      => 'test-site',
+				'track_search' => array(
+					'enabled'     => true,
+					'include_url' => true,
+				),
+			)
+		);
+
+		$hooks = new Betterlytics_Hooks();
+		$hooks->register_page_hooks();
+
+		// Simulate Search.
+		$wp_query->is_404    = false;
+		$wp_query->is_search = true;
+		$wp_query->set( 's', 'my search query' );
+		$wp->request      = '';
+		$wp->query_string = 's=my+search+query';
+
+		// Remove default WP redirects which cause "headers already sent" errors in tests.
+		remove_action( 'template_redirect', 'redirect_canonical' );
+		remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
+
+		// Output buffering to prevent "headers already sent" if template loads.
+		ob_start();
+		do_action( 'template_redirect' );
+		ob_end_clean();
+
+		$this->assertNotEmpty( $betterlytics_queued_events );
+		$this->assertSame( 'search', $betterlytics_queued_events[0]['name'] );
+		$this->assertSame( 'my search query', $betterlytics_queued_events[0]['properties']['query'] );
+		$this->assertArrayHasKey( 'url', $betterlytics_queued_events[0]['properties'] );
+		$this->assertStringContainsString( 's=my+search+query', $betterlytics_queued_events[0]['properties']['url'] );
 	}
 }

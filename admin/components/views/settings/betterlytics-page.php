@@ -47,7 +47,7 @@ $betterlytics_options = $args['options'];
 						'name'        => 'betterlytics_options[enabled]',
 						'checked'     => ! empty( $betterlytics_options['enabled'] ),
 						'description' => __( 'Enable Betterlytics tracking on this site', 'betterlytics' ),
-						'help_path'   => 'settings/enable-tracking',
+						'help_path'   => 'wordpress/settings#enable-tracking',
 					]
 				);
 
@@ -61,7 +61,7 @@ $betterlytics_options = $args['options'];
 						'value'       => $betterlytics_options['site_id'],
 						'placeholder' => 'your-site-id',
 						'description' => __( 'Your unique Site ID from the Betterlytics dashboard.', 'betterlytics' ),
-						'help_path'   => 'settings/site-id',
+						'help_path'   => 'wordpress/settings#site-id',
 					]
 				);
 
@@ -92,7 +92,7 @@ $betterlytics_options = $args['options'];
 							'name'        => 'betterlytics_options[track_404][enabled]',
 							'checked'     => ! empty( $betterlytics_options['track_404']['enabled'] ),
 							'description' => __( 'Track when visitors land on pages that don\'t exist', 'betterlytics' ),
-							'help_path'   => 'events/404-tracking',
+							'help_path'   => 'wordpress/events#404-tracking',
 						]
 					);
 
@@ -103,7 +103,19 @@ $betterlytics_options = $args['options'];
 							'name'        => 'betterlytics_options[track_search][enabled]',
 							'checked'     => ! empty( $betterlytics_options['track_search']['enabled'] ),
 							'description' => __( 'Track search queries on your site', 'betterlytics' ),
-							'help_path'   => 'events/site-search',
+							'help_path'   => 'wordpress/events#site-search',
+						]
+					);
+
+					Betterlytics_Admin_Controller::render_component(
+						'ui/setting-row',
+						[
+							'label'       => __( 'Include Search URL', 'betterlytics' ),
+							'name'        => 'betterlytics_options[track_search][include_url]',
+							'checked'     => ! empty( $betterlytics_options['track_search']['include_url'] ),
+							'description' => __( 'Send the full search URL with search events', 'betterlytics' ),
+							'help_path'   => 'wordpress/events#site-search',
+							'indent'      => true,
 						]
 					);
 
@@ -143,7 +155,7 @@ $betterlytics_options = $args['options'];
 							'name'        => 'betterlytics_options[track_downloads][enabled]',
 							'checked'     => ! empty( $betterlytics_options['track_downloads']['enabled'] ),
 							'description' => __( 'Track downloads of files (.pdf, .zip, .doc, etc.)', 'betterlytics' ),
-							'help_path'   => 'events/file-downloads',
+							'help_path'   => 'wordpress/events#file-downloads',
 						]
 					);
 

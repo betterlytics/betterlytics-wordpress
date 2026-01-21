@@ -10,21 +10,22 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"server_url": "https://betterlytics.io/event",
 	"script_url": "https://betterlytics.io/analytics.js",
 	"enabled": true,
-{
-	"site_id": "your-site-id",
-	"server_url": "https://betterlytics.io/event",
-	"script_url": "https://betterlytics.io/analytics.js",
-	"enabled": true,
 	"track_web_vitals": false,
 
-	"// Browser Events": "----------------",
 	"track_404": { "enabled": false },
-	"track_search": { "enabled": false },
+	"track_search": { "enabled": false, "include_url": false },
 	"track_outbound": { "mode": "domain" },
 	"track_downloads": { "enabled": false },
 	"track_css_events": { "enabled": false }
 }
 ```
+
+### track_search Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `enabled` | boolean | `false` | Enable site search tracking |
+| `include_url` | boolean | `false` | Include the full search URL with search events. **Privacy note:** When enabled, the complete URL including query parameters is sent. |
 
 ## WP-CLI
 

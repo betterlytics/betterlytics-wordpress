@@ -190,7 +190,7 @@ class Betterlytics_Admin_Controller {
 				</div>
 
 				<div class="betterlytics-nav-links flex gap-4">
-					<a href="https://betterlytics.io/docs/installation/wordpress" target="_blank" rel="noopener" class="betterlytics-nav-link betterlytics-link-external text-sm text-muted-foreground hover:text-primary hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm">
+					<a href="https://betterlytics.io/docs/wordpress" target="_blank" rel="noopener" class="betterlytics-nav-link betterlytics-link-external text-sm text-muted-foreground hover:text-primary hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm">
 						<?php esc_html_e( 'Documentation', 'betterlytics' ); ?>
 					</a>
 					<a href="https://betterlytics.io/contact" target="_blank" rel="noopener" class="betterlytics-nav-link betterlytics-link-external text-sm text-muted-foreground hover:text-primary hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm">

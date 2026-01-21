@@ -41,8 +41,9 @@ class Betterlytics_Options {
 			'metadata' => [],
 		],
 		'track_search'     => [
-			'enabled'  => false,
-			'metadata' => [],
+			'enabled'     => false,
+			'include_url' => false,
+			'metadata'    => [],
 		],
 		'track_outbound'   => [
 			'mode'     => 'domain',
