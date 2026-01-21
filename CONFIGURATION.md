@@ -17,28 +17,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"track_404": { "enabled": false },
 	"track_search": { "enabled": false },
 	"track_downloads": { "enabled": false },
-	"track_css_events": { "enabled": false },
-
-
-
-	"// Server Hooks (WordPress)": "-------",
-	"track_wp_login": false,
-	"track_wp_logout": false,
-	"track_user_register": false,
-
-	"// Custom Hooks": "-------------------",
-	"hooks": [
-		{ "wp_hook": "wp_login", "event_name": "user-login", "enabled": true },
-		{
-			"wp_hook": "user_register",
-			"event_name": "sign-up",
-			"enabled": true,
-			"metadata": [
-				{ "key": "user_id", "value": "{0}" },
-				{ "key": "email", "value": "{1->user_email}" }
-			]
-		}
-	]
+	"track_css_events": { "enabled": false }
 }
 ```
 
@@ -48,7 +27,7 @@ Configure the plugin directly from your deployment scripts:
 
 ```bash
 # Set all options at once (JSON)
-wp option update betterlytics_options '{"site_id":"abc123","server_url":"https://analytics.example.com/track","script_url":"https://analytics.example.com/analytics.js","enabled":true,"track_logged_in":false,"hooks":[]}' --format=json
+wp option update betterlytics_options '{"site_id":"abc123","server_url":"https://analytics.example.com/track","script_url":"https://analytics.example.com/analytics.js","enabled":true}' --format=json
 
 # Or pipe from a config file
 wp option update betterlytics_options --format=json < betterlytics-config.json
@@ -117,11 +96,7 @@ Keep a `betterlytics-config.json` in your deployment repo for reproducible confi
 	"site_id": "production-site-id",
 	"server_url": "https://analytics.example.com/track",
 	"script_url": "https://analytics.example.com/analytics.js",
-	"enabled": true,
-	"track_logged_in": false,
-	"hooks": [
-		{ "wp_hook": "wp_login", "event_name": "user-login", "enabled": true }
-	]
+	"enabled": true
 }
 ```
 
@@ -147,8 +122,6 @@ wp option update betterlytics_options --format=json < betterlytics-config.json
           server_url: "{{ betterlytics_server_url }}"
           script_url: "{{ betterlytics_script_url }}"
           enabled: true
-          track_logged_in: false
-          hooks: []
 ```
 
 ## Terraform (with WP-CLI provisioner)
@@ -162,8 +135,6 @@ resource "null_resource" "configure_betterlytics" {
         server_url      = var.betterlytics_server_url
         script_url      = var.betterlytics_script_url
         enabled         = true
-        track_logged_in = false
-        hooks           = []
       })}' --format=json --path=/var/www/html"
     ]
   }

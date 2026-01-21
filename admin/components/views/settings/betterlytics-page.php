@@ -70,7 +70,7 @@ $betterlytics_options = $args['options'];
 		</div>
 
 		<!-- Browser Event Tracking Section -->
-		<div class="mb-8">
+		<div id="betterlytics-events-section" class="mb-8">
 			<div class="flex items-center gap-3 mb-4">
 				<h3 class="text-xl font-bold text-foreground tracking-tight">
 					<?php esc_html_e( 'Browser Event Tracking', 'betterlytics' ); ?>

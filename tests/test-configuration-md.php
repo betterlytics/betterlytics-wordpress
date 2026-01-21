@@ -22,7 +22,6 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 			'server_url'       => 'https://betterlytics.io/event',
 			'script_url'       => 'https://betterlytics.io/analytics.js',
 			'enabled'          => true,
-			'track_logged_in'  => false,
 			'track_web_vitals' => false,
 
 			// Browser Events
@@ -31,9 +30,6 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 			'track_outbound'   => array( 'mode' => 'domain' ),
 			'track_downloads'  => array( 'enabled' => false ),
 			'track_css_events' => array( 'enabled' => false ),
-
-			'hooks'                => array(),
-
 		);
 
 		// Simulate applying this configuration via update_option
@@ -44,9 +40,6 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 
 		$this->assertSame( 'your-site-id', $stored['site_id'] );
 		$this->assertTrue( $stored['enabled'] );
-		$this->assertFalse( $stored['track_logged_in'] );
-
-		$this->assertEmpty( $stored['hooks'] );
 	}
 
 	/**
@@ -98,8 +91,6 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 			'server_url'      => $mock_env['BETTERLYTICS_SERVER_URL'],
 			'script_url'      => $mock_env['BETTERLYTICS_SCRIPT_URL'],
 			'enabled'         => filter_var( $mock_env['BETTERLYTICS_ENABLED'], FILTER_VALIDATE_BOOLEAN ),
-			'track_logged_in' => filter_var( $mock_env['BETTERLYTICS_TRACK_LOGGED_IN'], FILTER_VALIDATE_BOOLEAN ),
-			'hooks'           => array(),
 		);
 
 		update_option( 'betterlytics_options', $config );
@@ -108,8 +99,5 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 		$this->assertSame( 'env-site-id', $stored['site_id'] );
 		$this->assertSame( 'https://env-server.com', $stored['server_url'] );
 		$this->assertTrue( $stored['enabled'] );
-		$this->assertTrue( $stored['track_logged_in'] );
-		$this->assertIsArray( $stored['hooks'] );
-		$this->assertEmpty( $stored['hooks'] );
 	}
 }

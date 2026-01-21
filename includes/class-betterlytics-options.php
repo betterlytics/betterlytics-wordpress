@@ -34,7 +34,6 @@ class Betterlytics_Options {
 		'script_url'       => 'https://betterlytics.io/analytics.js',
 		'enabled'          => false,
 		'track_web_vitals' => false,
-		'hooks'            => [],
 
 		// Event tracking options.
 		'track_404'        => [

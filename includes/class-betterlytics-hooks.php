@@ -39,7 +39,7 @@ class Betterlytics_Hooks {
 	public function track_page_events() {
 		$options = Betterlytics_Options::get_options();
 
-		if ( ! empty( $options['track_404'] ) && is_404() ) {
+		if ( ! empty( $options['track_404']['enabled'] ) && is_404() ) {
 			global $wp;
 			$this->queue_event(
 				'404',
@@ -49,7 +49,7 @@ class Betterlytics_Hooks {
 			);
 		}
 
-		if ( ! empty( $options['track_search'] ) && is_search() ) {
+		if ( ! empty( $options['track_search']['enabled'] ) && is_search() ) {
 			$this->queue_event(
 				'search',
 				[

@@ -121,7 +121,7 @@ console.log('[Betterlytics] Script injected', {
 		}
 
 		$options  = Betterlytics_Options::get_options();
-		$needs_js = ! empty( $options['track_downloads'] ) || ! empty( $options['track_css_events'] );
+		$needs_js = ! empty( $options['track_downloads']['enabled'] ) || ! empty( $options['track_css_events']['enabled'] );
 
 		if ( ! $needs_js ) {
 			return;
