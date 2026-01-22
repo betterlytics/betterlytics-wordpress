@@ -110,7 +110,7 @@ class Betterlytics_Admin {
 
 			$checkbox_keys = [
 				'track_404'        => [ 'enabled' ],
-				'track_search'     => [ 'enabled', 'include_url' ],
+				'track_search'     => [ 'enabled', 'include_query' ],
 				'track_downloads'  => [ 'enabled' ],
 				'track_css_events' => [ 'enabled' ],
 			];

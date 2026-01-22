@@ -110,10 +110,10 @@ $betterlytics_options = $args['options'];
 					Betterlytics_Admin_Controller::render_component(
 						'ui/setting-row',
 						[
-							'label'       => __( 'Include Search URL', 'betterlytics' ),
-							'name'        => 'betterlytics_options[track_search][include_url]',
-							'checked'     => ! empty( $betterlytics_options['track_search']['include_url'] ),
-							'description' => __( 'Send the full search URL with search events', 'betterlytics' ),
+							'label'       => __( 'Include Search Query', 'betterlytics' ),
+							'name'        => 'betterlytics_options[track_search][include_query]',
+							'checked'     => ! empty( $betterlytics_options['track_search']['include_query'] ),
+							'description' => __( 'Send the search term with events (disable if users search for personal info)', 'betterlytics' ),
 							'help_path'   => 'integration/wordpress/events#site-search',
 							'indent'      => true,
 						]

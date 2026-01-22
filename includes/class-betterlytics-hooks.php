@@ -48,14 +48,10 @@ class Betterlytics_Hooks {
 		}
 
 		if ( ! empty( $options['track_search']['enabled'] ) && is_search() ) {
-			$properties = [
-				'query' => get_search_query(),
-			];
+			$properties = [];
 
-			// Optionally include the search URL.
-			if ( ! empty( $options['track_search']['include_url'] ) ) {
-				global $wp;
-				$properties['url'] = home_url( $wp->request ) . '?' . $wp->query_string;
+			if ( ! empty( $options['track_search']['include_query'] ) ) {
+				$properties['query'] = get_search_query();
 			}
 
 			$this->queue_event( 'search', $properties );

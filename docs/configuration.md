@@ -13,7 +13,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 	"track_web_vitals": false,
 
 	"track_404": { "enabled": false },
-	"track_search": { "enabled": false, "include_url": false },
+	"track_search": { "enabled": false, "include_query": false },
 	"track_outbound": { "mode": "domain" },
 	"track_downloads": { "enabled": false },
 	"track_css_events": { "enabled": false }
@@ -25,7 +25,7 @@ The Betterlytics plugin stores all settings in a single WordPress option (`bette
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enabled` | boolean | `false` | Enable site search tracking |
-| `include_url` | boolean | `false` | Include the full search URL with search events. **Privacy note:** When enabled, the complete URL including query parameters is sent. |
+| `include_query` | boolean | `false` | Include search query term with events |
 
 ## WP-CLI
 
