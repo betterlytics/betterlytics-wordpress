@@ -55,16 +55,7 @@ function betterlytics_activate() {
 	Betterlytics_Activator::activate();
 }
 
-/**
- * The code that runs during plugin deactivation.
- */
-function betterlytics_deactivate() {
-	require_once BETTERLYTICS_PLUGIN_DIR . 'includes/class-betterlytics-deactivator.php';
-	Betterlytics_Deactivator::deactivate();
-}
-
 register_activation_hook( __FILE__, 'betterlytics_activate' );
-register_deactivation_hook( __FILE__, 'betterlytics_deactivate' );
 
 /**
  * Add settings link to plugin action links.

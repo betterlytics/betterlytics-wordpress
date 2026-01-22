@@ -17,8 +17,6 @@
 class Betterlytics_Hooks {
 
 
-
-
 	/**
 	 * Register page-level event hooks (404, search).
 	 *
@@ -63,8 +61,6 @@ class Betterlytics_Hooks {
 			$this->queue_event( 'search', $properties );
 		}
 	}
-
-
 
 	/**
 	 * Queue an event for output in the footer.

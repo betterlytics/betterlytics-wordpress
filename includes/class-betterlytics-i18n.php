@@ -10,9 +10,7 @@
  */
 
 /**
- * Define the internationalization functionality.
- *
- * @since 1.0.0
+ * Internationalization handler.
  */
 class Betterlytics_I18n {
 

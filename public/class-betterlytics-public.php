@@ -8,29 +8,21 @@
  */
 
 /**
- * The public-facing functionality of the plugin.
- *
- * Defines the plugin name, version, and hooks for the public-facing side.
- *
- * @since 1.0.0
+ * Public-facing functionality.
  */
 class Betterlytics_Public {
 
 	/**
-	 * The ID of this plugin.
+	 * Plugin name.
 	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @var    string $plugin_name The ID of this plugin.
+	 * @var string
 	 */
 	private $plugin_name;
 
 	/**
-	 * The version of this plugin.
+	 * Plugin version.
 	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @var    string $version The current version of this plugin.
+	 * @var string
 	 */
 	private $version;
 

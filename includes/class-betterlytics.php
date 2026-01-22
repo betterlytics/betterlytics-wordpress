@@ -11,36 +11,28 @@
  */
 
 /**
- * The core plugin class.
- *
- * @since 1.0.0
+ * Core plugin class.
  */
 class Betterlytics {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks.
+	 * Hook loader.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    Betterlytics_Loader $loader Maintains and registers all hooks.
+	 * @var Betterlytics_Loader
 	 */
 	protected $loader;
 
 	/**
-	 * The unique identifier of this plugin.
+	 * Plugin name.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    string $plugin_name The string used to uniquely identify this plugin.
+	 * @var string
 	 */
 	protected $plugin_name;
 
 	/**
-	 * The current version of the plugin.
+	 * Plugin version.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    string $version The current version of the plugin.
+	 * @var string
 	 */
 	protected $version;
 

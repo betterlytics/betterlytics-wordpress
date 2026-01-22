@@ -9,10 +9,6 @@
 
 /**
  * Plugin options handler.
- *
- * Provides static methods for getting and updating plugin options.
- *
- * @since 1.0.0
  */
 class Betterlytics_Options {
 
@@ -34,8 +30,6 @@ class Betterlytics_Options {
 		'script_url'       => 'https://betterlytics.io/analytics.js',
 		'enabled'          => false,
 		'track_web_vitals' => false,
-
-		// Event tracking options.
 		'track_404'        => [
 			'enabled'  => false,
 			'metadata' => [],
@@ -145,14 +139,21 @@ class Betterlytics_Options {
 	public static function is_tracking_enabled() {
 		$options = self::get_options();
 
-		// Must be enabled and have a site ID.
 		if ( ! $options['enabled'] || empty( $options['site_id'] ) ) {
 			return false;
 		}
 
-		// Check if we should track logged-in users.
-		// Removed: track_logged_in option is no longer supported.
-		// Tracking is now enabled for all users if enabled globally.
 		return true;
+	}
+
+	/**
+	 * Check if setup is complete (site ID configured and enabled).
+	 *
+	 * @since  1.0.0
+	 * @return bool True if setup is complete.
+	 */
+	public static function is_setup_complete() {
+		$options = self::get_options();
+		return ! empty( $options['site_id'] ) && ! empty( $options['enabled'] );
 	}
 }

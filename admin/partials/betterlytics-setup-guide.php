@@ -12,9 +12,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$betterlytics_options     = Betterlytics_Options::get_options();
-$betterlytics_is_enabled  = ! empty( $betterlytics_options['enabled'] );
-$betterlytics_has_site_id = ! empty( $betterlytics_options['site_id'] );
+$betterlytics_options        = Betterlytics_Options::get_options();
+$betterlytics_is_enabled     = ! empty( $betterlytics_options['enabled'] );
+$betterlytics_has_site_id    = ! empty( $betterlytics_options['site_id'] );
+$betterlytics_setup_complete = Betterlytics_Options::is_setup_complete();
 
 /**
  * Define the steps data structure for reusability.

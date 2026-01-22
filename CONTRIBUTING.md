@@ -173,7 +173,6 @@ betterlytics-wordpress/
 ├── includes/                 # Core plugin classes
 │   ├── class-betterlytics.php
 │   ├── class-betterlytics-activator.php
-│   ├── class-betterlytics-deactivator.php
 │   ├── class-betterlytics-hooks.php
 │   ├── class-betterlytics-i18n.php
 │   ├── class-betterlytics-loader.php

@@ -8,29 +8,21 @@
  */
 
 /**
- * The admin-specific functionality of the plugin.
- *
- * Handles settings, assets, and AJAX handlers for the admin area.
- *
- * @since 1.0.0
+ * Admin functionality handler.
  */
 class Betterlytics_Admin {
 
 	/**
-	 * The ID of this plugin.
+	 * Plugin name.
 	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @var    string $plugin_name The ID of this plugin.
+	 * @var string
 	 */
 	private $plugin_name;
 
 	/**
-	 * The version of this plugin.
+	 * Plugin version.
 	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @var    string $version The current version of this plugin.
+	 * @var string
 	 */
 	private $version;
 
@@ -75,8 +67,6 @@ class Betterlytics_Admin {
 		);
 	}
 
-
-
 	/**
 	 * Register plugin settings.
 	 *
@@ -106,9 +96,7 @@ class Betterlytics_Admin {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by settings API.
 		$page = isset( $_POST['option_page'] ) ? sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) : '';
 
-		// Settings page fields.
 		if ( 'betterlytics_settings' === $page ) {
-			// Core settings.
 			$options['enabled']    = ! empty( $input['enabled'] );
 			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
 			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/event' );
@@ -118,10 +106,8 @@ class Betterlytics_Admin {
 				$options['script_url'] = esc_url_raw( $input['script_url'] );
 			}
 
-			// Browser event settings.
 			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
 
-			// Process checkbox-based event options.
 			$checkbox_keys = [
 				'track_404'        => [ 'enabled' ],
 				'track_search'     => [ 'enabled', 'include_url' ],
@@ -139,9 +125,8 @@ class Betterlytics_Admin {
 				}
 			}
 
-			// Process Mode Options (string-based selectors).
 			$mode_keys = [
-				'track_outbound' => 'domain', // Default mode.
+				'track_outbound' => 'domain',
 			];
 
 			foreach ( $mode_keys as $key => $default_mode ) {
@@ -158,7 +143,6 @@ class Betterlytics_Admin {
 					$mode = sanitize_text_field( $val );
 				}
 
-				// Validate mode value.
 				$valid_modes = [ 'off', 'domain', 'full' ];
 				if ( ! in_array( $mode, $valid_modes, true ) ) {
 					$mode = $default_mode;
@@ -173,7 +157,6 @@ class Betterlytics_Admin {
 
 		return $options;
 	}
-
 
 	/**
 	 * Hide WordPress admin notices on Betterlytics pages for cleaner UI.
@@ -210,8 +193,6 @@ class Betterlytics_Admin {
 		</script>
 		<?php
 	}
-
-
 
 	/**
 	 * AJAX handler for dismissing the setup banner.
