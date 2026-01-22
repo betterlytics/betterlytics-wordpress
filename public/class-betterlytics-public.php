@@ -160,7 +160,7 @@ console.log('[Betterlytics] Script injected', {
 		echo "<script>\n";
 		foreach ( $betterlytics_queued_events as $event ) {
 			$name  = esc_js( $event['name'] );
-			$props = wp_json_encode( $event['properties'] );
+			$props = wp_json_encode( $event['properties'], JSON_HEX_TAG | JSON_HEX_AMP );
 			echo "betterlytics.event('" . esc_js( $name ) . "', " . $props . ");\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 		echo "</script>\n";
