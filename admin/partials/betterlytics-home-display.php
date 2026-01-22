@@ -23,7 +23,7 @@ $betterlytics_setup_complete = Betterlytics_Options::is_setup_complete();
 		<h2 class="text-lg font-semibold mb-4 pb-2 border-b border-border"><?php esc_html_e( 'Resources', 'betterlytics' ); ?></h2>
 		<ul class="bg-card border border-border rounded-md divide-y divide-border list-none p-0 m-0">
 			<li>
-				<a href="https://betterlytics.io/docs/wordpress" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+				<a href="https://betterlytics.io/docs/integration/wordpress" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
 					<span class="dashicons dashicons-book text-muted-foreground"></span>
 					<?php esc_html_e( 'Documentation', 'betterlytics' ); ?>
 					<span class="dashicons dashicons-external text-muted-foreground/50 !w-4 !h-4 ml-auto"></span>
