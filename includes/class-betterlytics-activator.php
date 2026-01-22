@@ -24,15 +24,8 @@ class Betterlytics_Activator {
 	 * @since 1.0.0
 	 */
 	public static function activate() {
-		$default_options = [
-			'site_id'    => '',
-			'server_url' => 'https://betterlytics.io/event',
-			'script_url' => 'https://betterlytics.io/analytics.js',
-			'enabled'    => false,
-		];
-
-		if ( ! get_option( 'betterlytics_options' ) ) {
-			add_option( 'betterlytics_options', $default_options );
+		if ( ! get_option( Betterlytics_Options::OPTION_NAME ) ) {
+			add_option( Betterlytics_Options::OPTION_NAME, Betterlytics_Options::DEFAULTS );
 		}
 	}
 }

@@ -41,9 +41,9 @@ if ( $betterlytics_indent ) {
 	$betterlytics_check_classes = 'w-6 h-6 rounded-lg border-2 border-border text-primary focus:ring-primary/30 transition-all cursor-pointer';
 }
 ?>
-<div class="betterlytics-checkmark-row group <?php echo $betterlytics_indent ? '' : 'hover:bg-muted/5'; ?> transition-all duration-200 <?php echo esc_attr( $betterlytics_row_classes ); ?>">
+<div class="betterlytics-checkmark-row group <?php echo esc_attr( $betterlytics_indent ? '' : 'hover:bg-muted/5' ); ?> transition-all duration-200 <?php echo esc_attr( $betterlytics_row_classes ); ?>">
 	<div class="flex items-center justify-between <?php echo esc_attr( $betterlytics_inner_classes ); ?>">
-		<div class="flex flex-col <?php echo $betterlytics_indent ? 'gap-0.5' : 'gap-1'; ?> min-w-0 flex-1">
+		<div class="flex flex-col <?php echo esc_attr( $betterlytics_indent ? 'gap-0.5' : 'gap-1' ); ?> min-w-0 flex-1">
 			<div class="flex items-center gap-2">
 				<span class="<?php echo esc_attr( $betterlytics_label_classes ); ?> truncate">
 					<?php echo esc_html( $betterlytics_label ); ?>

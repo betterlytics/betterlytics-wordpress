@@ -63,13 +63,6 @@ class Betterlytics_Public {
 		}
 
 		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				echo "<!-- Betterlytics: Tracking DISABLED -->\n";
-				echo '<!-- Reason: enabled=' . ( $options['enabled'] ? 'true' : 'false' );
-				echo ', site_id=' . ( empty( $options['site_id'] ) ? 'EMPTY' : 'set' );
-				echo ', track_logged_in=' . ( $options['track_logged_in'] ? 'true' : 'false' );
-				echo ', is_user_logged_in=' . ( is_user_logged_in() ? 'true' : 'false' ) . " -->\n";
-			}
 			return;
 		}
 

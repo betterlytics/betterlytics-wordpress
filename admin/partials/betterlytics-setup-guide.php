@@ -91,7 +91,7 @@ foreach ( $betterlytics_steps as $betterlytics_step ) {
 		<div class="<?php echo esc_attr( $betterlytics_step_classes ); ?>">
 			<!-- Large Numbers (w-12 h-12 = 48px, 1.5x of 32px standard). -->
 			<div class="shrink-0">
-				<div class="w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-lg transition-all duration-200 <?php echo $betterlytics_is_completed ? 'bg-primary border-primary text-white' : 'border-primary text-primary bg-transparent'; ?>">
+				<div class="w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-lg transition-all duration-200 <?php echo esc_attr( $betterlytics_is_completed ? 'bg-primary border-primary text-white' : 'border-primary text-primary bg-transparent' ); ?>">
 					<?php if ( $betterlytics_is_completed ) : ?>
 						<span class="dashicons dashicons-yes !text-2xl !w-6 !h-6 !leading-none"></span>
 					<?php else : ?>
