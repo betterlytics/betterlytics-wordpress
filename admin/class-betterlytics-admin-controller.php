@@ -68,7 +68,8 @@ class Betterlytics_Admin_Controller {
 		$betterlytics_options          = Betterlytics_Options::get_options();
 		$betterlytics_setup_incomplete = empty( $betterlytics_options['site_id'] ) || empty( $betterlytics_options['enabled'] );
 
-		$betterlytics_show_setup_banner = $betterlytics_setup_incomplete;
+		$betterlytics_banner_dismissed  = Betterlytics_Admin::is_setup_banner_dismissed();
+		$betterlytics_show_setup_banner = $betterlytics_setup_incomplete && ! $betterlytics_banner_dismissed;
 		?>
 		<div id="betterlytics-admin-root" class="betterlytics-admin-root">
 			<?php if ( $betterlytics_show_setup_banner ) : ?>
