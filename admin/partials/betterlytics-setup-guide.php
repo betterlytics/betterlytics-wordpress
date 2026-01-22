@@ -4,7 +4,7 @@
  *
  * @package    Betterlytics
  * @subpackage Betterlytics/admin/partials
- * @since      1.0.2
+ * @since      1.0.0
  */
 
 // If this file is called directly, abort.
