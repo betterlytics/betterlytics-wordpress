@@ -176,16 +176,6 @@ class Betterlytics {
 	}
 
 	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @since  1.0.0
-	 * @return Betterlytics_Loader Orchestrates the hooks of the plugin.
-	 */
-	public function get_loader() {
-		return $this->loader;
-	}
-
-	/**
 	 * Retrieve the version number of the plugin.
 	 *
 	 * @since  1.0.0
