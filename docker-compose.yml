@@ -15,6 +15,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html
       - .:/var/www/html/wp-content/plugins/betterlytics
+      - ./demo/mu-plugins:/var/www/html/wp-content/mu-plugins
     depends_on:
       db:
         condition: service_healthy
@@ -213,6 +214,11 @@ services:
     command: >
       sh -c '
         echo "Setting up demo environment..." &&
+
+        # Enable pretty permalinks
+        echo "Enabling pretty permalinks..." &&
+        wp rewrite structure "/%postname%/" --hard &&
+        wp rewrite flush --hard &&
 
         # Create a demo page for testing custom events
         if ! wp post list --post_type=page --name=betterlytics-test --format=ids | grep -q .; then
