@@ -1,13 +1,13 @@
 {
-  "site_id": "betterlytics-wp-mklt1198",
+  "site_id": "",
   "server_url": "http://localhost:3001/event",
   "script_url": "http://localhost:3006/analytics.js",
-  "enabled": true,
+  "enabled": false,
   "track_web_vitals": false,
 
   "track_404": { "enabled": true },
   "track_search": { "enabled": true },
   "track_outbound": { "mode": "domain" },
   "track_downloads": { "enabled": true },
-  "track_css_events": { "enabled": true }
+  "track_custom_html_attribute": { "enabled": true }
 }

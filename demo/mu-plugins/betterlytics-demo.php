@@ -156,6 +156,17 @@ function betterlytics_demo_render_test_page( $content ) {
 			</p>
 		</div>
 
+		<h2>HTML Attribute Testing</h2>
+		<div class="test-section">
+			<p>Click these buttons to fire custom HTML attributed Betterlytics events:</p>
+			<button data-betterlytics-event="YourEvent">
+				Fire: YourEvent
+			</button>
+			<button class="secondary" data-betterlytics-event="test-page-action">
+				Fire: test-page-action
+			</button>
+		</div>
+
 		<h2>WordPress Hook Testing</h2>
 			<?php if ( comments_open() ) : ?>
 				<p style="margin-top: 15px;"><strong>Post a comment</strong> to trigger the <code>comment_post</code> hook:</p>

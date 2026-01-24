@@ -106,7 +106,7 @@ console.log('[Betterlytics] Script injected', {
 		}
 
 		$options  = Betterlytics_Options::get_options();
-		$needs_js = ! empty( $options['track_downloads']['enabled'] ) || ! empty( $options['track_css_events']['enabled'] );
+		$needs_js = ! empty( $options['track_downloads']['enabled'] ) || ! empty( $options['track_custom_html_attribute']['enabled'] );
 
 		if ( ! $needs_js ) {
 			return;
@@ -120,12 +120,12 @@ console.log('[Betterlytics] Script injected', {
 			true
 		);
 
-		wp_localize_script(
+			wp_localize_script(
 			'betterlytics-events',
 			'betterlyticsEvents',
 			[
-				'trackDownloads' => ! empty( $options['track_downloads'] ),
-				'trackCssEvents' => ! empty( $options['track_css_events'] ),
+				'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
+				'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
 			]
 		);
 	}

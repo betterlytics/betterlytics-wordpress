@@ -115,7 +115,7 @@ class Betterlytics_Admin {
 				'track_404'        => [ 'enabled' ],
 				'track_search'     => [ 'enabled', 'include_query' ],
 				'track_downloads'  => [ 'enabled' ],
-				'track_css_events' => [ 'enabled' ],
+				'track_custom_html_attribute' => [ 'enabled' ],
 			];
 
 			foreach ( $checkbox_keys as $key => $subkeys ) {

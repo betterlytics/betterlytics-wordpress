@@ -32,7 +32,7 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 			),
 			'track_outbound'   => array( 'mode' => 'domain' ),
 			'track_downloads'  => array( 'enabled' => false ),
-			'track_css_events' => array( 'enabled' => false ),
+			'track_custom_html_attribute' => array( 'enabled' => false ),
 		);
 
 		// Simulate applying this configuration via update_option
