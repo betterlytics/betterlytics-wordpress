@@ -99,9 +99,12 @@ class Betterlytics_Admin {
 		if ( 'betterlytics_settings' === $page ) {
 			$options['enabled']    = ! empty( $input['enabled'] );
 			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
-			$options['server_url'] = esc_url_raw( $input['server_url'] ?? 'https://betterlytics.io/event' );
 
-			// Allow script_url to be updated programmatically (e.g. config.json) even if hidden in UI.
+			// Only update URLs if explicitly provided
+			if ( ! empty( $input['server_url'] ) ) {
+				$options['server_url'] = esc_url_raw( $input['server_url'] );
+			}
+
 			if ( ! empty( $input['script_url'] ) ) {
 				$options['script_url'] = esc_url_raw( $input['script_url'] );
 			}
