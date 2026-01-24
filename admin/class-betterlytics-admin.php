@@ -97,10 +97,10 @@ class Betterlytics_Admin {
 		$page = isset( $_POST['option_page'] ) ? sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) : '';
 
 		if ( 'betterlytics_settings' === $page ) {
-			$options['enabled']    = ! empty( $input['enabled'] );
-			$options['site_id']    = sanitize_text_field( $input['site_id'] ?? '' );
+			$options['enabled'] = ! empty( $input['enabled'] );
+			$options['site_id'] = sanitize_text_field( $input['site_id'] ?? '' );
 
-			// Only update URLs if explicitly provided
+			// Only update URLs if explicitly provided.
 			if ( ! empty( $input['server_url'] ) ) {
 				$options['server_url'] = esc_url_raw( $input['server_url'] );
 			}
@@ -112,9 +112,9 @@ class Betterlytics_Admin {
 			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
 
 			$checkbox_keys = [
-				'track_404'        => [ 'enabled' ],
-				'track_search'     => [ 'enabled', 'include_query' ],
-				'track_downloads'  => [ 'enabled' ],
+				'track_404'                   => [ 'enabled' ],
+				'track_search'                => [ 'enabled', 'include_query' ],
+				'track_downloads'             => [ 'enabled' ],
 				'track_custom_html_attribute' => [ 'enabled' ],
 			];
 

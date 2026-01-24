@@ -121,13 +121,13 @@ console.log('[Betterlytics] Script injected', {
 		);
 
 			wp_localize_script(
-			'betterlytics-events',
-			'betterlyticsEvents',
-			[
-				'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
-				'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
-			]
-		);
+				'betterlytics-events',
+				'betterlyticsEvents',
+				[
+					'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
+					'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
+				]
+			);
 	}
 
 	/**
