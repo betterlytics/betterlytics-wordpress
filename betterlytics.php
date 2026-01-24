@@ -4,7 +4,7 @@
  *
  * @package           Betterlytics
  * @author            Betterlytics
- * @copyright         2024 Betterlytics
+ * @copyright         2026 Betterlytics
  * @license           GPL-2.0-or-later
  *
  * @wordpress-plugin
@@ -67,12 +67,9 @@ function betterlytics_plugin_action_links( $links ) {
 	$settings_link = '<a href="' . admin_url( 'options-general.php?page=betterlytics&tab=settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';
 	array_unshift( $links, $settings_link );
 
-	// Add dashboard link if site_id is configured.
-	$options = get_option( 'betterlytics_options', [] );
-	if ( ! empty( $options['site_id'] ) ) {
-		$dashboard_link = '<a href="https://betterlytics.io/dashboards/' . esc_attr( $options['site_id'] ) . '" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
-		array_unshift( $links, $dashboard_link );
-	}
+	// Add dashboard link.
+	$dashboard_link = '<a href="https://betterlytics.io/dashboards" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
+	array_unshift( $links, $dashboard_link );
 
 	return $links;
 }

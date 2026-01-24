@@ -20,7 +20,6 @@ This plugin helps you quickly set up Betterlytics on your WordPress site without
 
 * **Easy Setup** — Add your Site ID and start tracking in seconds
 * **No Code Required** — Automatically injects the lightweight tracking script
-* **Privacy Controls** — Option to exclude logged-in users from tracking
 * **WordPress Hooks Integration** — Map WordPress actions to custom analytics events
 * **Self-Hosting Support** — Works with both Betterlytics Cloud and self-hosted instances
 
@@ -70,10 +69,6 @@ Yes. Betterlytics does not collect personally identifiable information and does 
 
 Yes. Betterlytics is open source. You can configure the plugin to point to your own self-hosted instance by updating the Server URL and Script URL in the settings.
 
-= Can I exclude logged-in users from tracking? =
-
-Yes. There's a setting to exclude logged-in WordPress users from being tracked.
-
 == External Services ==
 
 This plugin connects to the Betterlytics analytics service to track website visits.
@@ -105,7 +100,6 @@ By enabling tracking, you consent to data being sent to Betterlytics servers (or
 * Initial release
 * Automatic tracking script injection
 * WordPress hooks integration
-* Privacy controls for logged-in users
 
 == Upgrade Notice ==
 
