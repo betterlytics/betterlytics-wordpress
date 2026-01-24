@@ -81,19 +81,18 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 	public function test_environment_variables_logic() {
 		// Simulate variables being available (via local vars instead of getenv for test stability)
 		$mock_env = array(
-			'BETTERLYTICS_SITE_ID'           => 'env-site-id',
-			'BETTERLYTICS_SERVER_URL'        => 'https://env-server.com',
-			'BETTERLYTICS_SCRIPT_URL'        => 'https://env-server.com/js',
-			'BETTERLYTICS_ENABLED'           => 'true',
-			'BETTERLYTICS_TRACK_LOGGED_IN'   => 'true',
+			'BETTERLYTICS_SITE_ID'    => 'env-site-id',
+			'BETTERLYTICS_SERVER_URL' => 'https://env-server.com',
+			'BETTERLYTICS_SCRIPT_URL' => 'https://env-server.com/js',
+			'BETTERLYTICS_ENABLED'    => 'true',
 		);
 
 		// The logic from CONFIGURATION.md adapted for test
 		$config = array(
-			'site_id'         => $mock_env['BETTERLYTICS_SITE_ID'],
-			'server_url'      => $mock_env['BETTERLYTICS_SERVER_URL'],
-			'script_url'      => $mock_env['BETTERLYTICS_SCRIPT_URL'],
-			'enabled'         => filter_var( $mock_env['BETTERLYTICS_ENABLED'], FILTER_VALIDATE_BOOLEAN ),
+			'site_id'    => $mock_env['BETTERLYTICS_SITE_ID'],
+			'server_url' => $mock_env['BETTERLYTICS_SERVER_URL'],
+			'script_url' => $mock_env['BETTERLYTICS_SCRIPT_URL'],
+			'enabled'    => filter_var( $mock_env['BETTERLYTICS_ENABLED'], FILTER_VALIDATE_BOOLEAN ),
 		);
 
 		update_option( 'betterlytics_options', $config );

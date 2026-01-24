@@ -79,7 +79,51 @@ class Test_Betterlytics_Admin extends Betterlytics_Test_Case {
 		$this->assertFalse( $result_disabled['enabled'] );
 	}
 
+	/**
+	 * Test sanitize_options preserves valid track_outbound modes.
+	 */
+	public function test_sanitize_options_track_outbound_valid_modes() {
+		$valid_modes = array( 'off', 'domain', 'full' );
 
+		foreach ( $valid_modes as $mode ) {
+			$input = array(
+				'track_outbound' => array( 'mode' => $mode ),
+			);
 
+			$result = $this->admin->sanitize_options( $input );
 
+			$this->assertSame( $mode, $result['track_outbound']['mode'] );
+		}
+	}
+
+	/**
+	 * Test sanitize_options falls back to default for invalid track_outbound mode.
+	 */
+	public function test_sanitize_options_track_outbound_invalid_mode() {
+		$input = array(
+			'track_outbound' => array( 'mode' => 'invalid_mode' ),
+		);
+
+		$result = $this->admin->sanitize_options( $input );
+
+		// Should fall back to default 'domain' mode.
+		$this->assertSame( 'domain', $result['track_outbound']['mode'] );
+	}
+
+	/**
+	 * Test sanitize_options handles track_web_vitals checkbox.
+	 */
+	public function test_sanitize_options_web_vitals_checkbox() {
+		$input_enabled = array(
+			'track_web_vitals' => '1',
+		);
+
+		$input_disabled = array();
+
+		$result_enabled  = $this->admin->sanitize_options( $input_enabled );
+		$result_disabled = $this->admin->sanitize_options( $input_disabled );
+
+		$this->assertTrue( $result_enabled['track_web_vitals'] );
+		$this->assertFalse( $result_disabled['track_web_vitals'] );
+	}
 }

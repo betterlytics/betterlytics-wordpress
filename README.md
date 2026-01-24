@@ -20,19 +20,18 @@ Official WordPress plugin for [Betterlytics](https://betterlytics.io) - privacy-
 
 ### General Settings
 
-| Setting                   | Description                                                            |
-| ------------------------- | ---------------------------------------------------------------------- |
-| **Enable Tracking**       | Toggle tracking on/off                                                 |
-| **Site ID**               | Your unique Site ID from the Betterlytics dashboard                    |
-| **Server URL**            | Tracking endpoint (default: `https://betterlytics.io/event`)           |
-| **Script URL**            | Analytics script URL (default: `https://betterlytics.io/analytics.js`) |
-| **Track Logged-in Users** | Include/exclude logged-in users from analytics                         |
+| Setting             | Description                                                            |
+| ------------------- | ---------------------------------------------------------------------- |
+| **Enable Tracking** | Toggle tracking on/off                                                 |
+| **Site ID**         | Your unique Site ID from the Betterlytics dashboard                    |
+| **Server URL**      | Tracking endpoint (default: `https://betterlytics.io/event`)           |
+| **Script URL**      | Analytics script URL (default: `https://betterlytics.io/analytics.js`) |
 
 ### Self-Hosting
 
 If you're self-hosting Betterlytics, update the Server URL and Script URL to point to your instance:
 
-- **Server URL**: `https://your-instance.com/track`
+- **Server URL**: `https://your-instance.com/event`
 - **Script URL**: `https://your-instance.com/analytics.js`
 
 ### Automated Configuration (CI/CD)
@@ -104,7 +103,7 @@ if ( Betterlytics_Options::is_tracking_enabled() ) {
 
 ```php
 $options = Betterlytics_Options::get_options();
-// Returns: site_id, server_url, script_url, enabled, track_logged_in, hooks
+// Returns: site_id, server_url, script_url, enabled, track_outbound, etc.
 
 // Get a single option
 $site_id = Betterlytics_Options::get( 'site_id' );
@@ -112,7 +111,7 @@ $site_id = Betterlytics_Options::get( 'site_id' );
 
 ## Requirements
 
-- WordPress 6.0+
+- WordPress 5.0+
 - PHP 7.4+
 - pnpm 9.0+ (for developers)
 

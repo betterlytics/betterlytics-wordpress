@@ -71,7 +71,7 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			array(
 				'enabled'    => true,
 				'site_id'    => 'my-test-site',
-				'server_url' => 'https://analytics.example.com/track',
+				'server_url' => 'https://analytics.example.com/event',
 				'script_url' => 'https://analytics.example.com/script.js',
 			)
 		);
@@ -83,7 +83,7 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 		// Check that the script contains expected elements.
 		$this->assertStringContainsString( 'window.betterlytics', $output );
 		$this->assertStringContainsString( 'data-site-id="my-test-site"', $output );
-		$this->assertStringContainsString( 'data-server-url="https://analytics.example.com/track"', $output );
+		$this->assertStringContainsString( 'data-server-url="https://analytics.example.com/event"', $output );
 		$this->assertStringContainsString( 'src="https://analytics.example.com/script.js"', $output );
 		$this->assertStringContainsString( 'async', $output );
 	}
@@ -168,5 +168,100 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 
 		$this->assertStringContainsString( "betterlytics.event('event-one'", $output );
 		$this->assertStringContainsString( "betterlytics.event('event-two'", $output );
+	}
+
+	/**
+	 * Test that web vitals attribute is output correctly when enabled.
+	 */
+	public function test_web_vitals_enabled() {
+		$this->set_options(
+			array(
+				'enabled'          => true,
+				'site_id'          => 'test-site',
+				'track_web_vitals' => true,
+			)
+		);
+
+		ob_start();
+		$this->public->inject_tracking_script();
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'data-web-vitals="true"', $output );
+	}
+
+	/**
+	 * Test that web vitals attribute is output correctly when disabled.
+	 */
+	public function test_web_vitals_disabled() {
+		$this->set_options(
+			array(
+				'enabled'          => true,
+				'site_id'          => 'test-site',
+				'track_web_vitals' => false,
+			)
+		);
+
+		ob_start();
+		$this->public->inject_tracking_script();
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'data-web-vitals="false"', $output );
+	}
+
+	/**
+	 * Test track_outbound mode 'domain' outputs correctly.
+	 */
+	public function test_outbound_links_domain_mode() {
+		$this->set_options(
+			array(
+				'enabled'        => true,
+				'site_id'        => 'test-site',
+				'track_outbound' => array( 'mode' => 'domain' ),
+			)
+		);
+
+		ob_start();
+		$this->public->inject_tracking_script();
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'data-outbound-links="domain"', $output );
+	}
+
+	/**
+	 * Test track_outbound mode 'full' outputs correctly.
+	 */
+	public function test_outbound_links_full_mode() {
+		$this->set_options(
+			array(
+				'enabled'        => true,
+				'site_id'        => 'test-site',
+				'track_outbound' => array( 'mode' => 'full' ),
+			)
+		);
+
+		ob_start();
+		$this->public->inject_tracking_script();
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'data-outbound-links="full"', $output );
+	}
+
+	/**
+	 * Test track_outbound mode 'off' outputs correctly.
+	 */
+	public function test_outbound_links_off_mode() {
+		$this->set_options(
+			array(
+				'enabled'        => true,
+				'site_id'        => 'test-site',
+				'track_outbound' => array( 'mode' => 'off' ),
+			)
+		);
+
+		ob_start();
+		$this->public->inject_tracking_script();
+		$output = ob_get_clean();
+
+		$this->assertStringContainsString( 'data-outbound-links="off"', $output );
 	}
 }

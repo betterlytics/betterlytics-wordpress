@@ -27,7 +27,7 @@ Configure the plugin directly from your deployment scripts:
 
 ```bash
 # Set all options at once (JSON)
-wp option update betterlytics_options '{"site_id":"abc123","server_url":"https://analytics.example.com/track","script_url":"https://analytics.example.com/analytics.js","enabled":true}' --format=json
+wp option update betterlytics_options '{"site_id":"abc123","server_url":"https://analytics.example.com/event","script_url":"https://analytics.example.com/analytics.js","enabled":true}' --format=json
 
 # Or pipe from a config file
 wp option update betterlytics_options --format=json < betterlytics-config.json
@@ -61,12 +61,10 @@ add_action( 'init', function() {
     }
 
     update_option( 'betterlytics_options', [
-        'site_id'         => $site_id,
-        'server_url'      => getenv( 'BETTERLYTICS_SERVER_URL' ) ?: 'https://betterlytics.io/event',
-        'script_url'      => getenv( 'BETTERLYTICS_SCRIPT_URL' ) ?: 'https://betterlytics.io/analytics.js',
-        'enabled'         => filter_var( getenv( 'BETTERLYTICS_ENABLED' ) ?: 'true', FILTER_VALIDATE_BOOLEAN ),
-        'track_logged_in' => filter_var( getenv( 'BETTERLYTICS_TRACK_LOGGED_IN' ) ?: 'false', FILTER_VALIDATE_BOOLEAN ),
-        'hooks'           => [],
+        'site_id'    => $site_id,
+        'server_url' => getenv( 'BETTERLYTICS_SERVER_URL' ) ?: 'https://betterlytics.io/event',
+        'script_url' => getenv( 'BETTERLYTICS_SCRIPT_URL' ) ?: 'https://betterlytics.io/analytics.js',
+        'enabled'    => filter_var( getenv( 'BETTERLYTICS_ENABLED' ) ?: 'true', FILTER_VALIDATE_BOOLEAN ),
     ]);
 
     update_option( 'betterlytics_configured_by_env', true );
@@ -81,10 +79,9 @@ services:
     wordpress:
         environment:
             BETTERLYTICS_SITE_ID: "your-site-id"
-            BETTERLYTICS_SERVER_URL: "https://analytics.example.com/track"
+            BETTERLYTICS_SERVER_URL: "https://analytics.example.com/event"
             BETTERLYTICS_SCRIPT_URL: "https://analytics.example.com/analytics.js"
             BETTERLYTICS_ENABLED: "true"
-            BETTERLYTICS_TRACK_LOGGED_IN: "false"
 ```
 
 ## Config File Approach
@@ -94,7 +91,7 @@ Keep a `betterlytics-config.json` in your deployment repo for reproducible confi
 ```json
 {
 	"site_id": "production-site-id",
-	"server_url": "https://analytics.example.com/track",
+	"server_url": "https://analytics.example.com/event",
 	"script_url": "https://analytics.example.com/analytics.js",
 	"enabled": true
 }
