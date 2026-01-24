@@ -75,7 +75,7 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 	public function test_update_options() {
 		$options = array(
 			'site_id'         => 'updated-site',
-			'server_url'      => 'https://custom.example.com/track',
+			'server_url'      => 'https://custom.example.com/event',
 			'script_url'      => 'https://custom.example.com/analytics.js',
 			'enabled'         => true,
 		);
@@ -84,7 +84,7 @@ class Test_Betterlytics_Options extends Betterlytics_Test_Case {
 
 		$this->assertTrue( $result );
 		$this->assertSame( 'updated-site', Betterlytics_Options::get( 'site_id' ) );
-		$this->assertSame( 'https://custom.example.com/track', Betterlytics_Options::get( 'server_url' ) );
+		$this->assertSame( 'https://custom.example.com/event', Betterlytics_Options::get( 'server_url' ) );
 	}
 
 	/**

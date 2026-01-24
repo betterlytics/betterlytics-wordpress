@@ -27,20 +27,18 @@ if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ]; then
     curl --progress-bar https://wordpress.org/latest.tar.gz | tar xz -C "$WP_CORE_DIR" --strip-components=1
     echo "      Done!"
 
-    # Download test suite
-    echo "[2/4] Downloading test suite includes..."
-    svn export --force --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/includes/ "$WP_TESTS_DIR/includes"
+    # Download test suite from GitHub mirror (more reliable than SVN)
+    echo "[2/4] Downloading test suite from GitHub..."
+    WP_DEVELOP_DIR=$(mktemp -d)
+    git clone --depth=1 --branch=6.7 https://github.com/WordPress/wordpress-develop.git "$WP_DEVELOP_DIR"
+    cp -r "$WP_DEVELOP_DIR/tests/phpunit/includes" "$WP_TESTS_DIR/includes"
+    cp -r "$WP_DEVELOP_DIR/tests/phpunit/data" "$WP_TESTS_DIR/data"
+    cp "$WP_DEVELOP_DIR/wp-tests-config-sample.php" "$WP_TESTS_DIR/wp-tests-config.php"
+    rm -rf "$WP_DEVELOP_DIR"
     echo "      Done!"
-
-    echo "[3/4] Downloading test suite data..."
-    svn export --force --ignore-externals https://develop.svn.wordpress.org/tags/6.7/tests/phpunit/data/ "$WP_TESTS_DIR/data"
-    echo "      Done!"
-
-    # Download wp-tests-config.php
-    echo "[4/4] Configuring test environment..."
-    curl -s https://develop.svn.wordpress.org/tags/6.7/wp-tests-config-sample.php > "$WP_TESTS_DIR/wp-tests-config.php"
 
     # Configure wp-tests-config.php
+    echo "[3/4] Configuring test environment..."
     sed -i "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR/wp-tests-config.php"
     sed -i "s:__DIR__ . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR/wp-tests-config.php"
     sed -i "s/youremptytestdbnamehere/$WORDPRESS_DB_NAME/" "$WP_TESTS_DIR/wp-tests-config.php"

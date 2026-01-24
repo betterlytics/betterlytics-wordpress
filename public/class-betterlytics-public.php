@@ -106,7 +106,7 @@ console.log('[Betterlytics] Script injected', {
 		}
 
 		$options  = Betterlytics_Options::get_options();
-		$needs_js = ! empty( $options['track_downloads']['enabled'] ) || ! empty( $options['track_css_events']['enabled'] );
+		$needs_js = ! empty( $options['track_downloads']['enabled'] ) || ! empty( $options['track_custom_html_attribute']['enabled'] );
 
 		if ( ! $needs_js ) {
 			return;
@@ -120,14 +120,14 @@ console.log('[Betterlytics] Script injected', {
 			true
 		);
 
-		wp_localize_script(
-			'betterlytics-events',
-			'betterlyticsEvents',
-			[
-				'trackDownloads' => ! empty( $options['track_downloads'] ),
-				'trackCssEvents' => ! empty( $options['track_css_events'] ),
-			]
-		);
+			wp_localize_script(
+				'betterlytics-events',
+				'betterlyticsEvents',
+				[
+					'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
+					'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
+				]
+			);
 	}
 
 	/**
@@ -145,7 +145,7 @@ console.log('[Betterlytics] Script injected', {
 		echo "<script>\n";
 		foreach ( $betterlytics_queued_events as $event ) {
 			$name  = esc_js( $event['name'] );
-			$props = wp_json_encode( $event['properties'], JSON_HEX_TAG | JSON_HEX_AMP );
+			$props = wp_json_encode( $event['properties'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_FORCE_OBJECT );
 			echo "betterlytics.event('" . esc_js( $name ) . "', " . $props . ");\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 		echo "</script>\n";

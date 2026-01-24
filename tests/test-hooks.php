@@ -27,7 +27,7 @@ class Test_Betterlytics_Hooks extends Betterlytics_Test_Case {
 			array(
 				'enabled'   => true,
 				'site_id'   => 'test-site',
-				'track_404' => true,
+				'track_404' => array( 'enabled' => true ),
 			)
 		);
 

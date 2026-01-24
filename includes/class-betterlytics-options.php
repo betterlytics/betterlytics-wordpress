@@ -25,29 +25,29 @@ class Betterlytics_Options {
 	 * @var array
 	 */
 	const DEFAULTS = [
-		'site_id'          => '',
-		'server_url'       => 'https://betterlytics.io/event',
-		'script_url'       => 'https://betterlytics.io/analytics.js',
-		'enabled'          => false,
-		'track_web_vitals' => false,
-		'track_404'        => [
+		'site_id'                     => '',
+		'server_url'                  => 'https://betterlytics.io/event',
+		'script_url'                  => 'https://betterlytics.io/analytics.js',
+		'enabled'                     => false,
+		'track_web_vitals'            => false,
+		'track_404'                   => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
-		'track_search'     => [
+		'track_search'                => [
 			'enabled'       => false,
 			'include_query' => false,
 			'metadata'      => [],
 		],
-		'track_outbound'   => [
+		'track_outbound'              => [
 			'mode'     => 'domain',
 			'metadata' => [],
 		],
-		'track_downloads'  => [
+		'track_downloads'             => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
-		'track_css_events' => [
+		'track_custom_html_attribute' => [
 			'enabled'  => false,
 			'metadata' => [],
 		],
@@ -68,7 +68,7 @@ class Betterlytics_Options {
 			'track_404',
 			'track_search',
 			'track_downloads',
-			'track_css_events',
+			'track_custom_html_attribute',
 		];
 
 		foreach ( $event_keys as $key ) {

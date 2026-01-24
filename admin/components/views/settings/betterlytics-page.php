@@ -162,13 +162,13 @@ $betterlytics_options = $args['options'];
 					Betterlytics_Admin_Controller::render_component(
 						'ui/setting-row',
 						[
-							'label'       => __( 'CSS Class Events', 'betterlytics' ),
-							'name'        => 'betterlytics_options[track_css_events][enabled]',
-							'checked'     => ! empty( $betterlytics_options['track_css_events']['enabled'] ),
+							'label'       => __( 'Custom HTML Attribute Events', 'betterlytics' ),
+							'name'        => 'betterlytics_options[track_custom_html_attribute][enabled]',
+							'checked'     => ! empty( $betterlytics_options['track_custom_html_attribute']['enabled'] ),
 							'description' => sprintf(
-								/* translators: %s: CSS class example */
-								__( 'Track clicks on elements with %s class', 'betterlytics' ),
-								'<code class="bg-muted px-1.5 py-0.5 rounded text-primary">betterlytics-event-name=YourEvent</code>'
+								/* translators: %s: HTML attribute example */
+								__( 'Track clicks on elements with %s attribute', 'betterlytics' ),
+								'<code class="bg-muted px-1.5 py-0.5 rounded text-primary">data-betterlytics-event="some-event-name"</code>'
 							),
 							'help_path'   => 'integration/custom-events',
 						]
