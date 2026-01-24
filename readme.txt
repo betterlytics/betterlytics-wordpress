@@ -1,7 +1,7 @@
 === Betterlytics ===
 Contributors: betterlytics
 Tags: analytics, privacy, gdpr, cookieless, statistics
-Requires at least: 6.0
+Requires at least: 5.0
 Tested up to: 6.7
 Stable tag: 1.0.0
 Requires PHP: 7.4
