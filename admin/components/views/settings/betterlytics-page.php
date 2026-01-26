@@ -4,6 +4,14 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/views/settings
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Template arguments.
  *
  * @var array $args {
  *     @type array $options Plugin options.

@@ -53,6 +53,9 @@ docker compose --profile test run --rm test
 # Build plugin zip
 docker compose --profile build run --rm build
 
+# Run WordPress.org Plugin Check
+docker compose up -d && docker compose --profile plugin-check run --rm plugin-check
+
 # Clean up everything (including volumes)
 docker compose down -v
 
@@ -80,6 +83,50 @@ docker compose --profile test run --rm test vendor/bin/phpunit tests/test-option
 # Run with verbose output
 docker compose --profile test run --rm test vendor/bin/phpunit --verbose
 ```
+
+## Plugin Check (WordPress.org Validation)
+
+Run the official [WordPress Plugin Check](https://wordpress.org/plugins/plugin-check/) tool to validate the plugin against WordPress.org submission requirements and best practices.
+
+```bash
+# Run all checks (comprehensive - for development)
+docker compose up -d && docker compose --profile plugin-check run --rm plugin-check
+
+# Run only plugin_repo category (required checks for WordPress.org submission)
+docker compose up -d && docker compose --profile plugin-check run --rm plugin-check \
+  wp plugin check betterlytics --categories=plugin_repo --format=table
+```
+
+### Check Categories
+
+| Category | Description | When to use |
+|----------|-------------|-------------|
+| `plugin_repo` | WordPress.org submission requirements | **CI/pre-submission** - these are required for approval |
+| `security` | XSS, SQL injection, nonces, sanitization | Always important |
+| `performance` | Script sizes, defer/async, efficient queries | Optimization |
+| `accessibility` | WCAG compliance, ARIA usage | Inclusive UX |
+| `general` | Code quality, naming, i18n | Best practices |
+
+### Common Options
+
+```bash
+# Filter by specific category
+--categories=plugin_repo
+--categories=security,performance
+
+# Output formats
+--format=table      # Human readable (default)
+--format=json       # Machine readable
+--format=csv        # Spreadsheet friendly
+
+# Ignore specific error codes
+--ignore-codes=code1,code2
+
+# Include lower severity issues
+--include-low-severity
+```
+
+For more options, see the [Plugin Check documentation](https://wordpress.org/plugins/plugin-check/).
 
 ## Demo Environment
 

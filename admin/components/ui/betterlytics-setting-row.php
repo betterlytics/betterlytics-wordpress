@@ -4,6 +4,14 @@
  *
  * @package Betterlytics
  * @subpackage Betterlytics/admin/components/ui
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Template arguments.
  *
  * @var array $args {
  *     @type string $label       Setting label.

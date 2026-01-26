@@ -10,6 +10,10 @@
  * @since      1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Core plugin class.
  */
@@ -46,7 +50,6 @@ class Betterlytics {
 		$this->plugin_name = 'betterlytics';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -62,11 +65,6 @@ class Betterlytics {
 		 * The class responsible for orchestrating the actions and filters.
 		 */
 		require_once BETTERLYTICS_PLUGIN_DIR . 'includes/class-betterlytics-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality.
-		 */
-		require_once BETTERLYTICS_PLUGIN_DIR . 'includes/class-betterlytics-i18n.php';
 
 		/**
 		 * The class responsible for plugin options.
@@ -95,17 +93,6 @@ class Betterlytics {
 		require_once BETTERLYTICS_PLUGIN_DIR . 'includes/class-betterlytics-hooks.php';
 
 		$this->loader = new Betterlytics_Loader();
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * @since  1.0.0
-	 * @access private
-	 */
-	private function set_locale() {
-		$plugin_i18n = new Betterlytics_I18n();
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**
