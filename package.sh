@@ -64,11 +64,6 @@ cp -r includes "${BUILD_DIR}/"
 echo "Copying public directory..."
 cp -r public "${BUILD_DIR}/"
 
-echo "Copying languages directory..."
-if [ -d "languages" ]; then
-    cp -r languages "${BUILD_DIR}/"
-fi
-
 # 5. Remove Development Files from Build Directory
 echo -e "${BLUE}Removing development files from build...${NC}"
 # Remove map files if they exist
