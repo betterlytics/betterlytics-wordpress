@@ -63,12 +63,12 @@ register_activation_hook( __FILE__, 'betterlytics_activate' );
  * @return array Modified plugin action links.
  */
 function betterlytics_plugin_action_links( $links ) {
-	$settings_link = '<a href="' . admin_url( 'options-general.php?page=betterlytics&tab=settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';
-	array_unshift( $links, $settings_link );
-
 	// Add dashboard link.
 	$dashboard_link = '<a href="https://betterlytics.io/dashboards" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
 	array_unshift( $links, $dashboard_link );
+
+	$settings_link = '<a href="' . admin_url( 'options-general.php?page=betterlytics&tab=settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';
+	array_unshift( $links, $settings_link );
 
 	return $links;
 }
