@@ -47,3 +47,6 @@ composer.lock
 /coverage/
 .claude/
 .agent/
+
+# Build
+betterlytics.zip
