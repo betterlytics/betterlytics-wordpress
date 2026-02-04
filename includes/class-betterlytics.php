@@ -125,8 +125,8 @@ class Betterlytics {
 	private function define_public_hooks() {
 		$plugin_public = new Betterlytics_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_head', $plugin_public, 'inject_tracking_script', 1 );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'output_queued_events', 99 );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'inject_tracking_script', 1 );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'output_queued_events', 99 );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_event_scripts' );
 
 		// Initialize custom hooks integration.
