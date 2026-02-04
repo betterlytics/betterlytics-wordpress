@@ -48,9 +48,10 @@ class Betterlytics_Public {
 	 * @since 1.0.0
 	 */
 	public function inject_tracking_script() {
+		$options = Betterlytics_Options::get_options();
+
 		// Debug: Log tracking check.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$options         = Betterlytics_Options::get_options();
 			$tracking_status = Betterlytics_Options::is_tracking_enabled() ? 'ENABLED' : 'DISABLED';
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug only.
 			error_log( '[Betterlytics] Tracking status: ' . $tracking_status );
@@ -62,14 +63,19 @@ class Betterlytics_Public {
 			return;
 		}
 
-		$options    = Betterlytics_Options::get_options();
 		$script_url = $options['script_url'];
+
+		// Validate script URL before enqueueing.
+		if ( empty( $script_url ) || ! filter_var( $script_url, FILTER_VALIDATE_URL ) ) {
+			return;
+		}
 
 		// Register and enqueue the external tracking script with async strategy (WP 6.3+).
 		wp_enqueue_script(
 			'betterlytics-tracker',
 			$script_url,
 			[],
+			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- External script URL; version managed by remote server.
 			null,
 			[
 				'strategy'  => 'async',
@@ -144,22 +150,22 @@ class Betterlytics_Public {
 			return;
 		}
 
-		wp_enqueue_script(
-			'betterlytics-events',
-			BETTERLYTICS_PLUGIN_URL . 'public/js/betterlytics-events.js',
-			[],
-			$this->version,
-			true
-		);
-
-			wp_localize_script(
+			wp_enqueue_script(
 				'betterlytics-events',
-				'betterlyticsEvents',
-				[
-					'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
-					'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
-				]
+				BETTERLYTICS_PLUGIN_URL . 'public/js/betterlytics-events.js',
+				[],
+				$this->version,
+				true
 			);
+
+		wp_localize_script(
+			'betterlytics-events',
+			'betterlyticsEvents',
+			[
+				'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
+				'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
+			]
+		);
 	}
 
 	/**
