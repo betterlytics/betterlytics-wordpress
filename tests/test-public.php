@@ -25,10 +25,14 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 	public function set_up() {
 		parent::set_up();
 		$this->public = new Betterlytics_Public( 'betterlytics', '1.0.0' );
+
+		// Reset WordPress scripts for each test.
+		global $wp_scripts;
+		$wp_scripts = null;
 	}
 
 	/**
-	 * Test that tracking script is not output when disabled.
+	 * Test that tracking script is not enqueued when disabled.
 	 */
 	public function test_script_not_output_when_disabled() {
 		$this->set_options(
@@ -38,15 +42,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringNotContainsString( '<script', $output );
+		$this->assertFalse( wp_script_is( 'betterlytics-tracker', 'enqueued' ) );
 	}
 
 	/**
-	 * Test that tracking script is not output without site_id.
+	 * Test that tracking script is not enqueued without site_id.
 	 */
 	public function test_script_not_output_without_site_id() {
 		$this->set_options(
@@ -56,15 +58,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringNotContainsString( '<script', $output );
+		$this->assertFalse( wp_script_is( 'betterlytics-tracker', 'enqueued' ) );
 	}
 
 	/**
-	 * Test that tracking script is output when properly configured.
+	 * Test that tracking script is enqueued when properly configured.
 	 */
 	public function test_script_output_when_configured() {
 		$this->set_options(
@@ -76,16 +76,22 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		// Check that the script contains expected elements.
-		$this->assertStringContainsString( 'window.betterlytics', $output );
-		$this->assertStringContainsString( 'data-site-id="my-test-site"', $output );
-		$this->assertStringContainsString( 'data-server-url="https://analytics.example.com/event"', $output );
-		$this->assertStringContainsString( 'src="https://analytics.example.com/script.js"', $output );
-		$this->assertStringContainsString( 'async', $output );
+		// Check that the script is enqueued.
+		$this->assertTrue( wp_script_is( 'betterlytics-tracker', 'enqueued' ) );
+
+		// Check the script URL.
+		global $wp_scripts;
+		$this->assertEquals(
+			'https://analytics.example.com/script.js',
+			$wp_scripts->registered['betterlytics-tracker']->src
+		);
+
+		// Check inline script before.
+		$inline_before = $wp_scripts->get_data( 'betterlytics-tracker', 'before' );
+		$this->assertNotEmpty( $inline_before );
+		$this->assertStringContainsString( 'window.betterlytics', implode( '', $inline_before ) );
 	}
 
 	/**
@@ -99,17 +105,19 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
+
+		global $wp_scripts;
+		$inline_before = $wp_scripts->get_data( 'betterlytics-tracker', 'before' );
+		$inline_script = implode( '', $inline_before );
 
 		// Check for the queue initialization code.
-		$this->assertStringContainsString( 'window.betterlytics.q', $output );
-		$this->assertStringContainsString( 'push(arguments)', $output );
+		$this->assertStringContainsString( 'window.betterlytics.q', $inline_script );
+		$this->assertStringContainsString( 'push(arguments)', $inline_script );
 	}
 
 	/**
-	 * Test queued events are output correctly.
+	 * Test queued events are added as inline script.
 	 */
 	public function test_queued_events_output() {
 		global $betterlytics_queued_events;
@@ -123,27 +131,50 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			),
 		);
 
-		ob_start();
-		$this->public->output_queued_events();
-		$output = ob_get_clean();
+		// First enqueue the tracker script.
+		$this->set_options(
+			array(
+				'enabled' => true,
+				'site_id' => 'test-site',
+			)
+		);
+		$this->public->inject_tracking_script();
 
-		$this->assertStringContainsString( "betterlytics.event('test-event'", $output );
-		$this->assertStringContainsString( '"wp_hook":"test_hook"', $output );
-		$this->assertStringContainsString( '"value":123', $output );
+		// Now output queued events.
+		$this->public->output_queued_events();
+
+		global $wp_scripts;
+		$inline_after = $wp_scripts->get_data( 'betterlytics-tracker', 'after' );
+		$inline_script = implode( '', $inline_after );
+
+		$this->assertStringContainsString( "betterlytics.event('test-event'", $inline_script );
+		$this->assertStringContainsString( '"wp_hook":"test_hook"', $inline_script );
+		$this->assertStringContainsString( '"value":123', $inline_script );
 	}
 
 	/**
-	 * Test no output when no queued events.
+	 * Test no inline script added when no queued events.
 	 */
 	public function test_no_output_when_no_queued_events() {
 		global $betterlytics_queued_events;
 		$betterlytics_queued_events = array();
 
-		ob_start();
-		$this->public->output_queued_events();
-		$output = ob_get_clean();
+		// First enqueue the tracker script.
+		$this->set_options(
+			array(
+				'enabled' => true,
+				'site_id' => 'test-site',
+			)
+		);
+		$this->public->inject_tracking_script();
 
-		$this->assertEmpty( $output );
+		// Now output queued events (should do nothing).
+		$this->public->output_queued_events();
+
+		global $wp_scripts;
+		$inline_after = $wp_scripts->get_data( 'betterlytics-tracker', 'after' );
+
+		$this->assertEmpty( $inline_after );
 	}
 
 	/**
@@ -162,12 +193,24 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			),
 		);
 
-		ob_start();
-		$this->public->output_queued_events();
-		$output = ob_get_clean();
+		// First enqueue the tracker script.
+		$this->set_options(
+			array(
+				'enabled' => true,
+				'site_id' => 'test-site',
+			)
+		);
+		$this->public->inject_tracking_script();
 
-		$this->assertStringContainsString( "betterlytics.event('event-one'", $output );
-		$this->assertStringContainsString( "betterlytics.event('event-two'", $output );
+		// Now output queued events.
+		$this->public->output_queued_events();
+
+		global $wp_scripts;
+		$inline_after = $wp_scripts->get_data( 'betterlytics-tracker', 'after' );
+		$inline_script = implode( '', $inline_after );
+
+		$this->assertStringContainsString( "betterlytics.event('event-one'", $inline_script );
+		$this->assertStringContainsString( "betterlytics.event('event-two'", $inline_script );
 	}
 
 	/**
@@ -182,11 +225,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringContainsString( 'data-web-vitals="true"', $output );
+		// Check the data attributes via the filter method.
+		$test_tag = '<script src="test.js"></script>';
+		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
+
+		$this->assertStringContainsString( 'data-web-vitals="true"', $result );
 	}
 
 	/**
@@ -201,11 +246,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringContainsString( 'data-web-vitals="false"', $output );
+		// Check the data attributes via the filter method.
+		$test_tag = '<script src="test.js"></script>';
+		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
+
+		$this->assertStringContainsString( 'data-web-vitals="false"', $result );
 	}
 
 	/**
@@ -220,11 +267,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringContainsString( 'data-outbound-links="domain"', $output );
+		// Check the data attributes via the filter method.
+		$test_tag = '<script src="test.js"></script>';
+		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
+
+		$this->assertStringContainsString( 'data-outbound-links="domain"', $result );
 	}
 
 	/**
@@ -239,11 +288,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringContainsString( 'data-outbound-links="full"', $output );
+		// Check the data attributes via the filter method.
+		$test_tag = '<script src="test.js"></script>';
+		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
+
+		$this->assertStringContainsString( 'data-outbound-links="full"', $result );
 	}
 
 	/**
@@ -258,10 +309,30 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		ob_start();
 		$this->public->inject_tracking_script();
-		$output = ob_get_clean();
 
-		$this->assertStringContainsString( 'data-outbound-links="off"', $output );
+		// Check the data attributes via the filter method.
+		$test_tag = '<script src="test.js"></script>';
+		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
+
+		$this->assertStringContainsString( 'data-outbound-links="off"', $result );
+	}
+
+	/**
+	 * Test that filter doesn't modify other script handles.
+	 */
+	public function test_filter_ignores_other_handles() {
+		$this->set_options(
+			array(
+				'enabled' => true,
+				'site_id' => 'test-site',
+			)
+		);
+
+		$test_tag = '<script src="other.js"></script>';
+		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'other-script' );
+
+		// Should return unchanged.
+		$this->assertEquals( $test_tag, $result );
 	}
 }

@@ -12,7 +12,7 @@
  * Plugin URI:        https://github.com/betterlytics/betterlytics-wordpress
  * Description:       Privacy-first analytics for WordPress. Automatically adds the Betterlytics tracking script and provides easy WordPress action hooks integration.
  * Version:           1.0.0
- * Requires at least: 5.0
+ * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Betterlytics
  * Author URI:        https://betterlytics.io

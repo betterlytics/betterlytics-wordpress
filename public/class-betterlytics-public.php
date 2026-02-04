@@ -7,6 +7,10 @@
  * @since      1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Public-facing functionality.
  */
@@ -39,7 +43,7 @@ class Betterlytics_Public {
 	}
 
 	/**
-	 * Inject the Betterlytics tracking script.
+	 * Enqueue the Betterlytics tracking script.
 	 *
 	 * @since 1.0.0
 	 */
@@ -58,41 +62,69 @@ class Betterlytics_Public {
 			return;
 		}
 
-		$options        = Betterlytics_Options::get_options();
-		$site_id        = esc_attr( $options['site_id'] );
-		$server_url     = esc_url( $options['server_url'] );
-		$script_url     = esc_url( $options['script_url'] );
-		$track_outbound = esc_attr( $options['track_outbound']['mode'] );
-		$web_vitals     = ! empty( $options['track_web_vitals'] ) ? 'true' : 'false';
+		$options    = Betterlytics_Options::get_options();
+		$script_url = $options['script_url'];
 
-		// Debug: Output configuration as HTML comment.
+		// Register and enqueue the external tracking script with async strategy (WP 6.3+).
+		wp_enqueue_script(
+			'betterlytics-tracker',
+			$script_url,
+			[],
+			null,
+			[
+				'strategy'  => 'async',
+				'in_footer' => false,
+			]
+		);
+
+		// Add filter for data-* attributes.
+		add_filter( 'script_loader_tag', [ $this, 'add_tracker_script_attributes' ], 10, 2 );
+
+		// Build inline script for event queue buffer.
+		$inline_script = 'window.betterlytics = window.betterlytics || { event: function() { (window.betterlytics.q = window.betterlytics.q || []).push(arguments); } };';
+
+		// Add debug logging if WP_DEBUG is enabled.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			echo "<!-- Betterlytics: Tracking ENABLED -->\n";
-			echo '<!-- Site ID: ' . esc_html( $site_id ) . " -->\n";
-			echo '<!-- Server URL: ' . esc_html( $server_url ) . " -->\n";
-			echo '<!-- Script URL: ' . esc_html( $script_url ) . " -->\n";
+			$site_id        = esc_js( $options['site_id'] );
+			$server_url     = esc_js( $options['server_url'] );
+			$script_url_js  = esc_js( $script_url );
+			$track_outbound = esc_js( $options['track_outbound']['mode'] );
+
+			$inline_script .= "\nconsole.log('[Betterlytics] Script injected', { siteId: '{$site_id}', serverUrl: '{$server_url}', scriptUrl: '{$script_url_js}', trackOutbound: '{$track_outbound}' });";
 		}
 
-		// Output async event queue for reliable tracking before script loads.
-		?>
-<script>
-window.betterlytics = window.betterlytics || {
-	event: function() {
-		(window.betterlytics.q = window.betterlytics.q || []).push(arguments);
+		// Add event queue buffer as inline script BEFORE the main script.
+		wp_add_inline_script( 'betterlytics-tracker', $inline_script, 'before' );
 	}
-};
-		<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
-console.log('[Betterlytics] Script injected', {
-	siteId: '<?php echo esc_js( $site_id ); ?>',
-	serverUrl: '<?php echo esc_js( $server_url ); ?>',
-	scriptUrl: '<?php echo esc_js( $script_url ); ?>',
-	trackOutbound: '<?php echo esc_js( $track_outbound ); ?>'
-});
-		<?php endif; ?>
-</script>
-<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- External analytics script with data attributes cannot use wp_enqueue_script(). ?>
-<script async src="<?php echo esc_url( $script_url ); ?>" data-site-id="<?php echo esc_attr( $site_id ); ?>" data-server-url="<?php echo esc_url( $server_url ); ?>" data-outbound-links="<?php echo esc_attr( $track_outbound ); ?>" data-web-vitals="<?php echo esc_attr( $web_vitals ); ?>"></script>
-		<?php
+
+	/**
+	 * Add data attributes to the tracking script tag.
+	 *
+	 * @since 1.0.0
+	 * @param string $tag    The script tag HTML.
+	 * @param string $handle The script handle.
+	 * @return string Modified script tag.
+	 */
+	public function add_tracker_script_attributes( $tag, $handle ) {
+		if ( 'betterlytics-tracker' !== $handle ) {
+			return $tag;
+		}
+
+		$options = Betterlytics_Options::get_options();
+
+		// Build data attributes string.
+		$data_attrs = sprintf(
+			' data-site-id="%s" data-server-url="%s" data-outbound-links="%s" data-web-vitals="%s"',
+			esc_attr( $options['site_id'] ),
+			esc_url( $options['server_url'] ),
+			esc_attr( $options['track_outbound']['mode'] ),
+			! empty( $options['track_web_vitals'] ) ? 'true' : 'false'
+		);
+
+		// Insert data attributes before the closing >.
+		$tag = str_replace( '></script>', $data_attrs . '></script>', $tag );
+
+		return $tag;
 	}
 
 	/**
@@ -131,23 +163,25 @@ console.log('[Betterlytics] Script injected', {
 	}
 
 	/**
-	 * Output queued events as JavaScript.
+	 * Output queued events as inline JavaScript.
 	 *
 	 * @since 1.0.0
 	 */
 	public function output_queued_events() {
 		global $betterlytics_queued_events;
 
-		if ( empty( $betterlytics_queued_events ) ) {
+		if ( empty( $betterlytics_queued_events ) || ! wp_script_is( 'betterlytics-tracker', 'enqueued' ) ) {
 			return;
 		}
 
-		echo "<script>\n";
+		$script_lines = [];
 		foreach ( $betterlytics_queued_events as $event ) {
-			$name  = esc_js( $event['name'] );
-			$props = wp_json_encode( $event['properties'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_FORCE_OBJECT );
-			echo "betterlytics.event('" . esc_js( $name ) . "', " . $props . ");\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$name           = esc_js( $event['name'] );
+			$props          = wp_json_encode( $event['properties'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_FORCE_OBJECT );
+			$script_lines[] = "betterlytics.event('" . $name . "', " . $props . ');';
 		}
-		echo "</script>\n";
+
+		// Add queued events as inline script AFTER the main tracking script.
+		wp_add_inline_script( 'betterlytics-tracker', implode( "\n", $script_lines ), 'after' );
 	}
 }
