@@ -72,6 +72,35 @@ class Betterlytics_Admin {
 	}
 
 	/**
+	 * Enqueue admin scripts.
+	 *
+	 * @since 1.0.0
+	 * @param string $hook The current admin page hook.
+	 */
+	public function enqueue_scripts( $hook ) {
+		// Always enqueue - dashboard link script runs on all admin pages.
+		wp_enqueue_script(
+			'betterlytics-admin',
+			BETTERLYTICS_PLUGIN_URL . 'admin/js/betterlytics-admin.js',
+			[],
+			$this->version,
+			true
+		);
+
+		// Only localize with AJAX data on Betterlytics pages where banner may show.
+		if ( 'settings_page_betterlytics' === $hook ) {
+			wp_localize_script(
+				'betterlytics-admin',
+				'betterlyticsAdmin',
+				[
+					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'betterlytics_admin' ),
+				]
+			);
+		}
+	}
+
+	/**
 	 * Register plugin settings.
 	 *
 	 * @since 1.0.0
@@ -176,29 +205,6 @@ class Betterlytics_Admin {
 			remove_all_actions( 'admin_notices' );
 			remove_all_actions( 'all_admin_notices' );
 		}
-	}
-
-	/**
-	 * Add target="_blank" to dashboard link in admin menu.
-	 *
-	 * @since 1.0.0
-	 */
-	public function dashboard_link_script() {
-		?>
-		<script>
-		(function(){
-			function setTarget() {
-				var link = document.querySelector('#adminmenu a[href*="betterlytics.io"]');
-				if (link) { link.target = '_blank'; link.rel = 'noopener'; }
-			}
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', setTarget);
-			} else {
-				setTarget();
-			}
-		})();
-		</script>
-		<?php
 	}
 
 	/**
