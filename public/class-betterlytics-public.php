@@ -83,8 +83,8 @@ class Betterlytics_Public {
 			]
 		);
 
-		// Add filter for data-* attributes.
-		add_filter( 'script_loader_tag', [ $this, 'add_tracker_script_attributes' ], 10, 2 );
+		// Add data-* attributes via wp_script_attributes filter.
+		add_filter( 'wp_script_attributes', [ $this, 'add_tracker_script_attributes' ] );
 
 		// Build inline script for event queue buffer.
 		$inline_script = 'window.betterlytics = window.betterlytics || { event: function() { (window.betterlytics.q = window.betterlytics.q || []).push(arguments); } };';
@@ -107,30 +107,22 @@ class Betterlytics_Public {
 	 * Add data attributes to the tracking script tag.
 	 *
 	 * @since 1.0.0
-	 * @param string $tag    The script tag HTML.
-	 * @param string $handle The script handle.
-	 * @return string Modified script tag.
+	 * @param array $attr Script tag attributes.
+	 * @return array Modified attributes.
 	 */
-	public function add_tracker_script_attributes( $tag, $handle ) {
-		if ( 'betterlytics-tracker' !== $handle ) {
-			return $tag;
+	public function add_tracker_script_attributes( $attr ) {
+		if ( ! isset( $attr['id'] ) || 'betterlytics-tracker-js' !== $attr['id'] ) {
+			return $attr;
 		}
 
 		$options = Betterlytics_Options::get_options();
 
-		// Build data attributes string.
-		$data_attrs = sprintf(
-			' data-site-id="%s" data-server-url="%s" data-outbound-links="%s" data-web-vitals="%s"',
-			esc_attr( $options['site_id'] ),
-			esc_url( $options['server_url'] ),
-			esc_attr( $options['track_outbound']['mode'] ),
-			! empty( $options['track_web_vitals'] ) ? 'true' : 'false'
-		);
+		$attr['data-site-id']        = esc_attr( $options['site_id'] );
+		$attr['data-server-url']     = esc_url( $options['server_url'] );
+		$attr['data-outbound-links'] = esc_attr( $options['track_outbound']['mode'] );
+		$attr['data-web-vitals']     = ! empty( $options['track_web_vitals'] ) ? 'true' : 'false';
 
-		// Insert data attributes before the closing >.
-		$tag = str_replace( '></script>', $data_attrs . '></script>', $tag );
-
-		return $tag;
+		return $attr;
 	}
 
 	/**

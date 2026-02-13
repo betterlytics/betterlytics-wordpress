@@ -225,13 +225,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		$this->public->inject_tracking_script();
+		$attr   = array(
+			'id'  => 'betterlytics-tracker-js',
+			'src' => 'https://analytics.example.com/script.js',
+		);
+		$result = $this->public->add_tracker_script_attributes( $attr );
 
-		// Check the data attributes via the filter method.
-		$test_tag = '<script src="test.js"></script>';
-		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
-
-		$this->assertStringContainsString( 'data-web-vitals="true"', $result );
+		$this->assertEquals( 'true', $result['data-web-vitals'] );
 	}
 
 	/**
@@ -246,13 +246,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		$this->public->inject_tracking_script();
+		$attr   = array(
+			'id'  => 'betterlytics-tracker-js',
+			'src' => 'https://analytics.example.com/script.js',
+		);
+		$result = $this->public->add_tracker_script_attributes( $attr );
 
-		// Check the data attributes via the filter method.
-		$test_tag = '<script src="test.js"></script>';
-		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
-
-		$this->assertStringContainsString( 'data-web-vitals="false"', $result );
+		$this->assertEquals( 'false', $result['data-web-vitals'] );
 	}
 
 	/**
@@ -267,13 +267,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		$this->public->inject_tracking_script();
+		$attr   = array(
+			'id'  => 'betterlytics-tracker-js',
+			'src' => 'https://analytics.example.com/script.js',
+		);
+		$result = $this->public->add_tracker_script_attributes( $attr );
 
-		// Check the data attributes via the filter method.
-		$test_tag = '<script src="test.js"></script>';
-		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
-
-		$this->assertStringContainsString( 'data-outbound-links="domain"', $result );
+		$this->assertEquals( 'domain', $result['data-outbound-links'] );
 	}
 
 	/**
@@ -288,13 +288,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		$this->public->inject_tracking_script();
+		$attr   = array(
+			'id'  => 'betterlytics-tracker-js',
+			'src' => 'https://analytics.example.com/script.js',
+		);
+		$result = $this->public->add_tracker_script_attributes( $attr );
 
-		// Check the data attributes via the filter method.
-		$test_tag = '<script src="test.js"></script>';
-		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
-
-		$this->assertStringContainsString( 'data-outbound-links="full"', $result );
+		$this->assertEquals( 'full', $result['data-outbound-links'] );
 	}
 
 	/**
@@ -309,13 +309,13 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		$this->public->inject_tracking_script();
+		$attr   = array(
+			'id'  => 'betterlytics-tracker-js',
+			'src' => 'https://analytics.example.com/script.js',
+		);
+		$result = $this->public->add_tracker_script_attributes( $attr );
 
-		// Check the data attributes via the filter method.
-		$test_tag = '<script src="test.js"></script>';
-		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'betterlytics-tracker' );
-
-		$this->assertStringContainsString( 'data-outbound-links="off"', $result );
+		$this->assertEquals( 'off', $result['data-outbound-links'] );
 	}
 
 	/**
@@ -329,10 +329,14 @@ class Test_Betterlytics_Public extends Betterlytics_Test_Case {
 			)
 		);
 
-		$test_tag = '<script src="other.js"></script>';
-		$result   = $this->public->add_tracker_script_attributes( $test_tag, 'other-script' );
+		$attr   = array(
+			'id'  => 'other-script-js',
+			'src' => 'https://example.com/other.js',
+		);
+		$result = $this->public->add_tracker_script_attributes( $attr );
 
-		// Should return unchanged.
-		$this->assertEquals( $test_tag, $result );
+		// Should return unchanged — no data-* keys added.
+		$this->assertArrayNotHasKey( 'data-site-id', $result );
+		$this->assertEquals( $attr, $result );
 	}
 }
