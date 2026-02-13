@@ -96,16 +96,6 @@ class Betterlytics_Admin_Controller {
 						</button>
 					</div>
 				</div>
-				<script>
-				document.getElementById('betterlytics-dismiss-banner').addEventListener('click', function() {
-					var banner = document.getElementById('betterlytics-setup-banner');
-					banner.style.display = 'none';
-					var xhr = new XMLHttpRequest();
-					xhr.open('POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>');
-					xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-					xhr.send('action=betterlytics_dismiss_setup_banner&nonce=<?php echo esc_js( wp_create_nonce( 'betterlytics_admin' ) ); ?>');
-				});
-				</script>
 			<?php endif; ?>
 
 			<div class="wrap betterlytics-admin-wrap max-w-[1200px] mx-auto px-10 relative">

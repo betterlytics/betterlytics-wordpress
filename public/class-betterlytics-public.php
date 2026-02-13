@@ -150,13 +150,13 @@ class Betterlytics_Public {
 			return;
 		}
 
-			wp_enqueue_script(
-				'betterlytics-events',
-				BETTERLYTICS_PLUGIN_URL . 'public/js/betterlytics-events.js',
-				[],
-				$this->version,
-				true
-			);
+		wp_enqueue_script(
+			'betterlytics-events',
+			BETTERLYTICS_PLUGIN_URL . 'public/js/betterlytics-events.js',
+			[],
+			$this->version,
+			true
+		);
 
 		wp_localize_script(
 			'betterlytics-events',
