@@ -9,7 +9,6 @@ docker-compose.yml
 phpcs.xml.dist
 phpunit.xml.dist
 composer.json
-composer.lock
 vendor/
 tests/
 bin/
