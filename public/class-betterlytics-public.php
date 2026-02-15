@@ -50,15 +50,6 @@ class Betterlytics_Public {
 	public function inject_tracking_script() {
 		$options = Betterlytics_Options::get_options();
 
-		// Debug: Log tracking check.
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$tracking_status = Betterlytics_Options::is_tracking_enabled() ? 'ENABLED' : 'DISABLED';
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug only.
-			error_log( '[Betterlytics] Tracking status: ' . $tracking_status );
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug only.
-			error_log( '[Betterlytics] Options: ' . wp_json_encode( $options ) );
-		}
-
 		if ( ! Betterlytics_Options::is_tracking_enabled() ) {
 			return;
 		}

@@ -8,7 +8,7 @@
 /**
  * Base test case class.
  */
-class Betterlytics_Test_Case extends WP_UnitTestCase {
+abstract class Betterlytics_Test_Case extends WP_UnitTestCase {
 
 	/**
 	 * Set up test fixtures.
