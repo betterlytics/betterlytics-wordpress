@@ -53,8 +53,8 @@ docker compose --profile test run --rm test
 # Build plugin zip
 docker compose --profile build run --rm build
 
-# Run WordPress.org Plugin Check
-docker compose up -d && docker compose --profile plugin-check run --rm plugin-check
+# Run WordPress.org Plugin Check (package first, then check)
+./package.sh && docker compose --profile plugin-check run --rm plugin-check
 
 # Clean up everything (including volumes)
 docker compose down -v
@@ -86,15 +86,11 @@ docker compose --profile test run --rm test vendor/bin/phpunit --verbose
 
 ## Plugin Check (WordPress.org Validation)
 
-Run the official [WordPress Plugin Check](https://wordpress.org/plugins/plugin-check/) tool to validate the plugin against WordPress.org submission requirements and best practices.
+Run the official [WordPress Plugin Check](https://wordpress.org/plugins/plugin-check/) tool to validate the plugin against WordPress.org submission requirements and best practices. The check runs against the packaged zip to match exactly what WordPress.org reviewers see.
 
 ```bash
-# Run all checks (comprehensive - for development)
-docker compose up -d && docker compose --profile plugin-check run --rm plugin-check
-
-# Run only plugin_repo category (required checks for WordPress.org submission)
-docker compose up -d && docker compose --profile plugin-check run --rm plugin-check \
-  wp plugin check betterlytics --categories=plugin_repo --format=table
+# Package the plugin and run all checks
+./package.sh && docker compose --profile plugin-check run --rm plugin-check
 ```
 
 ### Check Categories
