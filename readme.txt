@@ -12,30 +12,29 @@ Privacy-first, cookieless analytics for WordPress. Easily add Betterlytics track
 
 == Description ==
 
-**Betterlytics for WordPress** is the official plugin for [Betterlytics](https://betterlytics.io) — a privacy-first, cookieless analytics platform that's GDPR compliant out of the box.
+[Betterlytics](https://betterlytics.io) is an open-source, cookieless analytics platform. This is the official plugin that connects it to WordPress: install, paste in your Site ID, and data starts appearing in your dashboard. No theme edits, no code snippets, and since Betterlytics doesn't use cookies, no consent banner either.
 
-This plugin helps you quickly set up Betterlytics on your WordPress site without editing theme files or adding code manually.
+= What the plugin does =
 
-= Features =
+* Adds the Betterlytics tracking script (under 1KB, loaded async) to your site automatically
+* Walks you through setup with a short wizard on the settings page
+* Lets you switch on extra event tracking per feature: 404 pages, site searches, outbound link clicks, file downloads, and Core Web Vitals
+* Tracks clicks on any element you mark with a single HTML attribute, without writing JavaScript
+* Turns WordPress action hooks into custom analytics events for deeper integration
+* Works with Betterlytics Cloud or your own self-hosted instance — both the server and script URLs are configurable
 
-* **Easy Setup** — Add your Site ID and start tracking in seconds
-* **No Code Required** — Automatically injects the lightweight tracking script
-* **WordPress Hooks Integration** — Map WordPress actions to custom analytics events
-* **Self-Hosting Support** — Works with both Betterlytics Cloud and self-hosted instances
+All event tracking features are opt-in and stay disabled until you enable them.
 
-= Why Betterlytics? =
+= Privacy =
 
-* **Privacy-first** — No cookies, no consent banners required
-* **GDPR Compliant** — Respects visitor privacy by design
-* **Lightweight** — Under 1KB tracking script
-* **Open Source** — Transparent, community-driven development
+Betterlytics collects no personally identifiable information and uses no cookies, so it's GDPR compliant by design. Your visitors get privacy without cookie notices, and you get analytics without a consent management plugin. The platform itself is open source, so you can audit exactly what is collected — or run it entirely on your own servers.
 
-= Links =
+= Resources =
 
-* [Betterlytics Website](https://betterlytics.io)
 * [Documentation](https://betterlytics.io/docs)
-* [GitHub Repository](https://github.com/betterlytics/betterlytics)
-* [Live Demo](https://betterlytics.io/share/cmcxux3l8000ar9081uwprkwz)
+* [Live demo dashboard](https://betterlytics.io/share/cmcxux3l8000ar9081uwprkwz)
+* [GitHub repository](https://github.com/betterlytics/betterlytics)
+* [Discord community](https://discord.gg/vwqSvPn6sP)
 
 == Installation ==
 
