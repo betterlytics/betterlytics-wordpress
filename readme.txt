@@ -39,11 +39,20 @@ This plugin helps you quickly set up Betterlytics on your WordPress site without
 
 == Installation ==
 
-1. Upload the `betterlytics` folder to `/wp-content/plugins/`
-2. Activate the plugin through the **Plugins** menu in WordPress
-3. Go to **Settings > Betterlytics**
-4. Enter your Site ID from your [Betterlytics dashboard](https://betterlytics.io)
-5. Enable tracking and save
+= From your WordPress dashboard (recommended) =
+
+1. Go to **Plugins > Add New** in your WordPress admin
+2. Search for **Betterlytics**
+3. Click **Install Now** and then **Activate**
+4. Go to **Settings > Betterlytics** - the Home tab greets you with a setup wizard
+5. Paste in your Site ID from your [Betterlytics dashboard](https://betterlytics.io)
+6. Toggle on **Enable tracking** and click **Save Settings**
+
+= Manual installation =
+
+1. Download the plugin zip from [wordpress.org/plugins/betterlytics](https://wordpress.org/plugins/betterlytics/)
+2. Go to **Plugins > Add New > Upload Plugin** and upload the zip (or extract the `betterlytics` folder to `/wp-content/plugins/`)
+3. Activate the plugin through the **Plugins** menu, then follow steps 4–6 above
 
 = Getting a Site ID =
 
