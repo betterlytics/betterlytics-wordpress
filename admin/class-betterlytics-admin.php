@@ -145,9 +145,6 @@ class Betterlytics_Admin {
 			$options['track_web_vitals'] = ! empty( $input['track_web_vitals'] );
 
 			$checkbox_keys = [
-				'track_404'                   => [ 'enabled' ],
-				'track_search'                => [ 'enabled', 'include_query' ],
-				'track_downloads'             => [ 'enabled' ],
 				'track_custom_html_attribute' => [ 'enabled' ],
 			];
 

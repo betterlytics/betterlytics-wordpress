@@ -25,13 +25,7 @@ class Test_Configuration_MD extends Betterlytics_Test_Case {
 			'track_web_vitals' => false,
 
 			// Browser Events
-			'track_404'        => array( 'enabled' => false ),
-			'track_search'     => array(
-				'enabled'       => false,
-				'include_query' => false,
-			),
 			'track_outbound'   => array( 'mode' => 'domain' ),
-			'track_downloads'  => array( 'enabled' => false ),
 			'track_custom_html_attribute' => array( 'enabled' => false ),
 		);
 

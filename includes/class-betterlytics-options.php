@@ -30,21 +30,8 @@ class Betterlytics_Options {
 		'script_url'                  => 'https://betterlytics.io/analytics.js',
 		'enabled'                     => false,
 		'track_web_vitals'            => false,
-		'track_404'                   => [
-			'enabled'  => false,
-			'metadata' => [],
-		],
-		'track_search'                => [
-			'enabled'       => false,
-			'include_query' => false,
-			'metadata'      => [],
-		],
 		'track_outbound'              => [
 			'mode'     => 'domain',
-			'metadata' => [],
-		],
-		'track_downloads'             => [
-			'enabled'  => false,
 			'metadata' => [],
 		],
 		'track_custom_html_attribute' => [
@@ -65,9 +52,6 @@ class Betterlytics_Options {
 
 		// Normalize legacy boolean values to object format.
 		$event_keys = [
-			'track_404',
-			'track_search',
-			'track_downloads',
 			'track_custom_html_attribute',
 		];
 

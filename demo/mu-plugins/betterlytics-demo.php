@@ -167,40 +167,6 @@ function betterlytics_demo_render_test_page( $content ) {
 			</button>
 		</div>
 
-		<h2>WordPress Hook Testing</h2>
-			<?php if ( comments_open() ) : ?>
-				<p style="margin-top: 15px;"><strong>Post a comment</strong> to trigger the <code>comment_post</code> hook:</p>
-				<?php comment_form(); ?>
-			<?php endif; ?>
-		</div>
-
-		<h2>Feature Testing</h2>
-		<div class="test-section">
-			<h3>404 Error Tracking</h3>
-			<p>Click the link below to visit a non-existent page and trigger a 404 event:</p>
-			<a href="<?php echo esc_url( home_url( '/this-page-does-not-exist-' . wp_generate_password( 8, false ) ) ); ?>" target="_blank">
-				<button type="button">Trigger 404 Error (opens in new tab)</button>
-			</a>
-
-			<h3 style="margin-top: 20px;">Site Search Tracking</h3>
-			<p>Enter a query below to trigger a search event:</p>
-			<form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-				<input type="search" name="s" placeholder="Search for..." value="betterlytics test" style="padding: 8px; width: 200px;">
-				<button type="submit">Search</button>
-			</form>
-
-			<h3 style="margin-top: 20px;">File Download Tracking</h3>
-			<p>Click these links to trigger file download events:</p>
-			<div class="quick-links" style="margin-top: 10px;">
-				<a href="<?php echo esc_url( BETTERLYTICS_PLUGIN_URL . 'README.md' ); ?>" download>sample.md (not tracked)</a>
-				<a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" target="_blank">sample.pdf (tracked)</a>
-				<a href="https://github.com/google/betterlytics-wordpress/archive/refs/heads/main.zip" target="_blank">sample.zip (tracked)</a>
-			</div>
-			<p><small>Note: File download tracking is client-side and filters by specific extensions.</small></p>
-		</div>
-
-
-
 		<h2>Event Log</h2>
 		<div class="test-section">
 			<p>Events fired from this page (client-side only):</p>
@@ -288,21 +254,6 @@ function betterlytics_demo_render_test_page( $content ) {
 	return ob_get_clean();
 }
 add_filter( 'the_content', 'betterlytics_demo_render_test_page', 20 );
-
-/**
- * Enable comments on the test page for testing comment_post hook.
- *
- * @param bool $open    Whether comments are open.
- * @param int  $post_id The post ID (unused, required by filter signature).
- * @return bool
- */
-function betterlytics_demo_enable_comments( $open, $post_id ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-	if ( is_page( 'betterlytics-test' ) ) {
-		return true;
-	}
-	return $open;
-}
-add_filter( 'comments_open', 'betterlytics_demo_enable_comments', 10, 2 );
 
 /**
  * Add a notice in the admin when the demo plugin is active.

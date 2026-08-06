@@ -143,7 +143,6 @@ docker compose logs -f demo-setup
 - **Test Page** - Available at `/betterlytics-test/` with:
     - Connection status indicator
     - Manual event trigger buttons
-    - WordPress hook triggers (login, comments)
     - Real-time event log
 
 ### Testing with Local Betterlytics
@@ -216,7 +215,6 @@ betterlytics-wordpress/
 ├── includes/                 # Core plugin classes
 │   ├── class-betterlytics.php
 │   ├── class-betterlytics-activator.php
-│   ├── class-betterlytics-hooks.php
 │   ├── class-betterlytics-i18n.php
 │   ├── class-betterlytics-loader.php
 │   └── class-betterlytics-options.php

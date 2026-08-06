@@ -3,24 +3,6 @@
 
 	var config = window.betterlyticsEvents || {};
 
-	// File download tracking
-	if (config.trackDownloads) {
-		var downloadExtensions =
-			/\.(pdf|zip|doc|docx|xls|xlsx|ppt|pptx|exe|dmg|tar|gz|rar)$/i;
-		document.addEventListener("click", function (e) {
-			var link = e.target.closest("a[href]");
-			if (!link) return;
-
-			if (downloadExtensions.test(link.href)) {
-				window.betterlytics &&
-					betterlytics.event("file-download", {
-						url: link.href,
-						filename: link.href.split("/").pop(),
-					});
-			}
-		});
-	}
-
 	// Custom HTML attribute event tracking (data-betterlytics-event attribute)
 	if (config.trackCustomHtmlAttr) {
 		document.addEventListener("click", function (e) {

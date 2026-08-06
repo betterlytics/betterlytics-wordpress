@@ -127,7 +127,7 @@ class Betterlytics_Public {
 		}
 
 		$options  = Betterlytics_Options::get_options();
-		$needs_js = ! empty( $options['track_downloads']['enabled'] ) || ! empty( $options['track_custom_html_attribute']['enabled'] );
+		$needs_js = ! empty( $options['track_custom_html_attribute']['enabled'] );
 
 		if ( ! $needs_js ) {
 			return;
@@ -145,32 +145,8 @@ class Betterlytics_Public {
 			'betterlytics-events',
 			'betterlyticsEvents',
 			[
-				'trackDownloads'      => ! empty( $options['track_downloads']['enabled'] ),
 				'trackCustomHtmlAttr' => ! empty( $options['track_custom_html_attribute']['enabled'] ),
 			]
 		);
-	}
-
-	/**
-	 * Output queued events as inline JavaScript.
-	 *
-	 * @since 1.0.0
-	 */
-	public function output_queued_events() {
-		global $betterlytics_queued_events;
-
-		if ( empty( $betterlytics_queued_events ) || ! wp_script_is( 'betterlytics-tracker', 'enqueued' ) ) {
-			return;
-		}
-
-		$script_lines = [];
-		foreach ( $betterlytics_queued_events as $event ) {
-			$name           = esc_js( $event['name'] );
-			$props          = wp_json_encode( $event['properties'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_FORCE_OBJECT );
-			$script_lines[] = "betterlytics.event('" . $name . "', " . $props . ');';
-		}
-
-		// Add queued events as inline script AFTER the main tracking script.
-		wp_add_inline_script( 'betterlytics-tracker', implode( "\n", $script_lines ), 'after' );
 	}
 }

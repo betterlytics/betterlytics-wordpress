@@ -55,7 +55,7 @@ $betterlytics_options = $args['options'];
 						'name'        => 'betterlytics_options[enabled]',
 						'checked'     => ! empty( $betterlytics_options['enabled'] ),
 						'description' => __( 'Enable Betterlytics tracking on this site', 'betterlytics' ),
-						'help_path'   => 'integration/wordpress/settings#enable-tracking',
+						'help_path'   => 'wordpress/settings#enable-tracking',
 					]
 				);
 
@@ -69,7 +69,7 @@ $betterlytics_options = $args['options'];
 						'value'       => $betterlytics_options['site_id'],
 						'placeholder' => 'your-site-id',
 						'description' => __( 'Your unique Site ID from the Betterlytics dashboard.', 'betterlytics' ),
-						'help_path'   => 'integration/wordpress/settings#site-id',
+						'help_path'   => 'wordpress/settings#site-id',
 					]
 				);
 
@@ -92,41 +92,6 @@ $betterlytics_options = $args['options'];
 			<div class="bg-card border border-border rounded-2xl shadow-sm flex flex-col mb-8">
 				<div class="flex-1 p-10 relative">
 					<?php
-					// Page Events.
-					Betterlytics_Admin_Controller::render_component(
-						'ui/setting-row',
-						[
-							'label'       => __( '404 Error Pages', 'betterlytics' ),
-							'name'        => 'betterlytics_options[track_404][enabled]',
-							'checked'     => ! empty( $betterlytics_options['track_404']['enabled'] ),
-							'description' => __( 'Track when visitors land on pages that don\'t exist', 'betterlytics' ),
-							'help_path'   => 'integration/wordpress/events#404-tracking',
-						]
-					);
-
-					Betterlytics_Admin_Controller::render_component(
-						'ui/setting-row',
-						[
-							'label'       => __( 'Site Search', 'betterlytics' ),
-							'name'        => 'betterlytics_options[track_search][enabled]',
-							'checked'     => ! empty( $betterlytics_options['track_search']['enabled'] ),
-							'description' => __( 'Track search queries on your site', 'betterlytics' ),
-							'help_path'   => 'integration/wordpress/events#site-search',
-						]
-					);
-
-					Betterlytics_Admin_Controller::render_component(
-						'ui/setting-row',
-						[
-							'label'       => __( 'Include Search Query', 'betterlytics' ),
-							'name'        => 'betterlytics_options[track_search][include_query]',
-							'checked'     => ! empty( $betterlytics_options['track_search']['include_query'] ),
-							'description' => __( 'Send the search term with events (disable if users search for personal info)', 'betterlytics' ),
-							'help_path'   => 'integration/wordpress/events#site-search',
-							'indent'      => true,
-						]
-					);
-
 					Betterlytics_Admin_Controller::render_component(
 						'ui/setting-row',
 						[
@@ -152,18 +117,6 @@ $betterlytics_options = $args['options'];
 							],
 							'description' => __( 'Track clicks on links to external websites', 'betterlytics' ),
 							'help_path'   => 'integration/outbound-links',
-						]
-					);
-
-					// Click Events.
-					Betterlytics_Admin_Controller::render_component(
-						'ui/setting-row',
-						[
-							'label'       => __( 'File Downloads', 'betterlytics' ),
-							'name'        => 'betterlytics_options[track_downloads][enabled]',
-							'checked'     => ! empty( $betterlytics_options['track_downloads']['enabled'] ),
-							'description' => __( 'Track downloads of files (.pdf, .zip, .doc, etc.)', 'betterlytics' ),
-							'help_path'   => 'integration/wordpress/events#file-downloads',
 						]
 					);
 

@@ -3,7 +3,7 @@ Contributors: betterlytics
 Tags: analytics, privacy, gdpr, cookieless, statistics
 Requires at least: 6.3
 Tested up to: 6.9
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,9 +18,8 @@ Privacy-first, cookieless analytics for WordPress. Easily add Betterlytics track
 
 * Adds the Betterlytics tracking script (under 1KB, loaded async) to your site automatically
 * Walks you through setup with a short wizard on the settings page
-* Lets you switch on extra event tracking per feature: 404 pages, site searches, outbound link clicks, file downloads, and Core Web Vitals
+* Lets you switch on extra event tracking per feature: outbound link clicks and Core Web Vitals
 * Tracks clicks on any element you mark with a single HTML attribute, without writing JavaScript
-* Turns WordPress action hooks into custom analytics events for deeper integration
 * Works with Betterlytics Cloud or your own self-hosted instance — both the server and script URLs are configurable
 
 All event tracking features are opt-in and stay disabled until you enable them.
@@ -100,9 +99,14 @@ By enabling tracking, you consent to data being sent to Betterlytics servers (or
 == Screenshots ==
 
 1. Settings page — Configure your Site ID and tracking options
-2. Events configuration — Set up WordPress hooks for custom event tracking
+2. Events configuration — Enable browser event tracking options
 
 == Changelog ==
+
+= 1.1.0 =
+* Removed 404 error page tracking
+* Removed site search tracking
+* Removed file download tracking
 
 = 1.0.0 =
 * Initial release
@@ -110,6 +114,9 @@ By enabling tracking, you consent to data being sent to Betterlytics servers (or
 * WordPress hooks integration
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+404, site search, and file download tracking have been removed to simplify the plugin. All other tracking features are unaffected; previously saved settings for the removed features are ignored.
 
 = 1.0.0 =
 Initial release of Betterlytics for WordPress.

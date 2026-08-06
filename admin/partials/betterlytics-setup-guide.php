@@ -45,7 +45,7 @@ $betterlytics_steps = [
 	[
 		'id'          => 'configure_events',
 		'title'       => __( 'Configure events (optional)', 'betterlytics' ),
-		'description' => __( 'Set up event tracking for downloads, outbound links, and more.', 'betterlytics' ),
+		'description' => __( 'Set up event tracking for outbound links, custom events, and more.', 'betterlytics' ),
 		'completed'   => false, // Optional step.
 		'cta_text'    => __( 'Configure Events', 'betterlytics' ),
 		'cta_url'     => admin_url( 'options-general.php?page=betterlytics&tab=settings#betterlytics-events-section' ),
