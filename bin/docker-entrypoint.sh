@@ -30,7 +30,7 @@ if [ ! -f "$WP_TESTS_DIR/includes/functions.php" ]; then
     # Download test suite from GitHub mirror (more reliable than SVN)
     echo "[2/4] Downloading test suite from GitHub..."
     WP_DEVELOP_DIR=$(mktemp -d)
-    git clone --depth=1 --branch=6.7 https://github.com/WordPress/wordpress-develop.git "$WP_DEVELOP_DIR"
+    git clone --depth=1 --branch=7.0 https://github.com/WordPress/wordpress-develop.git "$WP_DEVELOP_DIR"
     cp -r "$WP_DEVELOP_DIR/tests/phpunit/includes" "$WP_TESTS_DIR/includes"
     cp -r "$WP_DEVELOP_DIR/tests/phpunit/data" "$WP_TESTS_DIR/data"
     cp "$WP_DEVELOP_DIR/wp-tests-config-sample.php" "$WP_TESTS_DIR/wp-tests-config.php"
