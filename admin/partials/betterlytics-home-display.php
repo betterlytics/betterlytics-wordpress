@@ -30,7 +30,7 @@ $betterlytics_setup_complete = Betterlytics_Options::is_setup_complete();
 				</a>
 			</li>
 			<li>
-				<a href="https://betterlytics.io/dashboards" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
+				<a href="https://betterlytics.io/dashboard" target="_blank" class="flex items-center gap-2 px-4 py-3 no-underline text-foreground hover:bg-muted transition-colors">
 					<span class="dashicons dashicons-chart-bar text-muted-foreground"></span>
 					<?php esc_html_e( 'Betterlytics Dashboard', 'betterlytics' ); ?>
 					<span class="dashicons dashicons-external text-muted-foreground/50 !w-4 !h-4 ml-auto"></span>

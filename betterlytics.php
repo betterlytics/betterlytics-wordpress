@@ -64,7 +64,7 @@ register_activation_hook( __FILE__, 'betterlytics_activate' );
  */
 function betterlytics_plugin_action_links( $links ) {
 	// Add dashboard link.
-	$dashboard_link = '<a href="https://betterlytics.io/dashboards" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
+	$dashboard_link = '<a href="https://betterlytics.io/dashboard" target="_blank">' . __( 'Dashboard', 'betterlytics' ) . '</a>';
 	array_unshift( $links, $dashboard_link );
 
 	$settings_link = '<a href="' . admin_url( 'options-general.php?page=betterlytics&tab=settings' ) . '">' . __( 'Settings', 'betterlytics' ) . '</a>';

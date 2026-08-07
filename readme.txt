@@ -43,7 +43,7 @@ Betterlytics collects no personally identifiable information and uses no cookies
 2. Search for **Betterlytics**
 3. Click **Install Now** and then **Activate**
 4. Go to **Settings > Betterlytics** - the Home tab greets you with a setup wizard
-5. Paste in your Site ID from your [Betterlytics dashboard](https://betterlytics.io)
+5. Paste in your Site ID from your [Betterlytics dashboard](https://betterlytics.io/dashboard)
 6. Toggle on **Enable tracking** and click **Save Settings**
 
 = Manual installation =

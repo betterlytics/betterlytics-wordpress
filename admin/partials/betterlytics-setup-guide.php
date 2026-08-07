@@ -27,7 +27,7 @@ $betterlytics_steps = [
 		'description' => sprintf(
 			/* translators: %s: link to Betterlytics dashboard */
 			__( 'Sign up or log in to your %s to get your unique Site ID.', 'betterlytics' ),
-			'<a href="https://betterlytics.io/dashboards" target="_blank" class="text-primary underline font-bold">' . __( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
+			'<a href="https://betterlytics.io/dashboard" target="_blank" class="text-primary underline font-bold">' . __( 'Betterlytics dashboard', 'betterlytics' ) . '</a>'
 		),
 		'completed'   => $betterlytics_has_site_id,
 		'cta_text'    => __( 'Enter Site ID', 'betterlytics' ),
